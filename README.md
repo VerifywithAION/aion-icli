@@ -21,6 +21,22 @@
   <a href="docs/PUBLIC_RELEASE_LOCK_V1.md">Release Lock</a>
 </p>
 
+<p align="center"><strong>AION ICLI terminal signature</strong></p>
+
+<pre align="center">
+█████╗ ██╗ ██████╗ ███╗   ██╗
+██╔══██╗██║██╔═══██╗████╗  ██║
+███████║██║██║   ██║██╔██╗ ██║
+██╔══██║██║██║   ██║██║╚██╗██║
+██║  ██║██║╚██████╔╝██║ ╚████║
+╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+
+AION ICLI
+Interactive Command Line Intelligence
+Governed Local Mode · Offline-capable by design
+No external APIs by default
+</pre>
+
 ---
 
 **AION ICLI** is a local-first command-line interface for governed AI and system actions.
@@ -318,6 +334,7 @@ Start here:
     docs/CONNECTOR_SDK_CONTRACT_V1.md
     docs/LOCAL_GOVERNANCE_PROXY_V1.md
     docs/PUBLIC_RELEASE_LOCK_V1.md
+
 
 
 
