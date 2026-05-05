@@ -29,8 +29,9 @@ Lock the public-safe release state of AION ICLI.
 
 This repository exposes only the public AION ICLI interface, documentation, examples, local deterministic governance proxy, and public-safe receipts/schema material.
 
-It does not expose private AION engines, confidential documents, proprietary routing logic, private model adapters, secrets, credentials, or live API integrations.
+It does not expose AION runtimes, confidential documents, proprietary routing logic, private model adapters, secrets, credentials, or live API integrations.
 
 ## Status
 
 LOCKED as public-safe release baseline.
+

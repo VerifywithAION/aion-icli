@@ -1,12 +1,33 @@
-﻿# AION ICLI
+﻿# ⚡ AION ICLI — Governed Command Line Intelligence
 
-**Interactive Command Line Intelligence for governed AI and system actions.**
+<p align="center">
+  <strong>Governed Execution · Receipts · Offline Replay</strong>
+</p>
 
-AION ICLI is the public, local-first command-line front door for AION-style governance.
+<p align="center">
+  <img alt="Build" src="https://img.shields.io/badge/build-passing-brightgreen">
+  <img alt="Release" src="https://img.shields.io/badge/release-public%20v1-blue">
+  <img alt="Mode" src="https://img.shields.io/badge/mode-local--first-purple">
+  <img alt="Network" src="https://img.shields.io/badge/network-off%20by%20default-orange">
+  <img alt="Receipts" src="https://img.shields.io/badge/receipts-enabled-00aaff">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-lightgrey">
+</p>
 
-It lets a user ask, evaluate, constrain, and verify actions through a receipt-bound interface before trust is granted.
+<p align="center">
+  <a href="#quick-start---windows">Quick Start</a> ·
+  <a href="#guided-tour">Guided Tour</a> ·
+  <a href="#local-governance-proxy">Governance Proxy</a> ·
+  <a href="#public-safety-boundary">Safety Boundary</a> ·
+  <a href="docs/PUBLIC_RELEASE_LOCK_V1.md">Release Lock</a>
+</p>
 
-> This repository contains the AION ICLI runtime, local governance examples, verification scripts, and documentation needed to run the public release.
+---
+
+**AION ICLI** is a local-first command-line interface for governed AI and system actions.
+
+It helps users evaluate requests, expose boundaries, and produce receipts before trust is granted.
+
+If you want a CLI that makes AI/system actions more inspectable, constrained, and replayable, this is the front door.
 
 ---
 
@@ -297,4 +318,6 @@ Start here:
     docs/CONNECTOR_SDK_CONTRACT_V1.md
     docs/LOCAL_GOVERNANCE_PROXY_V1.md
     docs/PUBLIC_RELEASE_LOCK_V1.md
+
+
 
