@@ -1,0 +1,17 @@
+﻿{
+  "request_id": "sdk-api-envelope-001",
+  "sdk_client": "example.public.sdk",
+  "intent": "Review an API request envelope before any live API call.",
+  "action": {
+    "kind": "api_request",
+    "name": "get_public_resource",
+    "description": "Proposed API request that remains dry-run only."
+  },
+  "risk_hint": "medium",
+  "requested_capabilities": ["network", "dry_run", "generate_receipt"],
+  "network_requested": true,
+  "mutation_requested": false,
+  "execution_requested": false,
+  "api_call_requested": true,
+  "receipt_output": "examples/sdk/generated/sdk-api-envelope-001.receipt.json"
+}

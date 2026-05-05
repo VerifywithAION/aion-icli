@@ -1,0 +1,17 @@
+﻿{
+  "request_id": "sdk-model-envelope-001",
+  "sdk_client": "example.public.sdk",
+  "intent": "Review a model request envelope before provider execution.",
+  "action": {
+    "kind": "model_request",
+    "name": "summarize_public_text",
+    "description": "Proposed model request that remains dry-run only."
+  },
+  "risk_hint": "low",
+  "requested_capabilities": ["read", "dry_run", "generate_receipt"],
+  "network_requested": false,
+  "mutation_requested": false,
+  "execution_requested": false,
+  "provider_call_requested": false,
+  "receipt_output": "examples/sdk/generated/sdk-model-envelope-001.receipt.json"
+}

@@ -398,9 +398,11 @@ Start here:
     docs/CONNECTOR_POLICY_V2.md
     docs/SAFE_API_ADAPTER_DRY_RUN_V1.md
     docs/SAFE_MODEL_ADAPTER_DRY_RUN_V1.md
+    docs/SDK_EXAMPLES_V1.md
     docs/LOCAL_GOVERNANCE_PROXY_V1.md
     docs/PUBLIC_RELEASE_LOCK_V1.md
     docs/RELEASE_NOTES_V1.md
+
 
 
 

@@ -1,0 +1,16 @@
+﻿{
+  "request_id": "sdk-safe-read-001",
+  "sdk_client": "example.public.sdk",
+  "intent": "Review a local read-only SDK action before trusting it.",
+  "action": {
+    "kind": "local_read",
+    "name": "inspect_public_config",
+    "description": "Read a local public config file in dry-run review mode."
+  },
+  "risk_hint": "low",
+  "requested_capabilities": ["read", "dry_run", "generate_receipt"],
+  "network_requested": false,
+  "mutation_requested": false,
+  "execution_requested": false,
+  "receipt_output": "examples/sdk/generated/sdk-safe-read-001.receipt.json"
+}

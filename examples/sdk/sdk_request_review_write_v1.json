@@ -1,0 +1,16 @@
+﻿{
+  "request_id": "sdk-review-write-001",
+  "sdk_client": "example.public.sdk",
+  "intent": "Review a write-style SDK action before any file mutation is allowed.",
+  "action": {
+    "kind": "local_write",
+    "name": "write_generated_report",
+    "description": "Proposed report generation that should stay in review mode first."
+  },
+  "risk_hint": "medium",
+  "requested_capabilities": ["write", "dry_run", "generate_receipt"],
+  "network_requested": false,
+  "mutation_requested": true,
+  "execution_requested": false,
+  "receipt_output": "examples/sdk/generated/sdk-review-write-001.receipt.json"
+}
