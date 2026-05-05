@@ -20,7 +20,7 @@ function Invoke-AionCapture {
   )
 
   if (-not (Test-Path -LiteralPath $FilePath)) {
-    throw "Missing executable/script for $Label: $FilePath"
+    throw "Missing executable/script for ${Label}: $FilePath"
   }
 
   $psi = New-Object System.Diagnostics.ProcessStartInfo
@@ -52,7 +52,7 @@ function Invoke-AionCapture {
   if ($p.ExitCode -ne 0) {
     Write-Host "----- $Label STDOUT/STDERR -----"
     Write-Host $combined
-    throw "$Label failed with exit code $($p.ExitCode)"
+    throw "${Label} failed with exit code $($p.ExitCode)"
   }
 
   return $combined
@@ -143,3 +143,4 @@ foreach ($fp in $forbiddenPaths) {
 }
 
 Write-Host "AION_ICLI_PUBLIC_SAFE_VERIFY_OK"
+
