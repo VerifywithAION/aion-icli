@@ -1,8 +1,13 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
 Set-Location (Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Definition))
 
+function Remove-AionAnsi {
+  param([string]$Text)
+  if ($null -eq $Text) { return "" }
+  return [regex]::Replace($Text, "`e\[[0-9;]*m", "")
+}
 Write-Host "AION ICLI public-safe verifier"
 
 $env:PYTHONUTF8 = "1"
