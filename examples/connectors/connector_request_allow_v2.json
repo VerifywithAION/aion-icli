@@ -1,0 +1,25 @@
+﻿{
+  "request_id": "conn-allow-001",
+  "connector_id": "example.sdk.local",
+  "connector_type": "sdk",
+  "intent": "Evaluate a local dry-run SDK request before trust is granted.",
+  "target": {
+    "kind": "local_demo",
+    "name": "example-safe-read"
+  },
+  "risk_hint": "low",
+  "requested_capabilities": ["read", "generate_receipt", "dry_run"],
+  "execution_mode": "dry_run",
+  "network_policy": {
+    "requested": false,
+    "default_allowed": false
+  },
+  "mutation_policy": {
+    "requested": false,
+    "default_allowed": false
+  },
+  "receipt_policy": {
+    "required": true,
+    "output": "examples/connectors/generated/conn-allow-001.receipt.json"
+  }
+}

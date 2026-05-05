@@ -1,0 +1,80 @@
+﻿{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AION ICLI Connector Request V2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request_id",
+    "connector_id",
+    "connector_type",
+    "intent",
+    "target",
+    "risk_hint",
+    "requested_capabilities",
+    "execution_mode",
+    "network_policy",
+    "mutation_policy",
+    "receipt_policy"
+  ],
+  "properties": {
+    "request_id": { "type": "string", "minLength": 1 },
+    "connector_id": { "type": "string", "minLength": 1 },
+    "connector_type": {
+      "type": "string",
+      "enum": ["sdk", "api", "model", "automation", "cli", "other"]
+    },
+    "intent": { "type": "string", "minLength": 1 },
+    "target": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["kind", "name"],
+      "properties": {
+        "kind": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 }
+      }
+    },
+    "risk_hint": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "unknown"]
+    },
+    "requested_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["read", "write", "network", "execute", "mutate", "generate_receipt", "dry_run"]
+      },
+      "uniqueItems": true
+    },
+    "execution_mode": {
+      "type": "string",
+      "enum": ["dry_run", "operator_review", "execute"]
+    },
+    "network_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requested", "default_allowed"],
+      "properties": {
+        "requested": { "type": "boolean" },
+        "default_allowed": { "type": "boolean" }
+      }
+    },
+    "mutation_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requested", "default_allowed"],
+      "properties": {
+        "requested": { "type": "boolean" },
+        "default_allowed": { "type": "boolean" }
+      }
+    },
+    "receipt_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "output"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "output": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

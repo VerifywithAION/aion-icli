@@ -395,9 +395,11 @@ Start here:
     docs/HARDENING_NOTE_V1.md
     docs/REPO_GUIDED_TOUR_V1.md
     docs/CONNECTOR_SDK_CONTRACT_V1.md
+    docs/CONNECTOR_POLICY_V2.md
     docs/LOCAL_GOVERNANCE_PROXY_V1.md
     docs/PUBLIC_RELEASE_LOCK_V1.md
     docs/RELEASE_NOTES_V1.md
+
 
 
 

@@ -1,0 +1,25 @@
+﻿{
+  "request_id": "conn-block-001",
+  "connector_id": "example.api.network",
+  "connector_type": "api",
+  "intent": "Attempt to execute an API action with network and mutation requested.",
+  "target": {
+    "kind": "api_demo",
+    "name": "example-unsafe-execute"
+  },
+  "risk_hint": "high",
+  "requested_capabilities": ["network", "execute", "mutate", "generate_receipt"],
+  "execution_mode": "execute",
+  "network_policy": {
+    "requested": true,
+    "default_allowed": false
+  },
+  "mutation_policy": {
+    "requested": true,
+    "default_allowed": false
+  },
+  "receipt_policy": {
+    "required": true,
+    "output": "examples/connectors/generated/conn-block-001.receipt.json"
+  }
+}
