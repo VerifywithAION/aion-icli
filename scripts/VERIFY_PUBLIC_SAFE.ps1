@@ -3,9 +3,14 @@ Set-StrictMode -Version Latest
 
 function Remove-AionAnsi {
   param([string]$Text)
-  if ($null -eq $Text) { return "" }
 
-  $s = [regex]::Replace($Text, "`e\[[0-9;?]*[ -/]*[@-~]", "")
+  if ($null -eq $Text) {
+    return ""
+  }
+
+  $esc = [char]27
+  $pattern = [regex]::Escape([string]$esc) + "\[[0-9;?]*[ -/]*[@-~]"
+  $s = [regex]::Replace($Text, $pattern, "")
   $s = $s -replace "`0", ""
   $s = $s -replace "`r`n", "`n"
   $s = $s -replace "`r", "`n"
@@ -15,52 +20,21 @@ function Remove-AionAnsi {
 function Invoke-AionCapture {
   param(
     [string]$Label,
-    [string]$FilePath,
-    [string[]]$Arguments
+    [string]$Command
   )
 
-  $isScriptPath = $FilePath.Contains("\") -or $FilePath.Contains("/") -or $FilePath.StartsWith(".")
-  if ($isScriptPath) {
-    if (-not (Test-Path -LiteralPath $FilePath)) {
-      throw "Missing executable/script for ${Label}: $FilePath"
-    }
-  } else {
-    $cmd = Get-Command $FilePath -ErrorAction SilentlyContinue
-    if ($null -eq $cmd) {
-      throw "Missing command on PATH for ${Label}: $FilePath"
-    }
-  }
+  $env:PYTHONUTF8 = "1"
+  $env:PYTHONIOENCODING = "utf-8"
+  $env:AION_FORCE_COLOR = "1"
 
-  $psi = New-Object System.Diagnostics.ProcessStartInfo
-  $psi.FileName = $FilePath
+  $output = cmd.exe /d /c $Command 2>&1
+  $exitCode = $LASTEXITCODE
+  $combined = Remove-AionAnsi (($output | Out-String))
 
-  foreach ($arg in $Arguments) {
-    [void]$psi.ArgumentList.Add($arg)
-  }
-
-  $psi.RedirectStandardOutput = $true
-  $psi.RedirectStandardError = $true
-  $psi.UseShellExecute = $false
-  $psi.CreateNoWindow = $true
-
-  $psi.Environment["PYTHONUTF8"] = "1"
-  $psi.Environment["PYTHONIOENCODING"] = "utf-8"
-  $psi.Environment["AION_FORCE_COLOR"] = "1"
-
-  $p = New-Object System.Diagnostics.Process
-  $p.StartInfo = $psi
-
-  [void]$p.Start()
-  $stdout = $p.StandardOutput.ReadToEnd()
-  $stderr = $p.StandardError.ReadToEnd()
-  $p.WaitForExit()
-
-  $combined = Remove-AionAnsi ($stdout + "`n" + $stderr)
-
-  if ($p.ExitCode -ne 0) {
-    Write-Host "----- $Label STDOUT/STDERR -----"
+  if ($exitCode -ne 0) {
+    Write-Host "----- ${Label} STDOUT/STDERR -----"
     Write-Host $combined
-    throw "${Label} failed with exit code $($p.ExitCode)"
+    throw "${Label} failed with exit code $exitCode"
   }
 
   return $combined
@@ -105,10 +79,14 @@ foreach ($p in $required) {
   }
 }
 
+$pythonCmd = Get-Command python -ErrorAction SilentlyContinue
+if ($null -eq $pythonCmd) {
+  throw "Missing command on PATH: python"
+}
+
 $direct = Invoke-AionCapture `
   -Label "Direct Python CLI" `
-  -FilePath "python" `
-  -Arguments @(".\src\aion_cli_entry.py", "Who are you, AION?")
+  -Command 'python ".\src\aion_cli_entry.py" "Who are you, AION?"'
 
 Assert-ContainsLiteral $direct "AION ICLI" "Missing AION title"
 Assert-ContainsLiteral $direct "Interactive Command Line Intelligence" "Missing ICLI subtitle"
@@ -119,8 +97,7 @@ Assert-ContainsLiteral $direct "Receipt  > receipts\local\aion_cli_receipt_v1.js
 
 $cmd = Invoke-AionCapture `
   -Label "Windows CMD launcher" `
-  -FilePath ".\bin\aion.cmd" `
-  -Arguments @("Who are you, AION?")
+  -Command '".\bin\aion.cmd" "Who are you, AION?"'
 
 Assert-ContainsLiteral $cmd "Boundary > LOCAL_ONLY" "CMD launcher missing local boundary"
 Assert-ContainsLiteral $cmd "Network  > NOT_USED" "CMD launcher missing network boundary"
@@ -128,8 +105,7 @@ Assert-ContainsLiteral $cmd "Mutation > NOT_PERFORMED" "CMD launcher missing mut
 
 $ps = Invoke-AionCapture `
   -Label "PowerShell launcher" `
-  -FilePath "powershell" `
-  -Arguments @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ".\bin\aion.ps1", "Who are you, AION?")
+  -Command 'powershell -NoProfile -ExecutionPolicy Bypass -File ".\bin\aion.ps1" "Who are you, AION?"'
 
 Assert-ContainsLiteral $ps "Boundary > LOCAL_ONLY" "PowerShell launcher missing local boundary"
 Assert-ContainsLiteral $ps "Network  > NOT_USED" "PowerShell launcher missing network boundary"
@@ -141,7 +117,8 @@ $forbiddenPaths = @(
   ".codara",
   ".aion",
   "private",
-  "secrets"
+  "secrets",
+  "aion-icli"
 )
 
 foreach ($fp in $forbiddenPaths) {
@@ -151,5 +128,3 @@ foreach ($fp in $forbiddenPaths) {
 }
 
 Write-Host "AION_ICLI_PUBLIC_SAFE_VERIFY_OK"
-
-
