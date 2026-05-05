@@ -19,8 +19,16 @@ function Invoke-AionCapture {
     [string[]]$Arguments
   )
 
-  if (-not (Test-Path -LiteralPath $FilePath)) {
-    throw "Missing executable/script for ${Label}: $FilePath"
+  $isScriptPath = $FilePath.Contains("\") -or $FilePath.Contains("/") -or $FilePath.StartsWith(".")
+  if ($isScriptPath) {
+    if (-not (Test-Path -LiteralPath $FilePath)) {
+      throw "Missing executable/script for ${Label}: $FilePath"
+    }
+  } else {
+    $cmd = Get-Command $FilePath -ErrorAction SilentlyContinue
+    if ($null -eq $cmd) {
+      throw "Missing command on PATH for ${Label}: $FilePath"
+    }
   }
 
   $psi = New-Object System.Diagnostics.ProcessStartInfo
@@ -143,4 +151,5 @@ foreach ($fp in $forbiddenPaths) {
 }
 
 Write-Host "AION_ICLI_PUBLIC_SAFE_VERIFY_OK"
+
 
