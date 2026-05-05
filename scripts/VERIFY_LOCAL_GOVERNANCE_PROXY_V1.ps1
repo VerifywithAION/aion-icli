@@ -21,15 +21,21 @@ foreach ($p in $required) {
 
 powershell -NoProfile -ExecutionPolicy Bypass -File ".\scripts\RUN_LOCAL_GOVERNANCE_PROXY_DEMO_V1.ps1"
 
-$allow = Get-Content -LiteralPath ".\examples\governance\sdk_response_req-allow-001.json" -Raw | ConvertFrom-Json
-$block = Get-Content -LiteralPath ".\examples\governance\sdk_response_req-block-001.json" -Raw | ConvertFrom-Json
+$allowPath = ".\examples\governance\generated\sdk_response_req-allow-001.json"
+$blockPath = ".\examples\governance\generated\sdk_response_req-block-001.json"
+$receiptPath = ".\examples\governance\generated\receipts.ndjson"
+
+if (-not (Test-Path -LiteralPath $allowPath)) { throw "Missing generated ALLOW response" }
+if (-not (Test-Path -LiteralPath $blockPath)) { throw "Missing generated BLOCK response" }
+if (-not (Test-Path -LiteralPath $receiptPath)) { throw "Missing generated receipts.ndjson" }
+
+$allow = Get-Content -LiteralPath $allowPath -Raw | ConvertFrom-Json
+$block = Get-Content -LiteralPath $blockPath -Raw | ConvertFrom-Json
 
 if ($allow.decision -ne "ALLOW") { throw "ALLOW case failed" }
 if ($block.decision -ne "BLOCK") { throw "BLOCK case failed" }
 
-if (-not (Test-Path -LiteralPath ".\examples\governance\receipts.ndjson")) { throw "Missing receipts.ndjson" }
-
-$receiptText = Get-Content -LiteralPath ".\examples\governance\receipts.ndjson" -Raw
+$receiptText = Get-Content -LiteralPath $receiptPath -Raw
 if ($receiptText -like "*api_key*") { throw "Forbidden api_key text found" }
 if ($receiptText -like "*secret*") { throw "Forbidden secret text found" }
 

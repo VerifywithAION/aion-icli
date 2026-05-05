@@ -7,12 +7,16 @@ Set-Location $Repo
 Write-Host "AION ICLI Local Governance Proxy V1"
 
 $ExampleDir = Join-Path $Repo "examples\governance"
+$GeneratedDir = Join-Path $ExampleDir "generated"
+
 if (-not (Test-Path -LiteralPath $ExampleDir)) { throw "Missing examples/governance directory" }
+
+New-Item -ItemType Directory -Force -Path $GeneratedDir | Out-Null
 
 $inputFiles = Get-ChildItem -LiteralPath $ExampleDir -Filter "sdk_request_*.json" -File -ErrorAction SilentlyContinue
 if ($null -eq $inputFiles -or $inputFiles.Count -eq 0) { throw "No sdk_request_*.json files found" }
 
-$receiptStream = Join-Path $ExampleDir "receipts.ndjson"
+$receiptStream = Join-Path $GeneratedDir "receipts.ndjson"
 if (Test-Path -LiteralPath $receiptStream) { Remove-Item -LiteralPath $receiptStream -Force }
 
 foreach ($file in $inputFiles) {
@@ -65,12 +69,12 @@ foreach ($file in $inputFiles) {
     receipt = $receipt
   }
 
-  $outFile = Join-Path $ExampleDir ("sdk_response_" + $json.claim_id + ".json")
+  $outFile = Join-Path $GeneratedDir ("sdk_response_" + $json.claim_id + ".json")
   $response | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $outFile -Encoding UTF8
   ($receipt | ConvertTo-Json -Depth 20 -Compress) | Add-Content -LiteralPath $receiptStream -Encoding UTF8
 
   Write-Host ("Processed " + $file.Name + ": " + $decision)
 }
 
-Write-Host ("Wrote receipts to " + $receiptStream)
+Write-Host ("Wrote generated outputs to " + $GeneratedDir)
 Write-Host "AION_LOCAL_GOVERNANCE_PROXY_V1_DEMO_OK"
