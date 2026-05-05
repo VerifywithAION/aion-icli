@@ -56,6 +56,9 @@ $badExact = @(
 
 $allText = ""
 foreach ($file in (git ls-files | Where-Object { $_ -match "\.(md|txt|ps1|py|json|cmd|sh|yml|yaml|svg)$" })) {
+  if ($file -eq "scripts/VERIFY_CONNECTOR_POLICY_V2.ps1") {
+    continue
+  }
   if (Test-Path -LiteralPath $file) {
     $allText += "`nFILE: $file`n"
     $allText += Get-Content -LiteralPath $file -Raw -ErrorAction SilentlyContinue
@@ -71,3 +74,4 @@ foreach ($b in $badExact) {
 }
 
 Write-Host "AION_CONNECTOR_POLICY_V2_VERIFY_OK"
+
