@@ -1,0 +1,13 @@
+﻿<svg width="1000" height="360" viewBox="0 0 1000 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1000" height="360" rx="22" fill="#07111F"/>
+  <rect x="20" y="20" width="960" height="320" rx="18" fill="#0B1626" stroke="#00B7FF" stroke-opacity="0.55" stroke-width="2"/>
+  <text x="500" y="70" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="22" fill="#00C8FF" letter-spacing="5">AION ICLI</text>
+  <text x="500" y="105" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="16" fill="#7FE7FF" letter-spacing="2">GOVERNED EXECUTION · RECEIPTS · OFFLINE REPLAY</text>
+
+  <text x="500" y="175" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="24" fill="#EAF9FF" xml:space="preserve">█████╗ ██╗ ██████╗ ███╗   ██╗</text>
+  <text x="500" y="205" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="24" fill="#B7F3FF" xml:space="preserve">██╔══██╗██║██╔═══██╗████╗  ██║</text>
+  <text x="500" y="235" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="24" fill="#38D8FF" xml:space="preserve">███████║██║██║   ██║██╔██╗ ██║</text>
+  <text x="500" y="265" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="24" fill="#159BFF" xml:space="preserve">██╔══██║██║██║   ██║██║╚██╗██║</text>
+  <text x="500" y="295" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="24" fill="#0078FF" xml:space="preserve">██║  ██║██║╚██████╔╝██║ ╚████║</text>
+  <text x="500" y="325" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="24" fill="#005CFF" xml:space="preserve">╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝</text>
+</svg>

@@ -21,6 +21,9 @@
   <a href="docs/PUBLIC_RELEASE_LOCK_V1.md">Release Lock</a>
 </p>
 
+<p align="center">
+  <img src="assets/aion-icli-blue-banner.svg" alt="AION ICLI blue terminal banner" width="900">
+</p>
 <p align="center"><strong>AION ICLI terminal signature</strong></p>
 
 <pre align="center">
@@ -334,6 +337,7 @@ Start here:
     docs/CONNECTOR_SDK_CONTRACT_V1.md
     docs/LOCAL_GOVERNANCE_PROXY_V1.md
     docs/PUBLIC_RELEASE_LOCK_V1.md
+
 
 
 
