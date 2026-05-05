@@ -6,7 +6,7 @@ AION ICLI is the public, local-first command-line front door for AION-style gove
 
 It lets a user ask, evaluate, constrain, and verify actions through a receipt-bound interface before trust is granted.
 
-> This repository is a public-safe interface layer. It is not the private AION engine.
+> This repository contains the AION ICLI runtime, local governance examples, verification scripts, and documentation needed to run the public release.
 
 ---
 
@@ -37,16 +37,16 @@ By default, it runs locally and does not call external APIs.
 
 AION ICLI is not:
 
-- the private AION engine
-- an open-source release of proprietary AION internals
+- a cloud AI provider
+- a general-purpose AI model
 - a live model provider
 - a cloud AI service
 - an autonomous agent
 - a bounty engine
-- a confidential control plane
-- a reconstruction kit for private AION systems
+- a background automation service
+- a replacement for independent security review
 
-This repo exposes only the public-safe interface, examples, docs, schemas, and deterministic local governance demo.
+This repo contains the interface, examples, docs, schemas, and deterministic local governance demo needed to run AION ICLI.
 
 ---
 
@@ -217,7 +217,7 @@ The demo behavior is intentionally simple:
     risk_hint=high -> BLOCK
     missing hint   -> WARN
 
-This proves the governance pattern without exposing private AION logic.
+This proves the governance pattern using a transparent public demo.
 
 ---
 
@@ -236,14 +236,14 @@ This repository may contain:
 
 This repository must not contain:
 
-- private AION engine code
+- unrelated backend service code
 - confidential documents
-- private orchestration logic
-- proprietary heuristics
+- hidden automatic execution logic
+- undocumented decision behavior
 - live model routing logic
 - real provider API keys
 - secrets or tokens
-- private receipts
+- secrets, tokens, or credentials
 - exploit automation
 
 ---
@@ -297,3 +297,4 @@ Start here:
     docs/CONNECTOR_SDK_CONTRACT_V1.md
     docs/LOCAL_GOVERNANCE_PROXY_V1.md
     docs/PUBLIC_RELEASE_LOCK_V1.md
+
