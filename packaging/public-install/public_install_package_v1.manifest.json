@@ -1,0 +1,28 @@
+﻿{
+    "package_id":  "aion-icli-public-install-package-v1",
+    "package_type":  "public_zip_distribution",
+    "repo":  "VerifywithAION/aion-icli",
+    "verified_head":  "b761e87",
+    "includes_exe":  false,
+    "includes_signed_installer":  false,
+    "includes_private_credentials":  false,
+    "includes_provider_keys":  false,
+    "network_default":  "NOT_USED",
+    "mutation_default":  "NOT_PERFORMED",
+    "launchers":  [
+                      "bin/aion.cmd",
+                      "bin/aion.ps1",
+                      "bin/aion",
+                      "aion.ps1"
+                  ],
+    "verifiers":  [
+                      "scripts/VERIFY_PUBLIC_SAFE.ps1",
+                      "scripts/VERIFY_PUBLIC_RELEASE_LOCK_V1.ps1",
+                      "scripts/VERIFY_CONNECTOR_POLICY_V2.ps1",
+                      "scripts/VERIFY_SAFE_API_ADAPTER_DRY_RUN_V1.ps1",
+                      "scripts/VERIFY_SAFE_MODEL_ADAPTER_DRY_RUN_V1.ps1",
+                      "scripts/VERIFY_SDK_EXAMPLES_V1.ps1",
+                      "scripts/VERIFY_CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.ps1"
+                  ],
+    "generated_at_utc":  "2026-05-05T23:20:02Z"
+}
