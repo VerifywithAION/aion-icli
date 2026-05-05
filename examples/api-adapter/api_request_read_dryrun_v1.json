@@ -1,0 +1,25 @@
+﻿{
+  "request_id": "api-dryrun-read-001",
+  "connector_id": "example.api.client",
+  "connector_type": "api",
+  "intent": "Review a proposed read-only API request before execution.",
+  "target": {
+    "kind": "api_action",
+    "name": "GET /example/resource"
+  },
+  "risk_hint": "low",
+  "requested_capabilities": ["read", "generate_receipt", "dry_run"],
+  "execution_mode": "dry_run",
+  "network_policy": {
+    "requested": false,
+    "default_allowed": false
+  },
+  "mutation_policy": {
+    "requested": false,
+    "default_allowed": false
+  },
+  "receipt_policy": {
+    "required": true,
+    "output": "examples/api-adapter/generated/api-dryrun-read-001.receipt.json"
+  }
+}

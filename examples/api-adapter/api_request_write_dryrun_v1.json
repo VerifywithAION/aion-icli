@@ -1,0 +1,25 @@
+﻿{
+  "request_id": "api-dryrun-write-001",
+  "connector_id": "example.api.client",
+  "connector_type": "api",
+  "intent": "Review a proposed write API request without executing it.",
+  "target": {
+    "kind": "api_action",
+    "name": "POST /example/resource"
+  },
+  "risk_hint": "high",
+  "requested_capabilities": ["write", "network", "mutate", "generate_receipt", "dry_run"],
+  "execution_mode": "dry_run",
+  "network_policy": {
+    "requested": true,
+    "default_allowed": false
+  },
+  "mutation_policy": {
+    "requested": true,
+    "default_allowed": false
+  },
+  "receipt_policy": {
+    "required": true,
+    "output": "examples/api-adapter/generated/api-dryrun-write-001.receipt.json"
+  }
+}
