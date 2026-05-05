@@ -24,22 +24,6 @@
 <p align="center">
   <img src="assets/aion-icli-blue-banner.svg" alt="AION ICLI blue terminal banner" width="900">
 </p>
-<p align="center"><strong>AION ICLI terminal signature</strong></p>
-
-<pre align="center">
-█████╗ ██╗ ██████╗ ███╗   ██╗
-██╔══██╗██║██╔═══██╗████╗  ██║
-███████║██║██║   ██║██╔██╗ ██║
-██╔══██║██║██║   ██║██║╚██╗██║
-██║  ██║██║╚██████╔╝██║ ╚████║
-╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝
-
-AION ICLI
-Interactive Command Line Intelligence
-Governed Local Mode · Offline-capable by design
-No external APIs by default
-</pre>
-
 ---
 
 **AION ICLI** is a local-first command-line interface for governed AI and system actions.
@@ -50,6 +34,82 @@ If you want a CLI that makes AI/system actions more inspectable, constrained, an
 
 ---
 
+## What you can do with AION ICLI
+
+AION ICLI gives users a simple way to place a governance layer in front of AI or system actions.
+
+At this public stage, it runs locally and proves the pattern without requiring cloud keys, model credentials, or background services.
+
+### 1. Ask AION what it is
+
+    .\bin\aion.cmd "Who are you, AION?"
+
+Example result:
+
+    Boundary > LOCAL_ONLY
+    Network  > NOT_USED
+    Mutation > NOT_PERFORMED
+    Receipt  > receipts\local\aion_cli_receipt_v1.json
+
+Use this to confirm AION is running in local governed mode.
+
+### 2. Check an action before trusting it
+
+Instead of accepting an AI or automation suggestion blindly, AION ICLI shows the boundary around the action.
+
+Example use case:
+
+    A script wants to run.
+    A user wants to know if it was evaluated locally.
+    AION shows whether network, mutation, or external calls were used.
+
+### 3. Produce a receipt
+
+AION ICLI writes a local receipt for basic interactions.
+
+Receipts help answer:
+
+- what was requested
+- what boundary was active
+- whether a network was used
+- whether mutation was performed
+- where the evidence was written
+
+### 4. Run an offline governance proxy demo
+
+AION ICLI includes a deterministic SDK/governance proxy example.
+
+Run:
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_LOCAL_GOVERNANCE_PROXY_V1.ps1
+
+Example behavior:
+
+    risk_hint=low  -> ALLOW
+    risk_hint=high -> BLOCK
+    missing hint   -> WARN
+
+This demonstrates how future SDK, API, or model-mediated workflows can be checked before execution.
+
+### 5. Keep generated outputs clean
+
+Runtime outputs are written to:
+
+    examples/governance/generated/
+
+That folder is ignored by Git, so verification does not dirty the repository.
+
+### 6. Verify the release
+
+Run:
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_PUBLIC_RELEASE_LOCK_V1.ps1
+
+Expected marker:
+
+    AION_PUBLIC_RELEASE_LOCK_V1_VERIFY_OK
+
+---
 ## What AION ICLI is
 
 AION ICLI is a governed command-line interface designed to make execution safer, clearer, and more verifiable.
@@ -337,6 +397,7 @@ Start here:
     docs/CONNECTOR_SDK_CONTRACT_V1.md
     docs/LOCAL_GOVERNANCE_PROXY_V1.md
     docs/PUBLIC_RELEASE_LOCK_V1.md
+
 
 
 
