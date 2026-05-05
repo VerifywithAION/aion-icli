@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+set -eu
+
+export PYTHONUTF8=1
+export PYTHONIOENCODING=utf-8
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+REPO_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+
+if command -v python3 >/dev/null 2>&1; then
+  exec python3 "$REPO_ROOT/src/aion_cli_entry.py" "$@"
+fi
+
+if command -v python >/dev/null 2>&1; then
+  exec python "$REPO_ROOT/src/aion_cli_entry.py" "$@"
+fi
+
+echo "AION launcher error: no supported Python runtime found."
+echo "Install python3 or python."
+exit 20

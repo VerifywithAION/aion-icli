@@ -1,0 +1,8 @@
+﻿Windows:
+  .\bin\aion.cmd "Who are you, AION?"
+
+PowerShell:
+  powershell -NoProfile -ExecutionPolicy Bypass -File .\bin\aion.ps1 "Who are you, AION?"
+
+macOS/Linux:
+  sh ./bin/aion "Who are you, AION?"

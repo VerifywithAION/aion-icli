@@ -1,0 +1,16 @@
+﻿.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+*.log
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store
+.aion/
+private/
+internal/
+classified/
+receipts/local/

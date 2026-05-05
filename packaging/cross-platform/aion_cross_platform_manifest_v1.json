@@ -1,0 +1,60 @@
+{
+  "schema": "aion.cross_platform_packaging_manifest.v1",
+  "milestone": "AION Cross-Platform Packaging V1",
+  "purpose": "Provide public-GitHub-ready local launchers for Windows, PowerShell, macOS, and Linux.",
+  "offline_mode": true,
+  "external_api_allowed": false,
+  "network_required": false,
+  "llm_required": false,
+  "launchers": [
+    {
+      "os_family": "windows",
+      "path": "bin/aion.cmd",
+      "type": "cmd",
+      "entry_chain": [
+        "bin/aion.cmd",
+        "bin/aion.ps1",
+        "aion.ps1",
+        "src/aion_cli_entry.py"
+      ]
+    },
+    {
+      "os_family": "windows_powershell",
+      "path": "bin/aion.ps1",
+      "type": "powershell",
+      "entry_chain": [
+        "bin/aion.ps1",
+        "aion.ps1",
+        "src/aion_cli_entry.py"
+      ]
+    },
+    {
+      "os_family": "macos_linux",
+      "path": "bin/aion",
+      "type": "posix_sh",
+      "entry_chain": [
+        "bin/aion",
+        "bin/aion.ps1 OR src/aion_cli_entry.py",
+        "src/aion_cli_entry.py"
+      ]
+    }
+  ],
+  "required_customer_surface": [
+    "AION ICLI",
+    "Interactive Command Line Intelligence",
+    "Governed Local Mode",
+    "Offline-capable by design",
+    "No external APIs by default"
+  ],
+  "safety_boundaries": {
+    "offline_mode": true,
+    "network_used": false,
+    "external_api_called": false,
+    "external_connector_used": false,
+    "autonomous_execution_performed": false,
+    "self_mutation_performed": false,
+    "policy_mutation_performed": false,
+    "code_mutation_performed": false,
+    "local_receipts_only": true
+  }
+}

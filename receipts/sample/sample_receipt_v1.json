@@ -1,0 +1,12 @@
+﻿{
+  "schema": "aion.public_sample_receipt.v1",
+  "repo": "aion-icli",
+  "status": "SAMPLE",
+  "runtime_boundaries": {
+    "offline_mode": true,
+    "network_used": false,
+    "external_api_called": false,
+    "autonomous_execution_performed": false,
+    "local_receipts_only": true
+  }
+}
