@@ -10,11 +10,11 @@ PASS
 
 ## SHA256
 
-    26FEFCD0C8CC24B8A2112894E28A18AED7988B090DCC4251BC23BDA602C7E82F
+    1F87C275AE088EBE5CCF6CCC5E14BF909ED6F379FC99B91617EF0D95B9DDED04
 
 ## Verified public head
 
-    b761e87 Make public-safe verifier PowerShell 5.1 compatible
+    8a21185 Verify public install package from ZIP contents
 
 ## Package contents
 
@@ -25,6 +25,7 @@ PASS
 - scripts
 - reports
 - Python CLI entrypoint
+- ZIP-content verifier
 
 ## Explicit exclusions
 
@@ -45,7 +46,8 @@ PASS
     AION_ICLI_PUBLIC_SAFE_VERIFY_OK
     AION_PUBLIC_RELEASE_LOCK_V1_VERIFY_OK
     AION_CONNECTOR_STACK_ACCEPTANCE_REPORT_V1_VERIFY_OK
+    AION_PUBLIC_INSTALL_PACKAGE_V1_VERIFY_OK
 
 ## Status
 
-LOCKED as Public Install Package V1.
+LOCKED as Public Install Package V1 rebuilt from current verifier-corrected repo state.
