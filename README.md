@@ -1,34 +1,299 @@
 ﻿# AION ICLI
 
-Interactive Command Line Intelligence.
+**Interactive Command Line Intelligence for governed AI and system actions.**
 
-AION ICLI is a public-safe, local command-line interface.
-It is not the private AION engine.
+AION ICLI is the public, local-first command-line front door for AION-style governance.
+
+It lets a user ask, evaluate, constrain, and verify actions through a receipt-bound interface before trust is granted.
+
+> This repository is a public-safe interface layer. It is not the private AION engine.
+
+---
+
+## What AION ICLI is
+
+AION ICLI is a governed command-line interface designed to make execution safer, clearer, and more verifiable.
+
+It is built around a simple operating rule:
+
+    Do not trust an action just because it was suggested.
+    Evaluate it, expose boundaries, produce a receipt, and make the proof visible.
+
+AION ICLI can be used as a local governance surface for:
+
+- AI assistants
+- agent workflows
+- SDK requests
+- API actions
+- automation previews
+- local policy checks
+- proof-oriented demos
+
+By default, it runs locally and does not call external APIs.
+
+---
+
+## What AION ICLI is not
+
+AION ICLI is not:
+
+- the private AION engine
+- an open-source release of proprietary AION internals
+- a live model provider
+- a cloud AI service
+- an autonomous agent
+- a bounty engine
+- a confidential control plane
+- a reconstruction kit for private AION systems
+
+This repo exposes only the public-safe interface, examples, docs, schemas, and deterministic local governance demo.
+
+---
+
+## Why it exists
+
+Modern AI systems often produce outputs without showing enough execution context.
+
+AION ICLI demonstrates a different pattern:
+
+    request -> boundary check -> decision -> receipt -> replayable proof
+
+The goal is not to make the user blindly trust the interface.
+
+The goal is to make the interface show:
+
+- what it did
+- what it did not do
+- whether it used a network
+- whether it mutated anything
+- what receipt was created
+- what boundary was enforced
+
+---
 
 ## Quick Start - Windows
 
-git clone https://github.com/VerifywithAION/aion-icli.git
-cd aion-icli
-.\install.ps1
-.\bin\aion.cmd "Who are you, AION?"
+    git clone https://github.com/VerifywithAION/aion-icli.git
+    cd aion-icli
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
+    .\bin\aion.cmd "Who are you, AION?"
+
+Expected markers:
+
+    AION_ICLI_INSTALL_PREVIEW_OK
+    AION ICLI
+    Boundary > LOCAL_ONLY
+    Network  > NOT_USED
+    Mutation > NOT_PERFORMED
+
+---
 
 ## Quick Start - macOS/Linux
 
-git clone https://github.com/VerifywithAION/aion-icli.git
-cd aion-icli
-sh ./install.sh
-sh ./bin/aion "Who are you, AION?"
+    git clone https://github.com/VerifywithAION/aion-icli.git
+    cd aion-icli
+    sh ./install.sh
+    sh ./bin/aion "Who are you, AION?"
+
+---
 
 ## Guided Tour
 
-1. Run the CLI.
-2. Read the AION ICLI banner.
-3. Confirm offline-capable by design.
-4. Ask the first question.
-5. Inspect docs/PUBLIC_BOUNDARY.md.
+### Step 1 - Run the CLI
 
-## Public Boundary
+Windows:
 
-This repo exposes launchers, a minimal CLI entry, public docs, examples, and install scripts.
+    .\bin\aion.cmd "Who are you, AION?"
 
-This repo does not expose private engines, internal orchestration, proprietary heuristics, private receipts, secrets, or environment files.
+PowerShell:
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\bin\aion.ps1 "Who are you, AION?"
+
+macOS/Linux:
+
+    sh ./bin/aion "Who are you, AION?"
+
+---
+
+### Step 2 - Read the banner
+
+You should see:
+
+    AION ICLI
+    Interactive Command Line Intelligence
+    Governed Local Mode
+    Offline-capable by design
+    No external APIs by default
+
+This means the public interface is running in local governed mode.
+
+---
+
+### Step 3 - Observe the offline capability block
+
+AION ICLI should show:
+
+    What I can do offline:
+    - Answer from local rules and local project context
+    - Evaluate actions before execution
+    - Produce receipts and proof traces
+    - Block unsafe or unproven operations
+    - Preserve evidence for replay and audit
+
+---
+
+### Step 4 - Inspect the boundary output
+
+Every basic interaction should expose the boundary:
+
+    Boundary > LOCAL_ONLY
+    Network  > NOT_USED
+    Mutation > NOT_PERFORMED
+    Receipt  > receipts\local\aion_cli_receipt_v1.json
+
+This is the central behavior: AION ICLI tells you what happened and what did not happen.
+
+---
+
+### Step 5 - Run the public safety verifier
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_PUBLIC_SAFE.ps1
+
+Expected marker:
+
+    AION_ICLI_PUBLIC_SAFE_VERIFY_OK
+
+---
+
+### Step 6 - Run the local governance proxy demo
+
+AION ICLI includes a deterministic offline SDK/governance proxy example.
+
+It reads request JSON files and writes generated response/receipt outputs.
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_LOCAL_GOVERNANCE_PROXY_V1.ps1
+
+Expected markers:
+
+    AION_LOCAL_GOVERNANCE_PROXY_V1_DEMO_OK
+    AION_LOCAL_GOVERNANCE_PROXY_V1_VERIFY_OK
+
+Generated outputs are written to:
+
+    examples/governance/generated/
+
+That folder is ignored by Git so runtime verification does not dirty the repo.
+
+---
+
+### Step 7 - Verify the release lock
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_PUBLIC_RELEASE_LOCK_V1.ps1
+
+Expected marker:
+
+    AION_PUBLIC_RELEASE_LOCK_V1_VERIFY_OK
+
+---
+
+## Local Governance Proxy
+
+The Local Governance Proxy V1 is the public-safe foundation for future SDK/API/model adapter governance.
+
+It does not call external services.
+
+It uses deterministic example request files:
+
+    examples/governance/sdk_request_allow.json
+    examples/governance/sdk_request_block.json
+
+It generates responses and receipts into:
+
+    examples/governance/generated/
+
+The demo behavior is intentionally simple:
+
+    risk_hint=low  -> ALLOW
+    risk_hint=high -> BLOCK
+    missing hint   -> WARN
+
+This proves the governance pattern without exposing private AION logic.
+
+---
+
+## Public Safety Boundary
+
+This repository may contain:
+
+- CLI launchers
+- local CLI entrypoint
+- guided docs
+- public schemas
+- public examples
+- deterministic offline governance proxy
+- public-safe verification scripts
+- sample receipts
+
+This repository must not contain:
+
+- private AION engine code
+- confidential documents
+- private orchestration logic
+- proprietary heuristics
+- live model routing logic
+- real provider API keys
+- secrets or tokens
+- private receipts
+- exploit automation
+
+---
+
+## Current release status
+
+Latest locked public release:
+
+    f9ce424 Lock AION ICLI Public Release v1
+
+Validated stack:
+
+    3b13c25 Initial public-safe AION ICLI release
+    0420c7e Add AION ICLI Local Governance Proxy v1
+    2002b85 Keep governance proxy outputs generated and untracked
+    f9ce424 Lock AION ICLI Public Release v1
+
+Fresh clone validation proved:
+
+    AION_ICLI_INSTALL_PREVIEW_OK
+    AION_ICLI_PUBLIC_SAFE_VERIFY_OK
+    AION_LOCAL_GOVERNANCE_PROXY_V1_DEMO_OK
+    AION_LOCAL_GOVERNANCE_PROXY_V1_VERIFY_OK
+    AION_ICLI_FRESH_CLONE_CLEANLINESS_TEST_V3_PASS
+
+---
+
+## Future direction
+
+AION ICLI is designed to become a universal governance surface for AI systems, API actions, SDK calls, and model-mediated workflows.
+
+Future connector layers must remain:
+
+- explicit opt-in
+- provider-neutral
+- no secrets committed
+- receipt-bound
+- locally verifiable
+- governed before execution
+- safe by default
+
+---
+
+## Read next
+
+Start here:
+
+    docs/PUBLIC_BOUNDARY.md
+    docs/HARDENING_NOTE_V1.md
+    docs/REPO_GUIDED_TOUR_V1.md
+    docs/CONNECTOR_SDK_CONTRACT_V1.md
+    docs/LOCAL_GOVERNANCE_PROXY_V1.md
+    docs/PUBLIC_RELEASE_LOCK_V1.md
