@@ -1,21 +1,8 @@
-import json
+﻿import json
 import os
 import sys
 from datetime import datetime, timezone
-
-
-def force_utf8_stdio() -> None:
-    """Keep Unicode banner stable under Windows pipes, redirected output, and CI."""
-    try:
-        if hasattr(sys.stdout, "reconfigure"):
-            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-        if hasattr(sys.stderr, "reconfigure"):
-            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
-    except Exception:
-        pass
-
-
-force_utf8_stdio()
+from pathlib import Path
 
 
 AION_LOGO = r"""
@@ -28,98 +15,140 @@ AION_LOGO = r"""
 """.strip("\n")
 
 
-def repo_root() -> str:
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+def configure_utf8() -> None:
+    """Best-effort UTF-8 console hardening for Windows and cross-platform terminals."""
+    os.environ.setdefault("PYTHONIOENCODING", "utf-8")
+    os.environ.setdefault("PYTHONUTF8", "1")
+
+    for stream_name in ("stdout", "stderr"):
+        stream = getattr(sys, stream_name, None)
+        if stream is not None and hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except Exception:
+                pass
 
 
-def receipt_path() -> str:
-    return os.path.join(repo_root(), "receipts", "local", "aion_cli_receipt_v1.json")
+def supports_color() -> bool:
+    if os.environ.get("NO_COLOR"):
+        return False
+    if os.environ.get("AION_NO_COLOR"):
+        return False
+    if os.environ.get("AION_FORCE_COLOR") == "1":
+        return True
+    return bool(getattr(sys.stdout, "isatty", lambda: False)())
 
 
-def write_receipt(prompt: str, response: str) -> str:
-    path = receipt_path()
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+def c(text: str, code: str) -> str:
+    if not supports_color():
+        return text
+    return f"\033[{code}m{text}\033[0m"
 
-    receipt = {
-        "schema": "aion.icli.local_receipt.v1",
-        "repo": "aion-icli",
-        "status": "PASS",
-        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "prompt": prompt,
-        "response_class": "LOCAL_GOVERNED_REPLY",
-        "runtime_boundaries": {
-            "offline_mode": True,
-            "network_used": False,
-            "external_api_called": False,
-            "autonomous_execution_performed": False,
-            "mutation_performed": False,
-            "local_receipts_only": True,
-        },
-    }
 
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(receipt, f, indent=2)
+def cyan(text: str) -> str:
+    return c(text, "96")
 
-    return os.path.relpath(path, repo_root())
+
+def blue(text: str) -> str:
+    return c(text, "94")
+
+
+def dim(text: str) -> str:
+    return c(text, "90")
+
+
+def white(text: str) -> str:
+    return c(text, "97")
+
+
+def green(text: str) -> str:
+    return c(text, "92")
 
 
 def render_banner() -> None:
-    print()
-    print(AION_LOGO)
-    print()
-    print("AION ICLI")
-    print("Interactive Command Line Intelligence")
-    print("Governed Local Mode")
-    print("Offline-capable by design")
-    print("No external APIs by default")
-    print()
-    print("What I can do offline:")
-    print("- Answer from local rules and local project context")
-    print("- Evaluate actions before execution")
-    print("- Produce receipts and proof traces")
-    print("- Block unsafe or unproven operations")
-    print("- Preserve evidence for replay and audit")
-    print()
+    print("")
+    print(cyan(AION_LOGO))
+    print("")
+    print(blue("AION ICLI"))
+    print(cyan("Interactive Command Line Intelligence"))
+    print(white("Governed Local Mode"))
+    print(cyan("Offline-capable by design"))
+    print(dim("No external APIs by default"))
+    print("")
+    print(white("What I can do offline:"))
+    print(cyan("- Answer from local rules and local project context"))
+    print(cyan("- Evaluate actions before execution"))
+    print(cyan("- Produce receipts and proof traces"))
+    print(cyan("- Keep risky actions in review mode before execution"))
+    print(cyan("- Preserve evidence for replay and audit"))
+    print("")
+
+
+def write_receipt(prompt: str, response: str) -> str:
+    receipt_dir = Path("receipts") / "local"
+    receipt_dir.mkdir(parents=True, exist_ok=True)
+
+    receipt_path = receipt_dir / "aion_cli_receipt_v1.json"
+
+    receipt = {
+        "receipt_type": "aion_cli_receipt_v1",
+        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "prompt": prompt,
+        "response": response,
+        "boundary": "LOCAL_ONLY",
+        "network": "NOT_USED",
+        "mutation": "NOT_PERFORMED",
+        "execution": "NOT_PERFORMED",
+        "governance_tone": "felt_not_seen",
+    }
+
+    receipt_path.write_text(json.dumps(receipt, indent=2), encoding="utf-8")
+    return str(receipt_path)
 
 
 def answer(prompt: str) -> str:
     normalized = (prompt or "").strip().lower()
 
-    if "who are you" in normalized:
+    if "who are you" in normalized or "what are you" in normalized:
         return (
-            "I am not an LLM. I am a governed execution layer that can talk through this interface. "
-            "I help evaluate actions, expose boundaries, produce receipts, and make proof visible before trust."
+            "I am AION ICLI, a governed command-line intelligence interface. "
+            "I help evaluate actions, expose boundaries, preserve receipts, "
+            "and make proof visible before trust."
         )
 
-    if normalized in ("/help", "help", "--help", "-h"):
+    if "api" in normalized or "sdk" in normalized or "model" in normalized:
         return (
-            "Use AION ICLI to ask local governed questions. "
-            "This public interface runs offline by default and produces a local receipt."
+            "I can review API, SDK, or model request envelopes locally before live execution. "
+            "By default I do not call providers, use the network, or mutate files."
         )
 
-    return "I can help. Rephrase with objective, constraints, and expected proof outcome."
+    return (
+        "I can help review this locally first. I will keep network use, mutation, "
+        "and execution off by default while preserving a receipt for later review."
+    )
 
 
 def main(argv: list[str]) -> int:
-    prompt = " ".join(argv[1:]).strip() if len(argv) > 1 else "Who are you, AION?"
+    configure_utf8()
+
+    prompt = " ".join(argv[1:]).strip()
+    if not prompt:
+        prompt = "Who are you, AION?"
 
     render_banner()
 
-    if prompt:
-        print(f"Operator > {prompt}")
-        print()
-
     response = answer(prompt)
-    print(f"AION     > {response}")
-    print()
+    receipt = write_receipt(prompt, response)
 
-    rel_receipt = write_receipt(prompt, response)
-
-    print("Boundary > LOCAL_ONLY")
-    print("Network  > NOT_USED")
-    print("Mutation > NOT_PERFORMED")
-    print(f"Receipt  > {rel_receipt}")
-    print()
+    print(white(f"Operator > {prompt}"))
+    print("")
+    print(cyan(f"AION     > {response}"))
+    print("")
+    print(blue("Boundary > ") + green("LOCAL_ONLY"))
+    print(blue("Network  > ") + green("NOT_USED"))
+    print(blue("Mutation > ") + green("NOT_PERFORMED"))
+    print(blue("Receipt  > ") + white(receipt))
+    print("")
 
     return 0
 

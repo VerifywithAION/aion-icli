@@ -1,7 +1,8 @@
-#!/usr/bin/env sh
+﻿#!/usr/bin/env sh
 set -eu
 
 export PYTHONUTF8=1
+export AION_FORCE_COLOR=1
 export PYTHONIOENCODING=utf-8
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)

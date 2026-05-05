@@ -1,4 +1,4 @@
-param(
+﻿param(
   [Parameter(ValueFromRemainingArguments=$true)]
   [string[]]$Query
 )
@@ -7,6 +7,7 @@ $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
 $env:PYTHONUTF8 = "1"
+$env:AION_FORCE_COLOR = "1"
 $env:PYTHONIOENCODING = "utf-8"
 
 $Repo = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Definition)
