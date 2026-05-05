@@ -34,6 +34,27 @@ If you want a CLI that makes AI/system actions more inspectable, constrained, an
 
 ---
 
+## Documentation Map
+
+Use these links to jump directly into the public AION ICLI release:
+
+| Area | Link | What it shows |
+|---|---|---|
+| Start here | [Guided Tour](docs/REPO_GUIDED_TOUR_V1.md) | Basic usage and repo walkthrough |
+| Public boundary | [Public Boundary](docs/PUBLIC_BOUNDARY.md) | What this public repo includes and excludes |
+| Hardening | [Hardening Note](docs/HARDENING_NOTE_V1.md) | Public-safety posture |
+| Release lock | [Public Release Lock](docs/PUBLIC_RELEASE_LOCK_V1.md) | Locked public release baseline |
+| Release notes | [Release Notes V1](docs/RELEASE_NOTES_V1.md) | What Public Release V1 includes |
+| Connector policy | [Connector Policy V2](docs/CONNECTOR_POLICY_V2.md) | Rules for SDK/API/model connectors |
+| Governance proxy | [Local Governance Proxy V1](docs/LOCAL_GOVERNANCE_PROXY_V1.md) | Local governance demo |
+| SDK contract | [Connector SDK Contract V1](docs/CONNECTOR_SDK_CONTRACT_V1.md) | Request/response contract shape |
+| API adapter | [Safe API Adapter Dry-Run V1](docs/SAFE_API_ADAPTER_DRY_RUN_V1.md) | API review without live API calls |
+| Model adapter | [Safe Model Adapter Dry-Run V1](docs/SAFE_MODEL_ADAPTER_DRY_RUN_V1.md) | Model-provider review without provider calls |
+| SDK examples | [SDK Examples V1](docs/SDK_EXAMPLES_V1.md) | Developer request examples and receipts |
+| CLI proof | [Governed vs Ungoverned CLI Proof V1](docs/GOVERNED_VS_UNGOVERNED_CLI_PROOF_V1.md) | Difference between invisible trust and governed trust |
+| Acceptance proof | [Connector Stack Acceptance Report V1](reports/CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.md) | Fresh-clone proof of the full connector stack |
+
+---
 ## What you can do with AION ICLI
 
 AION ICLI gives users a simple way to place a governance layer in front of AI or system actions.
@@ -296,6 +317,81 @@ Expected marker:
 
 ---
 
+## Developers: connect to AION in 3 minutes
+
+AION ICLI exposes a public-safe connector pattern for apps, SDKs, API clients, model request envelopes, and automation tools.
+
+The public contract is simple:
+
+    request JSON -> local AION review -> human-friendly result -> receipt
+
+No live API call is made by default. No model provider is called by default. No secret is required.
+
+### 1. Try the local governance proxy
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_LOCAL_GOVERNANCE_PROXY_V1.ps1
+
+Expected marker:
+
+    AION_LOCAL_GOVERNANCE_PROXY_V1_VERIFY_OK
+
+### 2. Try the safe API adapter dry-run
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_SAFE_API_ADAPTER_DRY_RUN_V1.ps1
+
+Expected marker:
+
+    AION_SAFE_API_ADAPTER_DRY_RUN_V1_VERIFY_OK
+
+What it proves:
+
+- API-style requests can be reviewed before execution
+- network remains unused
+- live API calls remain unperformed
+- receipts are generated locally
+
+### 3. Try the safe model adapter dry-run
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_SAFE_MODEL_ADAPTER_DRY_RUN_V1.ps1
+
+Expected marker:
+
+    AION_SAFE_MODEL_ADAPTER_DRY_RUN_V1_VERIFY_OK
+
+What it proves:
+
+- model request envelopes can be reviewed before provider execution
+- no provider is called
+- no model is called
+- no network is used
+- receipts are generated locally
+
+### 4. Try the SDK examples
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_SDK_EXAMPLES_V1.ps1
+
+Expected marker:
+
+    AION_SDK_EXAMPLES_V1_VERIFY_OK
+
+What it proves:
+
+- developers can send SDK-style request JSON
+- AION reviews it locally
+- AION returns a human-friendly governance result
+- generated receipts stay ignored by Git
+
+### 5. Run the full connector proof
+
+See the public proof report:
+
+    [Connector Stack Acceptance Report V1](reports/CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.md)
+
+Fresh-clone acceptance marker:
+
+    AION_ICLI_CONNECTOR_STACK_ACCEPTANCE_TEST_V1_PASS
+
+---
 ## Local Governance Proxy
 
 The Local Governance Proxy V1 is the public-safe foundation for future SDK/API/model adapter governance.
@@ -391,27 +487,16 @@ Future connector layers must remain:
 
 Start here:
 
-    docs/PUBLIC_BOUNDARY.md
-    docs/HARDENING_NOTE_V1.md
-    docs/REPO_GUIDED_TOUR_V1.md
-    docs/CONNECTOR_SDK_CONTRACT_V1.md
-    docs/CONNECTOR_POLICY_V2.md
-    docs/SAFE_API_ADAPTER_DRY_RUN_V1.md
-    docs/SAFE_MODEL_ADAPTER_DRY_RUN_V1.md
-    docs/SDK_EXAMPLES_V1.md
-    reports/CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.md
-    docs/LOCAL_GOVERNANCE_PROXY_V1.md
-    docs/PUBLIC_RELEASE_LOCK_V1.md
-    docs/RELEASE_NOTES_V1.md
-
-
-
-
-
-
-
-
-
-
-
+- [Public Boundary](docs/PUBLIC_BOUNDARY.md)
+- [Hardening Note V1](docs/HARDENING_NOTE_V1.md)
+- [Repo Guided Tour V1](docs/REPO_GUIDED_TOUR_V1.md)
+- [Connector SDK Contract V1](docs/CONNECTOR_SDK_CONTRACT_V1.md)
+- [Connector Policy V2](docs/CONNECTOR_POLICY_V2.md)
+- [Safe API Adapter Dry-Run V1](docs/SAFE_API_ADAPTER_DRY_RUN_V1.md)
+- [Safe Model Adapter Dry-Run V1](docs/SAFE_MODEL_ADAPTER_DRY_RUN_V1.md)
+- [SDK Examples V1](docs/SDK_EXAMPLES_V1.md)
+- [Local Governance Proxy V1](docs/LOCAL_GOVERNANCE_PROXY_V1.md)
+- [Public Release Lock V1](docs/PUBLIC_RELEASE_LOCK_V1.md)
+- [Release Notes V1](docs/RELEASE_NOTES_V1.md)
+- [Connector Stack Acceptance Report V1](reports/CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.md)
 
