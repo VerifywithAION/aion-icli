@@ -1,0 +1,15 @@
+﻿{
+  "schema": "aion.governance_receipt.schema.v1",
+  "required_fields": [
+    "receipt_fingerprint",
+    "agent",
+    "claim_id",
+    "claim_type",
+    "decision",
+    "reason_code",
+    "timestamp",
+    "runtime_boundaries"
+  ],
+  "allowed_decisions": [ "ALLOW", "WARN", "BLOCK" ],
+  "public_safe": true
+}

@@ -1,0 +1,10 @@
+﻿{
+  "agent": "example-client",
+  "claim_id": "req-allow-001",
+  "claim_type": "action.invoke",
+  "policy_id": "local-governance-proxy-v1",
+  "target": {
+    "identifier": "safe-local-demo",
+    "risk_hint": "low"
+  }
+}
