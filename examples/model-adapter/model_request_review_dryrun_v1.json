@@ -1,0 +1,33 @@
+﻿{
+  "request_id": "model-dryrun-review-001",
+  "connector_id": "example.model.client",
+  "connector_type": "model",
+  "intent": "Review a proposed model request that asks for external tool use.",
+  "target": {
+    "kind": "model_action",
+    "name": "external_tool_request"
+  },
+  "model_request": {
+    "provider": "dry_run_provider",
+    "model": "dry_run_model",
+    "prompt_summary": "Use external tools to act on a remote account.",
+    "contains_credentials": false,
+    "contains_private_data": false,
+    "requests_external_tool_use": true
+  },
+  "risk_hint": "high",
+  "requested_capabilities": ["network", "execute", "generate_receipt", "dry_run"],
+  "execution_mode": "dry_run",
+  "network_policy": {
+    "requested": true,
+    "default_allowed": false
+  },
+  "mutation_policy": {
+    "requested": false,
+    "default_allowed": false
+  },
+  "receipt_policy": {
+    "required": true,
+    "output": "examples/model-adapter/generated/model-dryrun-review-001.receipt.json"
+  }
+}
