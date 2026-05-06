@@ -28,7 +28,7 @@ function Assert-Absent {
 function Test-PackageTree {
   param(
     [string]$Root,
-    [bool]$AllowRuntimeReceipts
+    [bool]$AllowRuntimeOutputs
   )
 
   $mustExist = @(
@@ -52,27 +52,34 @@ function Test-PackageTree {
     Assert-Exists $target "Missing package file: $p"
   }
 
-  $forbidden = @(
+  $alwaysForbidden = @(
     ".env",
     ".codara",
     ".aion",
     "node_modules",
     "private",
-    "secrets",
-    "examples\governance\generated",
-    "examples\api-adapter\generated",
-    "examples\model-adapter\generated",
-    "examples\sdk\generated",
-    "examples\proofs\generated"
+    "secrets"
   )
 
-  if (-not $AllowRuntimeReceipts) {
-    $forbidden += "receipts\local"
-  }
-
-  foreach ($f in $forbidden) {
+  foreach ($f in $alwaysForbidden) {
     $target = Join-Path $Root $f
     Assert-Absent $target "Forbidden path exists in package: $f"
+  }
+
+  if (-not $AllowRuntimeOutputs) {
+    $runtimeGenerated = @(
+      "receipts\local",
+      "examples\governance\generated",
+      "examples\api-adapter\generated",
+      "examples\model-adapter\generated",
+      "examples\sdk\generated",
+      "examples\proofs\generated"
+    )
+
+    foreach ($f in $runtimeGenerated) {
+      $target = Join-Path $Root $f
+      Assert-Absent $target "Forbidden pre-runtime path exists in package: $f"
+    }
   }
 }
 
@@ -97,7 +104,7 @@ if (Test-Path -LiteralPath $zip) {
 
   try {
     Expand-Archive -LiteralPath $zip -DestinationPath $extractRoot -Force
-    Test-PackageTree -Root $extractRoot -AllowRuntimeReceipts $false
+    Test-PackageTree -Root $extractRoot -AllowRuntimeOutputs $false
   }
   finally {
     if (Test-Path -LiteralPath $extractRoot) {
@@ -105,7 +112,7 @@ if (Test-Path -LiteralPath $zip) {
     }
   }
 } else {
-  Test-PackageTree -Root $Repo -AllowRuntimeReceipts $true
+  Test-PackageTree -Root $Repo -AllowRuntimeOutputs $true
 }
 
 Write-Host "AION_PUBLIC_INSTALL_PACKAGE_V1_VERIFY_OK"
