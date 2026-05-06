@@ -111,3 +111,4 @@ foreach ($file in $scanFiles) {
 }
 
 Write-Host "AION_CONNECTOR_POLICY_V2_VERIFY_OK"
+
