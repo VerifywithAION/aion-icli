@@ -546,6 +546,27 @@ Read:
 
 - [Voice Layer V1](VOICE_LAYER_V1.md)
 
+## Adaptive Reasoning Layer V1
+
+ICLI now adapts responses to what the operator actually wrote.
+
+Extracted local signals:
+
+- subject
+- urgency
+- missing evidence
+- risk lens
+
+Behavior:
+
+- default output stays natural and operator-facing
+- proof footer remains visible
+- diagnostics mode can reveal internal signals and routing
+
+Read:
+
+- [Adaptive Reasoning Layer V1](ADAPTIVE_REASONING_LAYER_V1.md)
+
 ## Roadmap after User Guide V1
 
 Recommended next milestones:
