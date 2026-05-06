@@ -487,6 +487,27 @@ It says:
 
 That is the difference between helpful-sounding output and governed execution.
 
+
+## Interactive Mode V1
+
+AION ICLI can also run as a persistent local session.
+
+Start interactive mode:
+
+    .\bin\aion.cmd
+
+Then use commands such as:
+
+    help
+    receipt
+    boundary
+    verify
+    exit
+
+Read:
+
+- [Interactive Mode V1](INTERACTIVE_MODE_V1.md)
+
 ## Roadmap after User Guide V1
 
 Recommended next milestones:
@@ -503,3 +524,4 @@ Recommended next milestones:
 ## Status
 
 LOCKED as AION ICLI User Guide V1.
+
