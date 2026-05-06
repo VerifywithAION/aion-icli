@@ -508,6 +508,27 @@ Read:
 
 - [Interactive Mode V1](INTERACTIVE_MODE_V1.md)
 
+
+## Capability Router V1
+
+AION ICLI now exposes public-safe capability commands inside interactive mode:
+
+    capabilities
+    preflight
+    creative
+    intuition
+    cortex
+    connectors
+    receipts
+    verify
+    next
+
+Each capability remains local-first, no-network by default, no-mutation by default, no-execution by default, and receipt-backed.
+
+Read:
+
+- [Capability Router V1](CAPABILITY_ROUTER_V1.md)
+
 ## Roadmap after User Guide V1
 
 Recommended next milestones:
@@ -524,4 +545,5 @@ Recommended next milestones:
 ## Status
 
 LOCKED as AION ICLI User Guide V1.
+
 
