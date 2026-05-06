@@ -58,7 +58,8 @@ foreach ($r in $requiredDoc) {
   }
 }
 
-$env:AION_FORCE_COLOR = "1"
+$env:AION_FORCE_COLOR = "0"
+$env:AION_NO_COLOR = "1"
 $env:PYTHONUTF8 = "1"
 $env:PYTHONIOENCODING = "utf-8"
 
@@ -75,6 +76,11 @@ finally {
   }
 }
 
+# Normalize output for PS 5.1/cmd.exe/ANSI/spacing robustness.
+$normalized = $out -replace "`e\[[0-9;]*m", ""
+$normalized = $normalized -replace "\s+", " "
+$normalized = $normalized.Trim()
+
 $mustOutput = @(
   "Capability Router V1",
   "Available public-safe capabilities",
@@ -86,6 +92,7 @@ $mustOutput = @(
   "Receipt mode started",
   "Verification mode started",
   "Recommended next build",
+  "Capability > CAPABILITIES",
   "Capability > PREFLIGHT",
   "Capability > CREATIVE",
   "Capability > INTUITION",
@@ -97,8 +104,11 @@ $mustOutput = @(
 )
 
 foreach ($m in $mustOutput) {
-  if ($out -notlike "*$m*") {
+  if ($normalized -notlike "*$m*") {
+    Write-Host "----- RAW OUTPUT -----"
     Write-Host $out
+    Write-Host "----- NORMALIZED OUTPUT -----"
+    Write-Host $normalized
     throw "Capability Router output missing: $m"
   }
 }
