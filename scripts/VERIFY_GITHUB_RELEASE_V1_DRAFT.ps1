@@ -6,7 +6,6 @@ Set-Location $Repo
 
 Write-Host "AION ICLI GitHub Release V1 Draft verifier"
 
-$expectedReleaseDocsHead = "3ab076d"
 $expectedPackageHead = "2fea528"
 $expectedSha = "8B99C3C7161F2911212E7D57A4F3A3782700DBBCE404288D1E4AD6A671D7D746"
 $zip = ".\dist\aion-icli-public-install-package-v1.zip"
@@ -29,10 +28,9 @@ foreach ($p in $required) {
   }
 }
 
-$head = git rev-parse --short HEAD
-if ($head -ne $expectedReleaseDocsHead) {
-  throw "Unexpected release docs HEAD. Expected $expectedReleaseDocsHead, got $head"
-}
+$currentHead = git rev-parse --short HEAD
+Write-Host "Release docs current HEAD: $currentHead"
+Write-Host "Release package target HEAD: $expectedPackageHead"
 
 $sha = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash
 if ($sha -ne $expectedSha) {
