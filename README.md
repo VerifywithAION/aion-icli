@@ -51,6 +51,7 @@ Use these links to jump directly into the public AION ICLI release:
 | API adapter | [Safe API Adapter Dry-Run V1](docs/SAFE_API_ADAPTER_DRY_RUN_V1.md) | API review without live API calls |
 | Model adapter | [Safe Model Adapter Dry-Run V1](docs/SAFE_MODEL_ADAPTER_DRY_RUN_V1.md) | Model-provider review without provider calls |
 | SDK examples | [SDK Examples V1](docs/SDK_EXAMPLES_V1.md) | Developer request examples and receipts |
+| Voice layer | [Voice Layer V1](docs/VOICE_LAYER_V1.md) | Human-facing AION voice with optional diagnostics |
 | CLI proof | [Governed vs Ungoverned CLI Proof V1](docs/GOVERNED_VS_UNGOVERNED_CLI_PROOF_V1.md) | Difference between invisible trust and governed trust |
 | Acceptance proof | [Connector Stack Acceptance Report V1](reports/CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.md) | Fresh-clone proof of the full connector stack |
 
@@ -510,3 +511,10 @@ Start here:
 
 
 
+## Voice Layer V1
+
+Default ICLI responses now use a human-facing AION operator voice.
+
+- default mode: natural response + proof footer
+- diagnostics mode: `diagnostics on|off|diagnostics`
+- receipts remain machine-verifiable with capability/boundary/network/mutation/execution fields

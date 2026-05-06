@@ -529,6 +529,23 @@ Read:
 
 - [Capability Router V1](CAPABILITY_ROUTER_V1.md)
 
+## Voice Layer V1
+
+ICLI now separates internal routing from default visible language:
+
+- Default visible output: natural operator-facing AION response.
+- Proof footer remains visible:
+  - `Proof: local-only · no network · no mutation · no execution · receipt written`
+- Internal capability routing remains in receipts and diagnostics.
+- Diagnostics commands:
+  - `diagnostics on`
+  - `diagnostics off`
+  - `diagnostics`
+
+Read:
+
+- [Voice Layer V1](VOICE_LAYER_V1.md)
+
 ## Roadmap after User Guide V1
 
 Recommended next milestones:
