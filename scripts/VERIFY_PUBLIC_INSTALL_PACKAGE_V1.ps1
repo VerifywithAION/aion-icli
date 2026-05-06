@@ -26,7 +26,10 @@ function Assert-Absent {
 }
 
 function Test-PackageTree {
-  param([string]$Root)
+  param(
+    [string]$Root,
+    [bool]$AllowRuntimeReceipts
+  )
 
   $mustExist = @(
     "README.md",
@@ -56,13 +59,16 @@ function Test-PackageTree {
     "node_modules",
     "private",
     "secrets",
-    "receipts\local",
     "examples\governance\generated",
     "examples\api-adapter\generated",
     "examples\model-adapter\generated",
     "examples\sdk\generated",
     "examples\proofs\generated"
   )
+
+  if (-not $AllowRuntimeReceipts) {
+    $forbidden += "receipts\local"
+  }
 
   foreach ($f in $forbidden) {
     $target = Join-Path $Root $f
@@ -91,7 +97,7 @@ if (Test-Path -LiteralPath $zip) {
 
   try {
     Expand-Archive -LiteralPath $zip -DestinationPath $extractRoot -Force
-    Test-PackageTree -Root $extractRoot
+    Test-PackageTree -Root $extractRoot -AllowRuntimeReceipts $false
   }
   finally {
     if (Test-Path -LiteralPath $extractRoot) {
@@ -99,7 +105,7 @@ if (Test-Path -LiteralPath $zip) {
     }
   }
 } else {
-  Test-PackageTree -Root $Repo
+  Test-PackageTree -Root $Repo -AllowRuntimeReceipts $true
 }
 
 Write-Host "AION_PUBLIC_INSTALL_PACKAGE_V1_VERIFY_OK"

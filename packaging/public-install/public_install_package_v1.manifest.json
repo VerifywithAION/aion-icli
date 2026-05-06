@@ -2,8 +2,8 @@
     "package_id":  "aion-icli-public-install-package-v1",
     "package_type":  "public_zip_distribution",
     "repo":  "VerifywithAION/aion-icli",
-    "verified_head":  "bde8981",
-    "package_sha256":  "55529B35C52A3CCD7B37B37EAA54D654001FDBC7495CC919A2855A98A9F72CC4",
+    "verified_head":  "e46f1eb",
+    "package_sha256":  "EBDCEA2639C8C98B21548A0AD5C9DD75239BC517E38599C1879143DE5407D4F0",
     "includes_exe":  false,
     "includes_signed_installer":  false,
     "includes_private_credentials":  false,
@@ -26,5 +26,5 @@
                       "scripts/VERIFY_CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.ps1",
                       "scripts/VERIFY_PUBLIC_INSTALL_PACKAGE_V1.ps1"
                   ],
-    "generated_at_utc":  "2026-05-06T00:05:20Z"
+    "generated_at_utc":  "2026-05-06T00:26:09Z"
 }
