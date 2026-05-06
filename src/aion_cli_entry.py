@@ -16,6 +16,7 @@ AION_LOGO = r"""
 
 RECEIPT_PATH = Path("receipts") / "local" / "aion_cli_receipt_v1.json"
 PROOF_FOOTER = "Proof: local-only · no network · no mutation · no execution · receipt written"
+MAX_FILE_BYTES = 1024 * 1024
 
 CAPABILITY_MAP = {
     "preflight": {"name": "Preflight"},
@@ -43,6 +44,16 @@ COMMAND_STYLE = {
     "status",
     "/help",
     "?",
+}
+
+
+KNOWN_LAYER_DOCS = {
+    "Interactive Mode V1": Path("docs") / "INTERACTIVE_MODE_V1.md",
+    "Capability Router V1": Path("docs") / "CAPABILITY_ROUTER_V1.md",
+    "Voice Layer V1": Path("docs") / "VOICE_LAYER_V1.md",
+    "Adaptive Reasoning Layer V1": Path("docs") / "ADAPTIVE_REASONING_LAYER_V1.md",
+    "User Guide V1": Path("docs") / "USER_GUIDE_V1.md",
+    "Public Release Lock V1": Path("docs") / "PUBLIC_RELEASE_LOCK_V1.md",
 }
 
 
@@ -108,7 +119,253 @@ def render_banner() -> None:
     print("")
 
 
-def write_receipt(prompt: str, response: str, mode: str, capability: str, extracted_signals: Optional[dict] = None) -> str:
+def safe_read_text(path: Path) -> str:
+    try:
+        if not path.exists() or not path.is_file():
+            return ""
+        if path.stat().st_size > MAX_FILE_BYTES:
+            return ""
+        return path.read_text(encoding="utf-8", errors="replace")
+    except Exception:
+        return ""
+
+
+def discover_public_artifacts() -> dict:
+    artifacts = {
+        "release_docs": [],
+        "reports": [],
+        "schemas": [],
+        "examples_json": [],
+        "packaging_json": [],
+        "verifiers": [],
+        "connector_docs": [],
+        "wired_docs": [],
+        "receipt_exists": RECEIPT_PATH.exists(),
+    }
+
+    # docs and reports
+    for path in sorted(Path("docs").glob("*.md")) if Path("docs").exists() else []:
+        artifacts["release_docs"].append(str(path))
+        name = path.name.lower()
+        if "connector" in name or "api_adapter" in name or "model_adapter" in name or "sdk" in name:
+            artifacts["connector_docs"].append(str(path))
+
+    for path in sorted(Path("reports").glob("*.md")) if Path("reports").exists() else []:
+        artifacts["reports"].append(str(path))
+
+    for path in sorted(Path("schemas").glob("*.json")) if Path("schemas").exists() else []:
+        if path.stat().st_size <= MAX_FILE_BYTES:
+            artifacts["schemas"].append(str(path))
+
+    if Path("examples").exists():
+        for path in sorted(Path("examples").rglob("*.json")):
+            if path.stat().st_size <= MAX_FILE_BYTES:
+                artifacts["examples_json"].append(str(path))
+
+    if Path("packaging").exists():
+        for path in sorted(Path("packaging").rglob("*.json")):
+            if path.stat().st_size <= MAX_FILE_BYTES:
+                artifacts["packaging_json"].append(str(path))
+
+    if Path("scripts").exists():
+        for path in sorted(Path("scripts").glob("VERIFY_*.ps1")):
+            artifacts["verifiers"].append(path.name)
+
+    for label, path in KNOWN_LAYER_DOCS.items():
+        if path.exists():
+            artifacts["wired_docs"].append(label)
+
+    return artifacts
+
+
+def read_public_state() -> dict:
+    artifacts = discover_public_artifacts()
+    state = {
+        "artifacts": artifacts,
+        "release": {},
+        "connector": {},
+        "receipt": {},
+    }
+
+    manifest_path = Path("packaging") / "public-install" / "public_install_package_v1.manifest.json"
+    if manifest_path.exists():
+        try:
+            state["release"]["manifest"] = json.loads(safe_read_text(manifest_path) or "{}")
+            state["release"]["manifest_path"] = str(manifest_path)
+        except Exception:
+            state["release"]["manifest"] = {}
+
+    draft_path = Path("docs") / "GITHUB_RELEASE_V1_DRAFT.md"
+    checklist_path = Path("reports") / "GITHUB_RELEASE_V1_CHECKLIST.md"
+    report_path = Path("reports") / "PUBLIC_INSTALL_PACKAGE_V1_REPORT.md"
+    state["release"]["draft_path"] = str(draft_path) if draft_path.exists() else ""
+    state["release"]["checklist_path"] = str(checklist_path) if checklist_path.exists() else ""
+    state["release"]["report_path"] = str(report_path) if report_path.exists() else ""
+
+    connector_doc = Path("docs") / "CONNECTOR_POLICY_V2.md"
+    connector_schema = Path("schemas") / "connector_policy_v2.schema.json"
+    connector_example = Path("examples") / "connector_policy_v2.example.json"
+    state["connector"] = {
+        "policy_doc": str(connector_doc) if connector_doc.exists() else "",
+        "policy_schema": str(connector_schema) if connector_schema.exists() else "",
+        "policy_example": str(connector_example) if connector_example.exists() else "",
+    }
+
+    if RECEIPT_PATH.exists():
+        try:
+            state["receipt"] = json.loads(safe_read_text(RECEIPT_PATH) or "{}")
+        except Exception:
+            state["receipt"] = {}
+    return state
+
+
+def summarize_release_state(state: dict) -> tuple[str, list[str], str]:
+    release = state.get("release", {})
+    artifacts = []
+    parts = []
+
+    for key in ("draft_path", "checklist_path", "report_path", "manifest_path"):
+        value = release.get(key, "")
+        if value:
+            artifacts.append(value)
+
+    manifest = release.get("manifest", {}) or {}
+    if manifest:
+        tag = manifest.get("release_tag") or manifest.get("tag") or "unknown-tag"
+        zip_name = manifest.get("zip_name") or manifest.get("artifact") or "release-zip-noted"
+        sha = manifest.get("sha256") or manifest.get("sha") or "sha-not-listed"
+        parts.append(f"Public release evidence is present. Tag: {tag}. Package: {zip_name}. SHA: {sha}.")
+    else:
+        parts.append("I found release docs and reports, but no manifest SHA metadata was parsed.")
+
+    if release.get("draft_path"):
+        parts.append("Release draft and checklist are in place for public verification.")
+    return " ".join(parts), artifacts, "release_summary"
+
+
+def summarize_verifier_state(state: dict) -> tuple[str, list[str], str]:
+    verifiers = state.get("artifacts", {}).get("verifiers", [])
+    if not verifiers:
+        return "No verifier scripts were discovered under scripts/.", [], "verifier_summary"
+    top = ", ".join(verifiers[:8])
+    more = "" if len(verifiers) <= 8 else f" (+{len(verifiers)-8} more)"
+    return f"I can verify locally with these scripts: {top}{more}.", [f"scripts/{v}" for v in verifiers[:8]], "verifier_summary"
+
+
+def summarize_connector_state(state: dict) -> tuple[str, list[str], str]:
+    connector = state.get("connector", {})
+    artifacts = [v for v in connector.values() if v]
+    if artifacts:
+        return (
+            "Connectors are governed by policy/schema/example artifacts. Send endpoint, purpose, data scope, and auth type so we can review the connector envelope locally. No live provider call executes here.",
+            artifacts,
+            "connector_summary",
+        )
+    return (
+        "Connector policy artifacts were not fully discovered. "
+        "Default posture remains local-only with no live API execution.",
+        artifacts,
+        "connector_summary",
+    )
+
+
+def summarize_receipt_state(state: dict) -> tuple[str, list[str], str]:
+    receipt = state.get("receipt", {})
+    artifacts = [str(RECEIPT_PATH)] if RECEIPT_PATH.exists() else []
+    if receipt:
+        return (
+            f"Proof receipt is at {RECEIPT_PATH}. "
+            "Receipt captures interaction evidence; verifier markers prove policy checks.",
+            artifacts,
+            "receipt_summary",
+        )
+    return (
+        f"Receipt path is {RECEIPT_PATH}. Run a verifier to refresh proof markers.",
+        artifacts,
+        "receipt_summary",
+    )
+
+
+def summarize_wired_state(state: dict) -> tuple[str, list[str], str]:
+    wired = state.get("artifacts", {}).get("wired_docs", [])
+    artifacts = [str(KNOWN_LAYER_DOCS[w]) for w in wired if w in KNOWN_LAYER_DOCS]
+    if wired:
+        return f"Wired layers discovered: {', '.join(wired)}.", artifacts, "wired_summary"
+    return "No core wiring docs were discovered.", artifacts, "wired_summary"
+
+
+def summarize_missing_state(state: dict) -> tuple[str, list[str], str]:
+    missing = []
+    if not (Path("docs") / "CONNECTOR_POLICY_V2.md").exists():
+        missing.append("connector policy documentation")
+    if not (Path("docs") / "LOCAL_GOVERNANCE_PROXY_V1.md").exists():
+        missing.append("local governance proxy documentation")
+    if not (Path("dist")).exists():
+        missing.append("packaged binaries")
+
+    base = (
+        "What is not active: no live LLM/provider execution, no external API calls by default, "
+        "no canonical mutation execution path, and no autonomous runtime."
+    )
+    if missing:
+        base += " Also missing or not wired yet: " + ", ".join(missing) + "."
+    return base, [], "missing_summary"
+
+
+def governance_brain_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], str]:
+    n = normalize(prompt)
+    state = read_public_state()
+
+    if "release" in n or capability == "cortex":
+        return summarize_release_state(state)
+    if "verify" in n or "verifier" in n or "what can you verify" in n:
+        return summarize_verifier_state(state)
+    if "connector" in n or "api" in n or "sdk" in n:
+        return summarize_connector_state(state)
+    if "proof" in n or "receipt" in n:
+        return summarize_receipt_state(state)
+    if "what is wired" in n or "wired" in n:
+        return summarize_wired_state(state)
+    if "what is missing" in n or "missing" in n:
+        return summarize_missing_state(state)
+
+    return "", [], ""
+
+
+def maybe_use_governance_brain(prompt: str, capability: str, signals: dict) -> tuple[bool, str, list[str], str]:
+    n = normalize(prompt)
+    trigger_tokens = (
+        "what do you know about this release",
+        "what can you verify",
+        "how do connectors work",
+        "where is the proof",
+        "what is wired",
+        "what is missing",
+        "release",
+        "verifier",
+        "connector",
+        "proof",
+    )
+    should_try = capability in {"cortex", "verify", "connectors", "receipts"} or any(t in n for t in trigger_tokens)
+    if not should_try:
+        return False, "", [], ""
+
+    response, artifacts, evidence_summary = governance_brain_answer(prompt, capability, signals)
+    if response:
+        return True, response, artifacts[:10], evidence_summary
+    return False, "", [], ""
+
+
+def write_receipt(
+    prompt: str,
+    response: str,
+    mode: str,
+    capability: str,
+    extracted_signals: Optional[dict] = None,
+    governance_brain_used: bool = False,
+    artifacts_consulted: Optional[list[str]] = None,
+    evidence_summary: str = "",
+) -> str:
     RECEIPT_PATH.parent.mkdir(parents=True, exist_ok=True)
     receipt = {
         "receipt_type": "aion_cli_receipt_v1",
@@ -122,6 +379,9 @@ def write_receipt(prompt: str, response: str, mode: str, capability: str, extrac
         "mutation": "NOT_PERFORMED",
         "execution": "NOT_PERFORMED",
         "governance_tone": "felt_not_seen",
+        "governance_brain_used": governance_brain_used,
+        "artifacts_consulted": artifacts_consulted or [],
+        "evidence_summary": evidence_summary,
     }
     if extracted_signals:
         receipt["extracted_signals"] = extracted_signals
@@ -147,7 +407,7 @@ def detect_capability(prompt: str) -> str:
         return "intuition"
     if "what do you know about this release" in n or "cortex" in n or "release state" in n or "repo state" in n:
         return "cortex"
-    if "can i connect an api" in n or "connector" in n or "api" in n or "sdk" in n or "model" in n:
+    if "can i connect an api" in n or "how do connectors work" in n or "connector" in n or "api" in n or "sdk" in n or "model" in n:
         return "connectors"
     if "where is the proof" in n or "receipt" in n or "proof record" in n:
         return "receipts"
@@ -344,8 +604,12 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
         "urgency": extract_urgency(prompt),
         "missing_evidence": extract_missing_evidence(prompt, capability),
         "risk_lens": extract_risk_lens(prompt, capability),
+        "governance_brain_used": False,
+        "artifacts_consulted": [],
+        "evidence_summary": "",
     }
 
+    # Legacy command-style responses preserved for compatibility.
     if should_show_diagnostics(prompt, diagnostics_on):
         if capability == "preflight":
             return "preflight", preflight_response(prompt), signals
@@ -364,6 +628,14 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
         if capability == "next":
             return "next", next_response(prompt), signals
 
+    brain_used, brain_response, artifacts_consulted, evidence_summary = maybe_use_governance_brain(prompt, capability, signals)
+    signals["governance_brain_used"] = brain_used
+    signals["artifacts_consulted"] = artifacts_consulted
+    signals["evidence_summary"] = evidence_summary
+
+    if brain_used and brain_response:
+        return capability, brain_response, signals
+
     if capability in {"preflight", "creative", "intuition", "cortex", "connectors", "receipts", "verify"}:
         return capability, compose_operator_response(prompt, capability), signals
     if capability == "next":
@@ -380,8 +652,11 @@ def print_diagnostics(capability: str, receipt: str, signals: dict) -> None:
     print(blue("Urgency    > ") + white(str(signals.get("urgency", "normal"))))
     missing = signals.get("missing_evidence", [])
     risks = signals.get("risk_lens", [])
+    artifacts = signals.get("artifacts_consulted", [])
     print(blue("Missing evidence > ") + white(", ".join(missing) if missing else "none"))
     print(blue("Risk lens  > ") + white(", ".join(risks) if risks else "none"))
+    print(blue("Governance brain used > ") + white(str(bool(signals.get("governance_brain_used", False))).lower()))
+    print(blue("Artifacts consulted > ") + white(", ".join(artifacts) if artifacts else "none"))
     print(blue("Boundary   > ") + green("LOCAL_ONLY"))
     print(blue("Network    > ") + green("NOT_USED"))
     print(blue("Mutation   > ") + green("NOT_PERFORMED"))
@@ -396,7 +671,16 @@ def print_proof_footer() -> None:
 def run_one_shot(prompt: str) -> int:
     render_banner()
     capability, response, signals = build_response(prompt, diagnostics_on=False)
-    receipt = write_receipt(prompt, response, mode="one_shot", capability=capability, extracted_signals=signals)
+    receipt = write_receipt(
+        prompt,
+        response,
+        mode="one_shot",
+        capability=capability,
+        extracted_signals=signals,
+        governance_brain_used=bool(signals.get("governance_brain_used", False)),
+        artifacts_consulted=signals.get("artifacts_consulted", []),
+        evidence_summary=str(signals.get("evidence_summary", "")),
+    )
     print(white(f"Operator > {prompt}"))
     print("")
     print(cyan(f"AION     > {response}"))
@@ -435,7 +719,16 @@ def run_interactive() -> int:
             diagnostics_on = False
 
         capability, response, signals = build_response(prompt, diagnostics_on=diagnostics_on)
-        receipt = write_receipt(prompt, response, mode="interactive", capability=capability, extracted_signals=signals)
+        receipt = write_receipt(
+            prompt,
+            response,
+            mode="interactive",
+            capability=capability,
+            extracted_signals=signals,
+            governance_brain_used=bool(signals.get("governance_brain_used", False)),
+            artifacts_consulted=signals.get("artifacts_consulted", []),
+            evidence_summary=str(signals.get("evidence_summary", "")),
+        )
 
         print("")
         print(cyan(f"AION     > {response}"))

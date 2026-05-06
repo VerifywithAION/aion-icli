@@ -585,3 +585,10 @@ Recommended next milestones:
 LOCKED as AION ICLI User Guide V1.
 
 
+
+## Governance Brain Adapter V1
+
+AION can answer from local evidence instead of fixed response tables. It inspects public-safe repo artifacts such as docs, reports, schemas, examples, packaging metadata, verifier names, and local receipt state.
+
+See: docs/GOVERNANCE_BRAIN_ADAPTER_V1.md
+

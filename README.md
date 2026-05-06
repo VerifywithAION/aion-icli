@@ -527,3 +527,10 @@ AION now composes responses from extracted prompt signals (subject, urgency, mis
 - default mode: natural adaptive operator response + proof footer
 - diagnostics mode: shows capability and extracted signals
 - receipts keep machine-verifiable routing and boundary fields
+
+
+### Governance Brain Adapter V1
+
+AION can inspect public-safe local repo artifacts (docs, reports, schemas, examples, packaging metadata, verifier names, and local receipt state) to answer from evidence while keeping local-only boundaries.
+
+
