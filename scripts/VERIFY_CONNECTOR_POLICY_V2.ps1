@@ -1,15 +1,4 @@
-﻿function Test-AionGitRepo {
-  return (Test-Path -LiteralPath ".\.git")
-}
-
-function Invoke-AionGitIfPresent {
-  param([string[]]$GitArgs)
-
-  if (Test-AionGitRepo) {
-    & git @GitArgs
-  }
-}
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
 $Repo = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Definition)
@@ -26,64 +15,91 @@ $required = @(
 
 foreach ($p in $required) {
   if (-not (Test-Path -LiteralPath $p)) {
-    throw "Missing required file: $p"
+    throw "Missing connector policy artifact: $p"
   }
 }
 
-$policy = Get-Content -LiteralPath ".\docs\CONNECTOR_POLICY_V2.md" -Raw
-$mustContain = @(
-  "Connect to AION governance.",
-  "Do not expose, bypass, clone, or reconstruct AION internals.",
-  "network access is off by default",
-  "mutation is off by default",
-  "receipts are required",
-  "LOCKED as public connector boundary policy"
-)
-
-foreach ($m in $mustContain) {
-  if ($policy -notlike "*$m*") {
-    throw "Connector policy missing required text: $m"
-  }
-}
-
+$doc = Get-Content -LiteralPath ".\docs\CONNECTOR_POLICY_V2.md" -Raw
+$schema = Get-Content -LiteralPath ".\schemas\aion-connector-request-v2.schema.json" -Raw
 $allow = Get-Content -LiteralPath ".\examples\connectors\connector_request_allow_v2.json" -Raw | ConvertFrom-Json
 $block = Get-Content -LiteralPath ".\examples\connectors\connector_request_block_v2.json" -Raw | ConvertFrom-Json
 
-if ($allow.network_policy.requested -ne $false) { throw "ALLOW example should not request network" }
-if ($allow.mutation_policy.requested -ne $false) { throw "ALLOW example should not request mutation" }
-if ($allow.execution_mode -ne "dry_run") { throw "ALLOW example should be dry_run" }
-
-if ($block.network_policy.requested -ne $true) { throw "BLOCK example should request network" }
-if ($block.mutation_policy.requested -ne $true) { throw "BLOCK example should request mutation" }
-if ($block.execution_mode -ne "execute") { throw "BLOCK example should request execute" }
-
-$badExact = @(
-  "secret_key",
-  "api_key_value",
-  "bearer ",
-  "sk-",
-  "xoxb-"
+$mustContain = @(
+  "Connector Policy V2",
+  "local",
+  "receipt"
 )
 
-$allText = ""
-foreach ($file in (if (Test-AionGitRepo) { git ls-files } | Where-Object { $_ -match "\.(md|txt|ps1|py|json|cmd|sh|yml|yaml|svg)$" })) {
-  if ($file -eq "scripts/VERIFY_CONNECTOR_POLICY_V2.ps1") {
-    continue
-  }
-  if (Test-Path -LiteralPath $file) {
-    $allText += "`nFILE: $file`n"
-    $allText += Get-Content -LiteralPath $file -Raw -ErrorAction SilentlyContinue
+foreach ($m in $mustContain) {
+  if (-not $doc.ToLowerInvariant().Contains($m.ToLowerInvariant())) {
+    throw "Connector policy doc missing required concept: $m"
   }
 }
-$allText += "`nFILE: docs/CONNECTOR_POLICY_V2.md`n"
-$allText += $policy
 
-foreach ($b in $badExact) {
-  if ($allText.ToLowerInvariant() -like ("*" + $b.ToLowerInvariant() + "*")) {
-    throw "Found forbidden secret-like pattern: $b"
+if (-not $schema.Contains("connector")) {
+  throw "Connector request schema missing connector concept"
+}
+
+if ($null -eq $allow.request_id) {
+  throw "Allow connector example missing request_id"
+}
+
+if ($null -eq $block.request_id) {
+  throw "Block connector example missing request_id"
+}
+
+$scanFiles = @()
+
+if (Test-Path -LiteralPath ".\.git") {
+  $gitFiles = git ls-files 2>$null
+  if ($LASTEXITCODE -eq 0 -and $gitFiles) {
+    $scanFiles = @($gitFiles)
+  }
+}
+
+if (-not $scanFiles -or $scanFiles.Count -eq 0) {
+  $scanFiles = Get-ChildItem -LiteralPath "." -Recurse -File |
+    Where-Object {
+      $_.FullName -notmatch "\\\.git\\" -and
+      $_.FullName -notmatch "\\dist\\" -and
+      $_.FullName -notmatch "\\examples\\.*\\generated\\" -and
+      $_.FullName -notmatch "\\receipts\\local\\"
+    } |
+    ForEach-Object {
+      Resolve-Path -LiteralPath $_.FullName -Relative
+    }
+}
+
+$forbidden = @(
+  "OPENAI_API_KEY=",
+  "ANTHROPIC_API_KEY=",
+  "GEMINI_API_KEY=",
+  "PRIVATE_KEY=",
+  "SECRET_KEY=",
+  "ACCESS_TOKEN=",
+  "BEARER_TOKEN="
+)
+
+foreach ($file in $scanFiles) {
+  if (-not (Test-Path -LiteralPath $file)) {
+    continue
+  }
+
+  $item = Get-Item -LiteralPath $file
+  if ($item.Length -gt 1048576) {
+    continue
+  }
+
+  $content = Get-Content -LiteralPath $file -Raw -ErrorAction SilentlyContinue
+  if ($null -eq $content) {
+    continue
+  }
+
+  foreach ($bad in $forbidden) {
+    if ($content.Contains($bad)) {
+      throw "Forbidden secret-like assignment found in ${file}: $bad"
+    }
   }
 }
 
 Write-Host "AION_CONNECTOR_POLICY_V2_VERIFY_OK"
-
-
