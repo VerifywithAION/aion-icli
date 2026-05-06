@@ -1,4 +1,15 @@
-﻿$ErrorActionPreference = "Stop"
+﻿function Test-AionGitRepo {
+  return (Test-Path -LiteralPath ".\.git")
+}
+
+function Invoke-AionGitIfPresent {
+  param([string[]]$GitArgs)
+
+  if (Test-AionGitRepo) {
+    & git @GitArgs
+  }
+}
+$ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
 $Repo = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Definition)
@@ -55,7 +66,7 @@ $badExact = @(
 )
 
 $allText = ""
-foreach ($file in (git ls-files | Where-Object { $_ -match "\.(md|txt|ps1|py|json|cmd|sh|yml|yaml|svg)$" })) {
+foreach ($file in (if (Test-AionGitRepo) { git ls-files } | Where-Object { $_ -match "\.(md|txt|ps1|py|json|cmd|sh|yml|yaml|svg)$" })) {
   if ($file -eq "scripts/VERIFY_CONNECTOR_POLICY_V2.ps1") {
     continue
   }
@@ -74,4 +85,5 @@ foreach ($b in $badExact) {
 }
 
 Write-Host "AION_CONNECTOR_POLICY_V2_VERIFY_OK"
+
 
