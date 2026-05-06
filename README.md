@@ -501,6 +501,8 @@ Start here:
 - [Connector Stack Acceptance Report V1](reports/CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.md)
 - [Public Install Package V1](docs/PUBLIC_INSTALL_PACKAGE_V1.md)
 - [User Guide V1](docs/USER_GUIDE_V1.md)
+- [GitHub Release V1 Draft](docs/GITHUB_RELEASE_V1_DRAFT.md)
+
 
 
 
