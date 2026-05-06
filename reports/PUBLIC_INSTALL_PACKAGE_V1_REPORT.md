@@ -10,7 +10,7 @@ PASS
 
 ## SHA256
 
-    1F87C275AE088EBE5CCF6CCC5E14BF909ED6F379FC99B91617EF0D95B9DDED04
+    55529B35C52A3CCD7B37B37EAA54D654001FDBC7495CC919A2855A98A9F72CC4
 
 ## Verified public head
 
@@ -51,3 +51,4 @@ PASS
 ## Status
 
 LOCKED as Public Install Package V1 rebuilt from current verifier-corrected repo state.
+
