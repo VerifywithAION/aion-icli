@@ -49,9 +49,10 @@ if ($beforeDiag -match "Capability\s*>|Subject\s*>|Urgency\s*>|Risk lens|Governa
   throw "Normal mode leaked diagnostics internals"
 }
 
-if ($beforeDiag -notmatch "public release|Tag:|Package:|SHA:|release") {
-  throw "Release answer missing release/package evidence"
-}
+if ($beforeDiag -notmatch "v1\.0\.0-public-icli|public release") { throw "Release answer missing tag/release evidence" }
+if ($beforeDiag -notmatch "dist/aion-icli-public-install-package-v1\.zip|package") { throw "Release answer missing package evidence" }
+if ($beforeDiag -notmatch "SHA256|8B99C3") { throw "Release answer missing SHA evidence" }
+if ($beforeDiag -notmatch "VERIFY_PUBLIC_INSTALL_PACKAGE_V1\.ps1|release") { throw "Release answer missing verifier linkage" }
 
 if ($beforeDiag -notmatch "VERIFY_.*\.ps1") {
   throw "Verifier answer missing discovered VERIFY_*.ps1 scripts"
@@ -68,18 +69,21 @@ if ($beforeDiag -notmatch "verifier|prove") {
   throw "Proof answer missing verifier/proof language"
 }
 
-if ($beforeDiag -notmatch "Interactive Mode V1|Capability Router V1|Voice Layer V1|Adaptive Reasoning Layer V1|User Guide V1") {
+if ($beforeDiag -notmatch "Interactive Mode V1|Capability Router V1|Voice Layer V1|Adaptive Reasoning Layer V1|Governance Brain Adapter V1|User Guide V1") {
   throw "Wired answer missing known wired layers"
 }
 
-if ($beforeDiag -notmatch "no live LLM|no external API|no canonical mutation|no autonomous") {
+if ($beforeDiag -notmatch "no live provider/LLM|no external API execution by default|no autonomous") {
   throw "Missing-state answer asserted unsafe capability"
 }
 
 $diagSegment = ($norm -split "Diagnostics enabled\.",2)[1]
 if ([string]::IsNullOrWhiteSpace($diagSegment)) { throw "Missing diagnostics-on segment" }
-if ($diagSegment -notmatch "Governance brain used") { throw "Diagnostics missing governance brain used" }
+if ($diagSegment -notmatch "Governance brain used\s*>\s*true") { throw "Diagnostics missing governance brain true" }
 if ($diagSegment -notmatch "Artifacts consulted") { throw "Diagnostics missing artifacts consulted" }
+if ($diagSegment -notmatch "GITHUB_RELEASE_V1_DRAFT|PUBLIC_INSTALL_PACKAGE|public_install_package_v1\.manifest\.json") {
+  throw "Diagnostics artifacts missing release evidence files"
+}
 
 if (-not (Test-Path -LiteralPath ".\receipts\local\aion_cli_receipt_v1.json")) {
   throw "Receipt file missing"
@@ -89,7 +93,7 @@ if ($receipt.boundary -ne "LOCAL_ONLY") { throw "Receipt boundary mismatch" }
 if ($receipt.network -ne "NOT_USED") { throw "Receipt network mismatch" }
 if ($receipt.mutation -ne "NOT_PERFORMED") { throw "Receipt mutation mismatch" }
 if ($receipt.execution -ne "NOT_PERFORMED") { throw "Receipt execution mismatch" }
-if (-not ($receipt.PSObject.Properties.Name -contains "governance_brain_used")) { throw "Receipt missing governance_brain_used" }
+if ($receipt.governance_brain_used -ne $true) { throw "Receipt governance_brain_used should be true" }
 if (-not ($receipt.PSObject.Properties.Name -contains "artifacts_consulted")) { throw "Receipt missing artifacts_consulted" }
 
 Write-Host "AION_GOVERNANCE_BRAIN_ADAPTER_V1_VERIFY_OK"

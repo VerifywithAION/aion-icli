@@ -1,5 +1,6 @@
 ﻿import json
 import os
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -46,12 +47,12 @@ COMMAND_STYLE = {
     "?",
 }
 
-
 KNOWN_LAYER_DOCS = {
     "Interactive Mode V1": Path("docs") / "INTERACTIVE_MODE_V1.md",
     "Capability Router V1": Path("docs") / "CAPABILITY_ROUTER_V1.md",
     "Voice Layer V1": Path("docs") / "VOICE_LAYER_V1.md",
     "Adaptive Reasoning Layer V1": Path("docs") / "ADAPTIVE_REASONING_LAYER_V1.md",
+    "Governance Brain Adapter V1": Path("docs") / "GOVERNANCE_BRAIN_ADAPTER_V1.md",
     "User Guide V1": Path("docs") / "USER_GUIDE_V1.md",
     "Public Release Lock V1": Path("docs") / "PUBLIC_RELEASE_LOCK_V1.md",
 }
@@ -130,6 +131,11 @@ def safe_read_text(path: Path) -> str:
         return ""
 
 
+def first_match(text: str, pattern: str) -> str:
+    m = re.search(pattern, text or "", flags=re.IGNORECASE | re.MULTILINE)
+    return m.group(1).strip() if m else ""
+
+
 def discover_public_artifacts() -> dict:
     artifacts = {
         "release_docs": [],
@@ -143,15 +149,20 @@ def discover_public_artifacts() -> dict:
         "receipt_exists": RECEIPT_PATH.exists(),
     }
 
-    # docs and reports
+    if Path("README.md").exists() and Path("README.md").stat().st_size <= MAX_FILE_BYTES:
+        artifacts["release_docs"].append("README.md")
+
     for path in sorted(Path("docs").glob("*.md")) if Path("docs").exists() else []:
+        if path.stat().st_size > MAX_FILE_BYTES:
+            continue
         artifacts["release_docs"].append(str(path))
         name = path.name.lower()
         if "connector" in name or "api_adapter" in name or "model_adapter" in name or "sdk" in name:
             artifacts["connector_docs"].append(str(path))
 
     for path in sorted(Path("reports").glob("*.md")) if Path("reports").exists() else []:
-        artifacts["reports"].append(str(path))
+        if path.stat().st_size <= MAX_FILE_BYTES:
+            artifacts["reports"].append(str(path))
 
     for path in sorted(Path("schemas").glob("*.json")) if Path("schemas").exists() else []:
         if path.stat().st_size <= MAX_FILE_BYTES:
@@ -194,6 +205,7 @@ def read_public_state() -> dict:
             state["release"]["manifest_path"] = str(manifest_path)
         except Exception:
             state["release"]["manifest"] = {}
+            state["release"]["manifest_path"] = str(manifest_path)
 
     draft_path = Path("docs") / "GITHUB_RELEASE_V1_DRAFT.md"
     checklist_path = Path("reports") / "GITHUB_RELEASE_V1_CHECKLIST.md"
@@ -201,6 +213,9 @@ def read_public_state() -> dict:
     state["release"]["draft_path"] = str(draft_path) if draft_path.exists() else ""
     state["release"]["checklist_path"] = str(checklist_path) if checklist_path.exists() else ""
     state["release"]["report_path"] = str(report_path) if report_path.exists() else ""
+    state["release"]["draft_text"] = safe_read_text(draft_path) if draft_path.exists() else ""
+    state["release"]["checklist_text"] = safe_read_text(checklist_path) if checklist_path.exists() else ""
+    state["release"]["report_text"] = safe_read_text(report_path) if report_path.exists() else ""
 
     connector_doc = Path("docs") / "CONNECTOR_POLICY_V2.md"
     connector_schema = Path("schemas") / "connector_policy_v2.schema.json"
@@ -222,34 +237,63 @@ def read_public_state() -> dict:
 def summarize_release_state(state: dict) -> tuple[str, list[str], str]:
     release = state.get("release", {})
     artifacts = []
-    parts = []
 
     for key in ("draft_path", "checklist_path", "report_path", "manifest_path"):
         value = release.get(key, "")
         if value:
             artifacts.append(value)
+    zip_path = Path("dist") / "aion-icli-public-install-package-v1.zip"
+    if zip_path.exists():
+        artifacts.append(str(zip_path))
 
     manifest = release.get("manifest", {}) or {}
-    if manifest:
-        tag = manifest.get("release_tag") or manifest.get("tag") or "unknown-tag"
-        zip_name = manifest.get("zip_name") or manifest.get("artifact") or "release-zip-noted"
-        sha = manifest.get("sha256") or manifest.get("sha") or "sha-not-listed"
-        parts.append(f"Public release evidence is present. Tag: {tag}. Package: {zip_name}. SHA: {sha}.")
-    else:
-        parts.append("I found release docs and reports, but no manifest SHA metadata was parsed.")
+    draft_text = release.get("draft_text", "")
+    checklist_text = release.get("checklist_text", "")
+    report_text = release.get("report_text", "")
+    combined = "\n".join([draft_text, checklist_text, report_text])
 
-    if release.get("draft_path"):
-        parts.append("Release draft and checklist are in place for public verification.")
-    return " ".join(parts), artifacts, "release_summary"
+    tag = (
+        manifest.get("release_tag")
+        or manifest.get("tag")
+        or first_match(combined, r"\b(v\d+\.\d+\.\d+-[a-z0-9-]+)\b")
+        or "public release"
+    )
+    package = (
+        manifest.get("zip_name")
+        or manifest.get("artifact")
+        or first_match(combined, r"(dist/[A-Za-z0-9._-]+\.zip)")
+        or "package artifact"
+    )
+    sha = (
+        manifest.get("package_sha256")
+        or manifest.get("sha256")
+        or manifest.get("sha")
+        or first_match(combined, r"\b([A-Fa-f0-9]{64})\b")
+        or "sha-not-listed"
+    )
+    target_head = (
+        manifest.get("verified_head")
+        or first_match(combined, r"Target commit:\s*([0-9a-f]{7,40})")
+        or first_match(combined, r"Verified public head\s*([0-9a-f]{7,40})")
+        or "head-not-listed"
+    )
+    docs_head = first_match(combined, r"release docs head\s*[:=]\s*([0-9a-f]{7,40})") or "n/a"
+
+    response = (
+        f"I can see the public release trail locally: tag {tag}, package {package}, "
+        f"SHA256 {sha}, package target head {target_head}, docs head {docs_head}. "
+        "The package is verified through VERIFY_PUBLIC_INSTALL_PACKAGE_V1.ps1 and release draft/checklist verification."
+    )
+    return response, artifacts[:12], "release_metadata_parsed"
 
 
 def summarize_verifier_state(state: dict) -> tuple[str, list[str], str]:
     verifiers = state.get("artifacts", {}).get("verifiers", [])
     if not verifiers:
         return "No verifier scripts were discovered under scripts/.", [], "verifier_summary"
-    top = ", ".join(verifiers[:8])
-    more = "" if len(verifiers) <= 8 else f" (+{len(verifiers)-8} more)"
-    return f"I can verify locally with these scripts: {top}{more}.", [f"scripts/{v}" for v in verifiers[:8]], "verifier_summary"
+    top = ", ".join(verifiers[:10])
+    more = "" if len(verifiers) <= 10 else f" (+{len(verifiers)-10} more)"
+    return f"I can verify locally with these scripts: {top}{more}.", [f"scripts/{v}" for v in verifiers[:10]], "verifier_summary"
 
 
 def summarize_connector_state(state: dict) -> tuple[str, list[str], str]:
@@ -262,8 +306,7 @@ def summarize_connector_state(state: dict) -> tuple[str, list[str], str]:
             "connector_summary",
         )
     return (
-        "Connector policy artifacts were not fully discovered. "
-        "Default posture remains local-only with no live API execution.",
+        "Connector policy artifacts were not fully discovered. Default posture remains local-only with no live API execution.",
         artifacts,
         "connector_summary",
     )
@@ -274,8 +317,7 @@ def summarize_receipt_state(state: dict) -> tuple[str, list[str], str]:
     artifacts = [str(RECEIPT_PATH)] if RECEIPT_PATH.exists() else []
     if receipt:
         return (
-            f"Proof receipt is at {RECEIPT_PATH}. "
-            "Receipt captures interaction evidence; verifier markers prove policy checks.",
+            f"Proof receipt is at {RECEIPT_PATH}. A receipt shows what was answered; verifier markers show what was proven.",
             artifacts,
             "receipt_summary",
         )
@@ -295,20 +337,20 @@ def summarize_wired_state(state: dict) -> tuple[str, list[str], str]:
 
 
 def summarize_missing_state(state: dict) -> tuple[str, list[str], str]:
-    missing = []
-    if not (Path("docs") / "CONNECTOR_POLICY_V2.md").exists():
-        missing.append("connector policy documentation")
-    if not (Path("docs") / "LOCAL_GOVERNANCE_PROXY_V1.md").exists():
-        missing.append("local governance proxy documentation")
-    if not (Path("dist")).exists():
-        missing.append("packaged binaries")
+    dist_zip = Path("dist") / "aion-icli-public-install-package-v1.zip"
+    has_runner_doc = (Path("docs") / "LOCAL_GOVERNANCE_PROXY_V1.md").exists()
+    has_exe = any(Path("dist").glob("*.exe")) if Path("dist").exists() else False
 
     base = (
-        "What is not active: no live LLM/provider execution, no external API calls by default, "
-        "no canonical mutation execution path, and no autonomous runtime."
+        "What is not active: no live provider/LLM calls, no external API execution by default, "
+        "and no autonomous mutation/execution path."
     )
-    if missing:
-        base += " Also missing or not wired yet: " + ", ".join(missing) + "."
+    if not has_runner_doc:
+        base += " There is no real artifact-inspection runner wired yet."
+    if not has_exe:
+        base += " There is no standalone EXE package in the current public release."
+    if not dist_zip.exists():
+        base += " Public ZIP package artifact is not present locally."
     return base, [], "missing_summary"
 
 
@@ -316,18 +358,18 @@ def governance_brain_answer(prompt: str, capability: str, signals: dict) -> tupl
     n = normalize(prompt)
     state = read_public_state()
 
-    if "release" in n or capability == "cortex":
-        return summarize_release_state(state)
+    if "what is wired" in n or "wired" in n:
+        return summarize_wired_state(state)
+    if "what is missing" in n or "missing" in n:
+        return summarize_missing_state(state)
     if "verify" in n or "verifier" in n or "what can you verify" in n:
         return summarize_verifier_state(state)
     if "connector" in n or "api" in n or "sdk" in n:
         return summarize_connector_state(state)
     if "proof" in n or "receipt" in n:
         return summarize_receipt_state(state)
-    if "what is wired" in n or "wired" in n:
-        return summarize_wired_state(state)
-    if "what is missing" in n or "missing" in n:
-        return summarize_missing_state(state)
+    if "release" in n or capability == "cortex":
+        return summarize_release_state(state)
 
     return "", [], ""
 
@@ -352,7 +394,7 @@ def maybe_use_governance_brain(prompt: str, capability: str, signals: dict) -> t
 
     response, artifacts, evidence_summary = governance_brain_answer(prompt, capability, signals)
     if response:
-        return True, response, artifacts[:10], evidence_summary
+        return True, response, artifacts[:12], evidence_summary
     return False, "", [], ""
 
 
@@ -411,8 +453,12 @@ def detect_capability(prompt: str) -> str:
         return "connectors"
     if "where is the proof" in n or "receipt" in n or "proof record" in n:
         return "receipts"
-    if "verify" in n or "verifier" in n or "proof marker" in n:
+    if "verify" in n or "verifier" in n or "proof marker" in n or "what can you verify" in n:
         return "verify"
+    if "what is wired" in n:
+        return "cortex"
+    if "what is missing" in n:
+        return "cortex"
     if "next" in n or "roadmap" in n or "what should i do" in n:
         return "next"
     return "general"
@@ -577,6 +623,14 @@ def should_show_diagnostics(prompt: str, diagnostics_on: bool) -> bool:
     return any(n.startswith(prefix + " ") for prefix in command_prefixes)
 
 
+def is_legacy_command_prompt(prompt: str) -> bool:
+    n = normalize(prompt)
+    if n in COMMAND_STYLE:
+        return True
+    legacy_prefixes = ("preflight ", "creative ", "intuition ", "cortex ", "connectors ", "receipts ", "verify ", "next ")
+    return any(n.startswith(prefix) for prefix in legacy_prefixes)
+
+
 def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
     n = normalize(prompt)
     capability = detect_capability(prompt)
@@ -609,8 +663,8 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
         "evidence_summary": "",
     }
 
-    # Legacy command-style responses preserved for compatibility.
-    if should_show_diagnostics(prompt, diagnostics_on):
+    # Legacy command-style responses preserved for direct mode commands.
+    if is_legacy_command_prompt(prompt):
         if capability == "preflight":
             return "preflight", preflight_response(prompt), signals
         if capability == "creative":
@@ -632,7 +686,6 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
     signals["governance_brain_used"] = brain_used
     signals["artifacts_consulted"] = artifacts_consulted
     signals["evidence_summary"] = evidence_summary
-
     if brain_used and brain_response:
         return capability, brain_response, signals
 
@@ -656,7 +709,8 @@ def print_diagnostics(capability: str, receipt: str, signals: dict) -> None:
     print(blue("Missing evidence > ") + white(", ".join(missing) if missing else "none"))
     print(blue("Risk lens  > ") + white(", ".join(risks) if risks else "none"))
     print(blue("Governance brain used > ") + white(str(bool(signals.get("governance_brain_used", False))).lower()))
-    print(blue("Artifacts consulted > ") + white(", ".join(artifacts) if artifacts else "none"))
+    print(blue("Artifacts consulted > ") + white("; ".join(artifacts) if artifacts else "none"))
+    print(blue("Evidence summary > ") + white(str(signals.get("evidence_summary", "")) or "none"))
     print(blue("Boundary   > ") + green("LOCAL_ONLY"))
     print(blue("Network    > ") + green("NOT_USED"))
     print(blue("Mutation   > ") + green("NOT_PERFORMED"))
@@ -719,6 +773,24 @@ def run_interactive() -> int:
             diagnostics_on = False
 
         capability, response, signals = build_response(prompt, diagnostics_on=diagnostics_on)
+
+        print("")
+        print(cyan(f"AION     > {response}"))
+
+        if capability == "exit":
+            if diagnostics_on:
+                print(blue("Receipt  > ") + white(str(RECEIPT_PATH)))
+            else:
+                print_proof_footer()
+            print("")
+            return 0
+
+        if capability == "diagnostics":
+            print("")
+            print_proof_footer()
+            print("")
+            continue
+
         receipt = write_receipt(
             prompt,
             response,
@@ -729,17 +801,6 @@ def run_interactive() -> int:
             artifacts_consulted=signals.get("artifacts_consulted", []),
             evidence_summary=str(signals.get("evidence_summary", "")),
         )
-
-        print("")
-        print(cyan(f"AION     > {response}"))
-
-        if capability == "exit":
-            if diagnostics_on:
-                print(blue("Receipt  > ") + white(receipt))
-            else:
-                print_proof_footer()
-            print("")
-            return 0
 
         print("")
         if should_show_diagnostics(prompt, diagnostics_on):
@@ -761,4 +822,3 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv))
-

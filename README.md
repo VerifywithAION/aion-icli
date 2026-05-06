@@ -534,3 +534,9 @@ AION now composes responses from extracted prompt signals (subject, urgency, mis
 AION can inspect public-safe local repo artifacts (docs, reports, schemas, examples, packaging metadata, verifier names, and local receipt state) to answer from evidence while keeping local-only boundaries.
 
 
+
+## Governance Brain Integration Fix V1
+
+- [Governance Brain Integration Fix V1](docs/GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.md)
+- Ensures release-state questions use governance brain evidence in both normal and diagnostics mode, with accurate artifacts consulted and evidence summary.
+

@@ -592,3 +592,10 @@ AION can answer from local evidence instead of fixed response tables. It inspect
 
 See: docs/GOVERNANCE_BRAIN_ADAPTER_V1.md
 
+
+## Governance Brain Integration Fix V1
+
+This fix ensures release-state answers consistently use local governance evidence in normal and diagnostics modes.
+
+Read: docs/GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.md
+
