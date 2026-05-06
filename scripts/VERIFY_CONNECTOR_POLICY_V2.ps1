@@ -6,6 +6,8 @@ Set-Location $Repo
 
 Write-Host "AION ICLI Connector Policy V2 verifier"
 
+$SelfRelative = "scripts\VERIFY_CONNECTOR_POLICY_V2.ps1"
+
 $required = @(
   "docs\CONNECTOR_POLICY_V2.md",
   "schemas\aion-connector-request-v2.schema.json",
@@ -81,6 +83,12 @@ $forbidden = @(
 )
 
 foreach ($file in $scanFiles) {
+  $normalized = $file.Replace("/", "\").TrimStart(".", "\")
+
+  if ($normalized -ieq $SelfRelative) {
+    continue
+  }
+
   if (-not (Test-Path -LiteralPath $file)) {
     continue
   }
