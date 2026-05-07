@@ -1,0 +1,10 @@
+{
+  "generated_at_utc": "2026-05-07T03:44:41Z",
+  "prompt": "Who are you, AION?",
+  "capability": "identity",
+  "introspection_used": true,
+  "passed": true,
+  "findings": [],
+  "repairs_applied": [],
+  "risk_level": "LOW"
+}

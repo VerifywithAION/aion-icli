@@ -1,0 +1,16 @@
+{
+  "ruleset": "aion_icli_introspection_gate_v1",
+  "checks": [
+    "has_proof_footer_in_normal_mode",
+    "no_diagnostics_leak_in_normal_mode",
+    "no_live_provider_claim",
+    "no_execution_claim",
+    "no_consciousness_claim",
+    "no_release_overclaim",
+    "artifact_claim_requires_artifact_inspection",
+    "evidence_claim_requires_evidence_engine",
+    "proof_claim_requires_receipt_or_verifier",
+    "missing_artifact_requires_question",
+    "local_boundary_preserved"
+  ]
+}

@@ -636,3 +636,10 @@ See: `docs/LIVING_PROOF_GRAPH_V1.md`.
 AION can classify proof strength (claim/doc/verifier/marker/wired/release/admissible) before trust decisions.
 
 See: `docs/EVIDENCE_ENGINE_V1.md`.
+
+
+## Introspection Gate V1
+
+AION self-audits answers before speaking to reduce overclaim and enforce local-safe boundaries.
+
+See: `docs/INTROSPECTION_GATE_V1.md`.

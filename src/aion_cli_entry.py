@@ -82,6 +82,10 @@ EVIDENCE_DIR = Path(".aion_public") / "evidence"
 EVIDENCE_INDEX_PATH = EVIDENCE_DIR / "evidence_index_v1.json"
 EVIDENCE_SUMMARY_PATH = EVIDENCE_DIR / "evidence_summary_v1.md"
 EVIDENCE_LATEST_PATH = EVIDENCE_DIR / "evidence_latest_v1.json"
+INTROSPECTION_DIR = Path(".aion_public") / "introspection"
+INTROSPECTION_RULES_PATH = INTROSPECTION_DIR / "introspection_rules_v1.json"
+INTROSPECTION_LATEST_PATH = INTROSPECTION_DIR / "introspection_latest_v1.json"
+INTROSPECTION_SUMMARY_PATH = INTROSPECTION_DIR / "introspection_summary_v1.md"
 
 EVIDENCE_LEVELS = {
     "MISSING": 0,
@@ -1135,11 +1139,155 @@ def maybe_use_evidence_engine(prompt: str, capability: str, signals: dict) -> tu
         "what is admissible right now",
         "what evidence is weak",
         "is this release evidence strong",
+        "is this release fully packaged",
     )
     if not any(t in n for t in triggers):
         return False, "", [], {}
     response, refs, details = evidence_engine_answer(prompt, capability, signals)
     return True, response, refs, details
+
+
+def build_introspection_rules() -> dict:
+    INTROSPECTION_DIR.mkdir(parents=True, exist_ok=True)
+    rules = {
+        "ruleset": "aion_icli_introspection_gate_v1",
+        "checks": [
+            "has_proof_footer_in_normal_mode",
+            "no_diagnostics_leak_in_normal_mode",
+            "no_live_provider_claim",
+            "no_execution_claim",
+            "no_consciousness_claim",
+            "no_release_overclaim",
+            "artifact_claim_requires_artifact_inspection",
+            "evidence_claim_requires_evidence_engine",
+            "proof_claim_requires_receipt_or_verifier",
+            "missing_artifact_requires_question",
+            "local_boundary_preserved",
+        ],
+    }
+    INTROSPECTION_RULES_PATH.write_text(json.dumps(rules, indent=2), encoding="utf-8")
+    return rules
+
+
+def detect_overclaim(answer: str, context: dict) -> list[str]:
+    a = (answer or "").lower()
+    findings: list[str] = []
+    if "conscious" in a and "not conscious" not in a:
+        findings.append("consciousness_overclaim")
+    if ("openai" in a or "claude" in a or "gemini" in a or "grok" in a) and "no live" not in a and "does not" not in a:
+        findings.append("live_provider_overclaim")
+    if "release_packaged" in a or "fully packaged" in a:
+        if context.get("roadmap_caveat", False):
+            findings.append("release_packaging_overclaim")
+    if ("i executed" in a or "we executed" in a or "action executed" in a) and "not execute" not in a and "no execution" not in a:
+        findings.append("execution_overclaim")
+    return findings
+
+
+def detect_missing_grounding(prompt: str, answer: str, context: dict) -> list[str]:
+    p = normalize(prompt)
+    a = (answer or "").lower()
+    findings: list[str] = []
+    if "should i run this script" in p and not context.get("artifact_inspection_used", False):
+        if "artifact path" not in a and "no artifact, no judgment" not in a:
+            findings.append("missing_artifact_question")
+    if "evidence" in p and not context.get("evidence_engine_used", False):
+        findings.append("evidence_claim_without_evidence_engine")
+    if "proof" in p and not (RECEIPT_PATH.exists() or "verifier" in a):
+        findings.append("proof_claim_without_receipt_or_verifier")
+    return findings
+
+
+def detect_boundary_violation(answer: str, context: dict) -> list[str]:
+    a = (answer or "").lower()
+    findings: list[str] = []
+    if "network used" in a or "called api" in a:
+        findings.append("network_violation_claim")
+    if "mutated" in a and "not" not in a:
+        findings.append("mutation_violation_claim")
+    if "autonomous" in a and "not" not in a:
+        findings.append("autonomy_overclaim")
+    return findings
+
+
+def introspect_answer(prompt: str, answer: str, capability: str, signals: dict, context: dict) -> dict:
+    rules = build_introspection_rules()
+    findings = []
+    findings.extend(detect_overclaim(answer, context))
+    findings.extend(detect_missing_grounding(prompt, answer, context))
+    findings.extend(detect_boundary_violation(answer, context))
+
+    if not context.get("diagnostics_on", False):
+        # normal mode should not leak diagnostics table labels
+        for leak in ("capability >", "boundary   >", "network    >", "mutation   >", "execution  >"):
+            if leak in (answer or "").lower():
+                findings.append("diagnostics_leak_in_normal_mode")
+                break
+
+    passed = len(findings) == 0
+    risk_level = "LOW" if passed else ("HIGH" if any("overclaim" in x or "violation" in x for x in findings) else "MEDIUM")
+    return {
+        "introspection_used": True,
+        "passed": passed,
+        "findings": findings,
+        "repairs_applied": [],
+        "risk_level": risk_level,
+        "final_answer_changed": False,
+        "rules_path": str(INTROSPECTION_RULES_PATH),
+        "rules": rules,
+    }
+
+
+def repair_answer_if_needed(prompt: str, answer: str, capability: str, signals: dict, context: dict, introspection_result: dict) -> str:
+    out = answer
+    findings = introspection_result.get("findings", [])
+    repairs = introspection_result.get("repairs_applied", [])
+    p = normalize(prompt)
+    if "missing_artifact_question" in findings:
+        out = "I need the artifact path first. No artifact, no judgment."
+        repairs.append("insert_missing_artifact_clarification")
+    if "release_packaging_overclaim" in findings:
+        out = "I cannot call this fully packaged. Current evidence is ROADMAP_WIRED for newer layers, not RELEASE_PACKAGED until a rebuilt ZIP proof exists."
+        repairs.append("downgrade_release_claim")
+    if "consciousness_overclaim" in findings:
+        out = "No. I am not conscious. I am a local governance interface."
+        repairs.append("remove_consciousness_claim")
+    if "live_provider_overclaim" in findings:
+        out = "No live provider call is executed here by default. This path stays local-only."
+        repairs.append("remove_live_provider_claim")
+    if "execution_overclaim" in findings:
+        out = "I do not execute that action here. I provide a governed local assessment only."
+        repairs.append("remove_execution_overclaim")
+    introspection_result["repairs_applied"] = repairs
+    introspection_result["final_answer_changed"] = out != answer
+    introspection_result["passed"] = len(introspection_result.get("findings", [])) == 0 or len(repairs) > 0
+    return out
+
+
+def introspection_gate_wrap(prompt: str, answer: str, capability: str, signals: dict, context: dict) -> tuple[str, dict]:
+    result = introspect_answer(prompt, answer, capability, signals, context)
+    final = repair_answer_if_needed(prompt, answer, capability, signals, context, result)
+    summary = {
+        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "prompt": prompt,
+        "capability": capability,
+        "introspection_used": True,
+        "passed": bool(result.get("passed", False)),
+        "findings": result.get("findings", []),
+        "repairs_applied": result.get("repairs_applied", []),
+        "risk_level": result.get("risk_level", "LOW"),
+    }
+    INTROSPECTION_DIR.mkdir(parents=True, exist_ok=True)
+    INTROSPECTION_LATEST_PATH.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    INTROSPECTION_SUMMARY_PATH.write_text(
+        "# Introspection Gate V1 Summary\n\n"
+        + f"- Passed: {str(summary['passed']).lower()}\n"
+        + f"- Risk: {summary['risk_level']}\n"
+        + f"- Findings: {', '.join(summary['findings']) if summary['findings'] else 'none'}\n"
+        + f"- Repairs: {', '.join(summary['repairs_applied']) if summary['repairs_applied'] else 'none'}\n",
+        encoding="utf-8",
+    )
+    return final, summary
 
 
 def memory_scar_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], list[str], str]:
@@ -1266,6 +1414,11 @@ def write_receipt(
     strongest_evidence_level: str = "",
     weakest_layers: Optional[list[str]] = None,
     evidence_paths: Optional[list[str]] = None,
+    introspection_used: bool = False,
+    introspection_passed: bool = False,
+    introspection_findings: Optional[list[str]] = None,
+    introspection_repairs_applied: Optional[list[str]] = None,
+    introspection_risk_level: str = "",
 ) -> str:
     RECEIPT_PATH.parent.mkdir(parents=True, exist_ok=True)
     receipt = {
@@ -1309,6 +1462,11 @@ def write_receipt(
         "strongest_evidence_level": strongest_evidence_level,
         "weakest_layers": weakest_layers or [],
         "evidence_paths": evidence_paths or [],
+        "introspection_used": introspection_used,
+        "introspection_passed": introspection_passed,
+        "introspection_findings": introspection_findings or [],
+        "introspection_repairs_applied": introspection_repairs_applied or [],
+        "introspection_risk_level": introspection_risk_level,
     }
     if extracted_signals:
         receipt["extracted_signals"] = extracted_signals
@@ -1575,6 +1733,11 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
         "strongest_evidence_level": "",
         "weakest_layers": [],
         "evidence_paths": [],
+        "introspection_used": False,
+        "introspection_passed": False,
+        "introspection_findings": [],
+        "introspection_repairs_applied": [],
+        "introspection_risk_level": "",
     }
 
     evidence_used, evidence_response, evidence_refs, evidence_details = maybe_use_evidence_engine(prompt, capability, signals)
@@ -1658,6 +1821,10 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
 
     if "who are you" in n or "what are you" in n:
         return "identity", "I am AION ICLI, a governed local command intelligence interface.", signals
+    if "are you conscious" in n or "consciousness" in n:
+        return "identity", "No. I am not conscious. I am a local governance interface.", signals
+    if "openai" in n or "claude" in n or "gemini" in n or "grok" in n:
+        return "connectors", "No live provider call executes here by default. This path remains local-only unless a governed connector flow is explicitly enabled.", signals
     return "general", compose_operator_response(prompt, "general"), signals
 
 
@@ -1698,6 +1865,13 @@ def print_diagnostics(capability: str, receipt: str, signals: dict) -> None:
     print(blue("Weakest layers > ") + white("; ".join(wl) if wl else "none"))
     epaths = signals.get("evidence_paths", [])
     print(blue("Evidence paths > ") + white("; ".join(epaths) if epaths else "none"))
+    print(blue("Introspection gate used > ") + white(str(bool(signals.get("introspection_used", False))).lower()))
+    print(blue("Introspection passed > ") + white(str(bool(signals.get("introspection_passed", False))).lower()))
+    ifind = signals.get("introspection_findings", [])
+    irep = signals.get("introspection_repairs_applied", [])
+    print(blue("Findings > ") + white("; ".join(ifind) if ifind else "none"))
+    print(blue("Repairs applied > ") + white("; ".join(irep) if irep else "none"))
+    print(blue("Risk level > ") + white(str(signals.get("introspection_risk_level", "")) or "none"))
     print(blue("Artifacts consulted > ") + white("; ".join(artifacts) if artifacts else "none"))
     print(blue("Evidence summary > ") + white(str(signals.get("evidence_summary", "")) or "none"))
     print(blue("Boundary   > ") + green("LOCAL_ONLY"))
@@ -1714,6 +1888,18 @@ def print_proof_footer() -> None:
 def run_one_shot(prompt: str) -> int:
     render_banner()
     capability, response, signals = build_response(prompt, diagnostics_on=False)
+    context = {
+        "diagnostics_on": False,
+        "artifact_inspection_used": bool(signals.get("artifact_inspection_used", False)),
+        "evidence_engine_used": bool(signals.get("evidence_engine_used", False)),
+        "roadmap_caveat": "not yet rebuilt" in safe_read_text(Path("docs") / "AION_ICLI_ROADMAP_STATE_V1.md").lower(),
+    }
+    response, ires = introspection_gate_wrap(prompt, response, capability, signals, context)
+    signals["introspection_used"] = True
+    signals["introspection_passed"] = bool(ires.get("passed", False))
+    signals["introspection_findings"] = list(ires.get("findings", []))
+    signals["introspection_repairs_applied"] = list(ires.get("repairs_applied", []))
+    signals["introspection_risk_level"] = str(ires.get("risk_level", "LOW"))
     receipt = write_receipt(
         prompt,
         response,
@@ -1749,6 +1935,11 @@ def run_one_shot(prompt: str) -> int:
         strongest_evidence_level=str(signals.get("strongest_evidence_level", "")),
         weakest_layers=signals.get("weakest_layers", []),
         evidence_paths=signals.get("evidence_paths", []),
+        introspection_used=bool(signals.get("introspection_used", False)),
+        introspection_passed=bool(signals.get("introspection_passed", False)),
+        introspection_findings=signals.get("introspection_findings", []),
+        introspection_repairs_applied=signals.get("introspection_repairs_applied", []),
+        introspection_risk_level=str(signals.get("introspection_risk_level", "")),
     )
     print(white(f"Operator > {prompt}"))
     print("")
@@ -1788,6 +1979,18 @@ def run_interactive() -> int:
             diagnostics_on = False
 
         capability, response, signals = build_response(prompt, diagnostics_on=diagnostics_on)
+        context = {
+            "diagnostics_on": diagnostics_on,
+            "artifact_inspection_used": bool(signals.get("artifact_inspection_used", False)),
+            "evidence_engine_used": bool(signals.get("evidence_engine_used", False)),
+            "roadmap_caveat": "not yet rebuilt" in safe_read_text(Path("docs") / "AION_ICLI_ROADMAP_STATE_V1.md").lower(),
+        }
+        response, ires = introspection_gate_wrap(prompt, response, capability, signals, context)
+        signals["introspection_used"] = True
+        signals["introspection_passed"] = bool(ires.get("passed", False))
+        signals["introspection_findings"] = list(ires.get("findings", []))
+        signals["introspection_repairs_applied"] = list(ires.get("repairs_applied", []))
+        signals["introspection_risk_level"] = str(ires.get("risk_level", "LOW"))
 
         print("")
         print(cyan(f"AION     > {response}"))
@@ -1841,6 +2044,11 @@ def run_interactive() -> int:
             strongest_evidence_level=str(signals.get("strongest_evidence_level", "")),
             weakest_layers=signals.get("weakest_layers", []),
             evidence_paths=signals.get("evidence_paths", []),
+            introspection_used=bool(signals.get("introspection_used", False)),
+            introspection_passed=bool(signals.get("introspection_passed", False)),
+            introspection_findings=signals.get("introspection_findings", []),
+            introspection_repairs_applied=signals.get("introspection_repairs_applied", []),
+            introspection_risk_level=str(signals.get("introspection_risk_level", "")),
         )
 
         print("")
