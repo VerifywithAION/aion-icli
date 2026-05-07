@@ -613,3 +613,10 @@ Read: docs/MEMORY_SCAR_ENGINE_V1.md
 - docs/AION_ICLI_NEXT_8_BUILDS_V1.md
 - docs/AION_ICLI_SYSTEM_WIRING_REPORT_V1.md
 
+
+## Artifact Inspection Runner V1
+
+AION can inspect local artifacts (scripts/docs/config) in read-only mode and return risk guidance without executing them.
+
+Read: docs/ARTIFACT_INSPECTION_RUNNER_V1.md
+

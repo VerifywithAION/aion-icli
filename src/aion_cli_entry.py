@@ -18,6 +18,18 @@ AION_LOGO = r"""
 RECEIPT_PATH = Path("receipts") / "local" / "aion_cli_receipt_v1.json"
 PROOF_FOOTER = "Proof: local-only · no network · no mutation · no execution · receipt written"
 MAX_FILE_BYTES = 1024 * 1024
+ARTIFACT_MAX_BYTES = 256 * 1024
+ARTIFACT_MAX_CHARS = 40000
+ALLOWED_ARTIFACT_EXTS = {
+    ".ps1", ".py", ".js", ".ts", ".tsx", ".json", ".md", ".txt", ".yaml", ".yml", ".cmd", ".bat", ".sh"
+}
+FORBIDDEN_PATH_PARTS = {".git", ".env", "secrets", "private", "node_modules", "__pycache__", ".venv", "venv"}
+NETWORK_PATTERNS = ["invoke-webrequest", "invoke-restmethod", "curl", "wget", "requests", "fetch(", "axios", "http://", "https://"]
+MUTATION_PATTERNS = ["set-content", "add-content", "remove-item", "new-item", "copy-item", "move-item", "write_text", "open(", "fs.writefile", "git commit", "git push"]
+EXECUTION_PATTERNS = ["start-process", "subprocess", "os.system", "powershell -file", " node ", "python ", "npm run"]
+SECRET_PATTERNS = ["api_key", "secret", "token", "private_key", "seed phrase", "password"]
+GOVERNANCE_PATTERNS = ["verifier", "receipt", "dry-run", "rollback", "no-network", "local-only"]
+PACKAGE_PATTERNS = ["dist", "zip", "manifest", "sha256", "release", "tag"]
 
 CAPABILITY_MAP = {
     "preflight": {"name": "Preflight"},
@@ -133,6 +145,168 @@ def safe_read_text(path: Path) -> str:
         return path.read_text(encoding="utf-8", errors="replace")
     except Exception:
         return ""
+
+
+def extract_artifact_path(prompt: str) -> str:
+    n = (prompt or "").strip()
+    # Prefer explicit repo-like paths first.
+    path_match = re.search(r"([A-Za-z0-9_./\\-]+\.(ps1|py|js|ts|tsx|json|md|txt|yaml|yml|cmd|bat|sh))", n, flags=re.IGNORECASE)
+    return path_match.group(1) if path_match else ""
+
+
+def normalize_artifact_path(path_text: str) -> Optional[Path]:
+    if not path_text:
+        return None
+    candidate = Path(path_text.strip().strip("\"'"))
+    if candidate.is_absolute():
+        return candidate
+    return (Path.cwd() / candidate).resolve()
+
+
+def is_allowed_artifact_path(path: Path) -> tuple[bool, str]:
+    try:
+        repo_root = Path.cwd().resolve()
+        resolved = path.resolve()
+    except Exception:
+        return False, "path_resolve_failed"
+    if not str(resolved).startswith(str(repo_root)):
+        return False, "outside_repo_root"
+    low = str(resolved).lower().replace("\\", "/")
+    for part in FORBIDDEN_PATH_PARTS:
+        if f"/{part.lower()}/" in f"/{low}/":
+            return False, "forbidden_path_segment"
+    if low.endswith(".zip") and "/dist/" in low:
+        return False, "binary_zip_content_forbidden"
+    if resolved.suffix.lower() not in ALLOWED_ARTIFACT_EXTS:
+        return False, "unsupported_file_type"
+    if not resolved.exists() or not resolved.is_file():
+        return False, "artifact_not_found"
+    return True, "ok"
+
+
+def read_artifact_safely(path: Path) -> tuple[bool, str, int, str]:
+    try:
+        size = path.stat().st_size
+    except Exception:
+        return False, "", 0, "artifact_stat_failed"
+    if size > ARTIFACT_MAX_BYTES:
+        return False, "", size, "too_large"
+    text = safe_read_text(path)
+    if not text:
+        return False, "", size, "artifact_read_failed_or_empty"
+    return True, text[:ARTIFACT_MAX_CHARS], size, "ok"
+
+
+def scan_patterns(text: str, patterns: list[str]) -> list[str]:
+    low = (text or "").lower()
+    return [p for p in patterns if p in low]
+
+
+def inspect_artifact_text(path: Path, text: str) -> dict:
+    return {
+        "network": scan_patterns(text, NETWORK_PATTERNS),
+        "mutation": scan_patterns(text, MUTATION_PATTERNS),
+        "execution": scan_patterns(text, EXECUTION_PATTERNS),
+        "secret": scan_patterns(text, SECRET_PATTERNS),
+        "governance": scan_patterns(text, GOVERNANCE_PATTERNS),
+        "package": scan_patterns(text, PACKAGE_PATTERNS),
+        "path": str(path),
+        "file_type": path.suffix.lower(),
+    }
+
+
+def classify_artifact_risk(path: Path, text: str) -> dict:
+    p = inspect_artifact_text(path, text)
+    detected = []
+    reasons = []
+    missing_controls = []
+    decision = "SAFE_TO_READ"
+    risk_level = "LOW"
+
+    for k in ("network", "mutation", "execution", "secret"):
+        if p[k]:
+            detected.extend([f"{k}:{v}" for v in p[k]])
+
+    if p["secret"]:
+        decision = "NEEDS_MANUAL_REVIEW"
+        risk_level = "HIGH"
+        reasons.append("secret_indicator_detected")
+    if p["network"] or p["mutation"] or p["execution"]:
+        if risk_level != "HIGH":
+            risk_level = "MEDIUM"
+            decision = "REVIEW_ONLY"
+        reasons.append("active_operation_indicators_detected")
+        if not any(x in p["governance"] for x in ("rollback", "dry-run", "verifier")):
+            missing_controls.extend(["rollback", "dry-run", "verifier"])
+    if p["network"] and p["mutation"]:
+        decision = "BLOCK_EXECUTION"
+        risk_level = "HIGH"
+        reasons.append("combined_network_and_mutation_risk")
+
+    recommended = "Read-only review only. Do not execute. Require verifier and rollback plan."
+    if decision == "SAFE_TO_READ":
+        recommended = "Safe to read. If execution is requested, run preflight and verifier checks first."
+
+    return {
+        "decision": decision,
+        "risk_level": risk_level,
+        "reasons": reasons or ["no_high_risk_patterns_detected"],
+        "missing_controls": sorted(set(missing_controls)),
+        "detected_patterns": sorted(set(detected)),
+        "recommended_next_step": recommended,
+        "inspection": p,
+    }
+
+
+def artifact_inspection_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], dict]:
+    path_text = extract_artifact_path(prompt)
+    if not path_text:
+        return (
+            "You asked to do it now. Don't run it yet. I cannot inspect what I cannot see. Share the script/file path first so I can check blast radius, reversibility, and evidence. No artifact, no judgment.",
+            [],
+            {"decision": "NEEDS_MANUAL_REVIEW", "risk_level": "MEDIUM", "reasons": ["missing_artifact_path"], "missing_controls": ["artifact_path"]},
+        )
+
+    path = normalize_artifact_path(path_text)
+    if not path:
+        return ("Artifact path could not be normalized for local inspection.", [], {"decision": "NEEDS_MANUAL_REVIEW", "risk_level": "MEDIUM", "reasons": ["path_normalization_failed"], "missing_controls": ["artifact_path"]})
+    allowed, status = is_allowed_artifact_path(path)
+    if not allowed:
+        return (
+            f"I can only inspect repo-local public-safe artifacts. This path is blocked: {status}.",
+            [str(path)],
+            {"decision": "NEEDS_MANUAL_REVIEW", "risk_level": "HIGH", "reasons": [status], "missing_controls": ["repo_local_path"]},
+        )
+
+    ok, text, size, read_status = read_artifact_safely(path)
+    if not ok:
+        reason = "too_large" if read_status == "too_large" else "artifact_read_failed"
+        return (
+            f"I inspected path metadata for {path}. Content requires manual review: {read_status}.",
+            [str(path)],
+            {"decision": "NEEDS_MANUAL_REVIEW", "risk_level": "MEDIUM", "reasons": [reason], "missing_controls": ["manual_review"], "artifact_size_bytes": size},
+        )
+
+    risk = classify_artifact_risk(path, text)
+    risk["artifact_size_bytes"] = size
+    response = (
+        f"I inspected {path}. Decision: {risk['decision']} ({risk['risk_level']}). "
+        f"Detected patterns: {', '.join(risk['detected_patterns']) if risk['detected_patterns'] else 'none'}. "
+        f"Missing controls: {', '.join(risk['missing_controls']) if risk['missing_controls'] else 'none'}. "
+        f"{risk['recommended_next_step']}"
+    )
+    if risk["decision"] in {"REVIEW_ONLY", "BLOCK_EXECUTION", "NEEDS_MANUAL_REVIEW"} and ("rollback" in risk["missing_controls"] or "dry-run" in risk["missing_controls"]):
+        response += " Learned rule: no artifact, no judgment; no verifier, no lock."
+    return response, [str(path)], risk
+
+
+def maybe_use_artifact_inspection(prompt: str, capability: str, signals: dict) -> tuple[bool, str, list[str], dict]:
+    n = normalize(prompt)
+    triggers = ("should i run", "inspect ", "what does this file do", "is this safe", "where is the rollback", "risk in this")
+    if not any(t in n for t in triggers):
+        return False, "", [], {}
+    response, artifacts, risk = artifact_inspection_answer(prompt, capability, signals)
+    return True, response, artifacts, risk
 
 
 def first_match(text: str, pattern: str) -> str:
@@ -537,6 +711,16 @@ def write_receipt(
     memory_scar_engine_used: bool = False,
     scars_consulted: Optional[list[str]] = None,
     future_rules: Optional[list[str]] = None,
+    artifact_inspection_used: bool = False,
+    artifact_path: str = "",
+    artifact_size_bytes: int = 0,
+    file_type: str = "",
+    decision: str = "",
+    risk_level: str = "",
+    detected_patterns: Optional[list[str]] = None,
+    missing_controls: Optional[list[str]] = None,
+    reasons: Optional[list[str]] = None,
+    recommended_next_step: str = "",
 ) -> str:
     RECEIPT_PATH.parent.mkdir(parents=True, exist_ok=True)
     receipt = {
@@ -557,6 +741,16 @@ def write_receipt(
         "memory_scar_engine_used": memory_scar_engine_used,
         "scars_consulted": scars_consulted or [],
         "future_rules": future_rules or [],
+        "artifact_inspection_used": artifact_inspection_used,
+        "artifact_path": artifact_path,
+        "artifact_size_bytes": artifact_size_bytes,
+        "file_type": file_type,
+        "decision": decision,
+        "risk_level": risk_level,
+        "detected_patterns": detected_patterns or [],
+        "missing_controls": missing_controls or [],
+        "reasons": reasons or [],
+        "recommended_next_step": recommended_next_step,
     }
     if extracted_signals:
         receipt["extracted_signals"] = extracted_signals
@@ -797,7 +991,33 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
         "memory_scar_engine_used": False,
         "scars_consulted": [],
         "future_rules": [],
+        "artifact_inspection_used": False,
+        "artifact_path": "",
+        "artifact_size_bytes": 0,
+        "file_type": "",
+        "decision": "",
+        "risk_level": "",
+        "detected_patterns": [],
+        "missing_controls": [],
+        "reasons": [],
+        "recommended_next_step": "",
     }
+
+    artifact_used, artifact_response, inspected_artifacts, risk = maybe_use_artifact_inspection(prompt, capability, signals)
+    if artifact_used:
+        signals["artifact_inspection_used"] = True
+        signals["artifacts_consulted"] = inspected_artifacts
+        signals["artifact_path"] = inspected_artifacts[0] if inspected_artifacts else ""
+        signals["artifact_size_bytes"] = int(risk.get("artifact_size_bytes", 0) or 0)
+        signals["file_type"] = str(risk.get("inspection", {}).get("file_type", ""))
+        signals["decision"] = str(risk.get("decision", ""))
+        signals["risk_level"] = str(risk.get("risk_level", ""))
+        signals["detected_patterns"] = list(risk.get("detected_patterns", []))
+        signals["missing_controls"] = list(risk.get("missing_controls", []))
+        signals["reasons"] = list(risk.get("reasons", []))
+        signals["recommended_next_step"] = str(risk.get("recommended_next_step", ""))
+        signals["evidence_summary"] = "artifact_inspection"
+        return capability, artifact_response, signals
 
     scar_used, scar_response, scar_artifacts, scar_rules, scar_summary = maybe_use_memory_scar_engine(prompt, capability, signals)
     if scar_used and scar_response:
@@ -858,6 +1078,14 @@ def print_diagnostics(capability: str, receipt: str, signals: dict) -> None:
     print(blue("Memory scar engine used > ") + white(str(bool(signals.get("memory_scar_engine_used", False))).lower()))
     print(blue("Scars consulted > ") + white("; ".join(scars_consulted) if scars_consulted else "none"))
     print(blue("Future rule > ") + white("; ".join(future_rules) if future_rules else "none"))
+    print(blue("Artifact inspection used > ") + white(str(bool(signals.get("artifact_inspection_used", False))).lower()))
+    print(blue("Artifact path > ") + white(str(signals.get("artifact_path", "")) or "none"))
+    print(blue("Decision > ") + white(str(signals.get("decision", "")) or "none"))
+    print(blue("Risk level > ") + white(str(signals.get("risk_level", "")) or "none"))
+    detected = signals.get("detected_patterns", [])
+    missing_controls = signals.get("missing_controls", [])
+    print(blue("Detected patterns > ") + white("; ".join(detected) if detected else "none"))
+    print(blue("Missing controls > ") + white("; ".join(missing_controls) if missing_controls else "none"))
     print(blue("Artifacts consulted > ") + white("; ".join(artifacts) if artifacts else "none"))
     print(blue("Evidence summary > ") + white(str(signals.get("evidence_summary", "")) or "none"))
     print(blue("Boundary   > ") + green("LOCAL_ONLY"))
@@ -886,6 +1114,16 @@ def run_one_shot(prompt: str) -> int:
         memory_scar_engine_used=bool(signals.get("memory_scar_engine_used", False)),
         scars_consulted=signals.get("scars_consulted", []),
         future_rules=signals.get("future_rules", []),
+        artifact_inspection_used=bool(signals.get("artifact_inspection_used", False)),
+        artifact_path=str(signals.get("artifact_path", "")),
+        artifact_size_bytes=int(signals.get("artifact_size_bytes", 0) or 0),
+        file_type=str(signals.get("file_type", "")),
+        decision=str(signals.get("decision", "")),
+        risk_level=str(signals.get("risk_level", "")),
+        detected_patterns=signals.get("detected_patterns", []),
+        missing_controls=signals.get("missing_controls", []),
+        reasons=signals.get("reasons", []),
+        recommended_next_step=str(signals.get("recommended_next_step", "")),
     )
     print(white(f"Operator > {prompt}"))
     print("")
@@ -955,6 +1193,16 @@ def run_interactive() -> int:
             memory_scar_engine_used=bool(signals.get("memory_scar_engine_used", False)),
             scars_consulted=signals.get("scars_consulted", []),
             future_rules=signals.get("future_rules", []),
+            artifact_inspection_used=bool(signals.get("artifact_inspection_used", False)),
+            artifact_path=str(signals.get("artifact_path", "")),
+            artifact_size_bytes=int(signals.get("artifact_size_bytes", 0) or 0),
+            file_type=str(signals.get("file_type", "")),
+            decision=str(signals.get("decision", "")),
+            risk_level=str(signals.get("risk_level", "")),
+            detected_patterns=signals.get("detected_patterns", []),
+            missing_controls=signals.get("missing_controls", []),
+            reasons=signals.get("reasons", []),
+            recommended_next_step=str(signals.get("recommended_next_step", "")),
         )
 
         print("")

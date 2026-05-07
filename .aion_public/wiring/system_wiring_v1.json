@@ -1,6 +1,6 @@
 ﻿{
-    "generated_at_utc":  "2026-05-07T02:21:20Z",
-    "current_head":  "8183fc6",
+    "generated_at_utc":  "2026-05-07T02:55:56Z",
+    "current_head":  "df4ffaa",
     "status":  "PASS",
     "layers":  [
                    {
@@ -155,10 +155,27 @@
                        "layer_name":  "Memory Scar Engine V1",
                        "status":  "PASS",
                        "notes":  "Scar-based behavior rules active"
+                   },
+                   {
+                       "layer_name":  "Artifact Inspection Runner V1",
+                       "status":  "PASS",
+                       "files_checked":  [
+                                             "src/aion_cli_entry.py",
+                                             "examples/inspection/fixture_safe_script.ps1",
+                                             "examples/inspection/fixture_risky_script.ps1"
+                                         ],
+                       "docs_checked":  [
+                                            "docs/ARTIFACT_INSPECTION_RUNNER_V1.md"
+                                        ],
+                       "verifier_checked":  "scripts/VERIFY_ARTIFACT_INSPECTION_RUNNER_V1.ps1",
+                       "cli_wired":  true,
+                       "receipt_wired":  true,
+                       "public_safe":  true,
+                       "notes":  "Read-only artifact inspection with risk classification and receipt fields"
                    }
                ],
     "missing_required":  [
 
                          ],
-    "next_required_action":  "Artifact Inspection Runner V1"
+    "next_required_action":  "Living Proof Graph V1"
 }

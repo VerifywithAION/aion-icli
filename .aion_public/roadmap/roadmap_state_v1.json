@@ -1,10 +1,10 @@
 ﻿{
     "roadmap_type":  "aion_icli_public_safe_roadmap_state_v1",
-    "generated_at_utc":  "2026-05-07T02:21:20Z",
-    "current_head":  "8183fc6",
-    "latest_completed_layer":  "Memory Scar Engine V1",
-    "latest_completed_commit":  "8183fc6",
-    "next_build_pointer":  "Artifact Inspection Runner V1",
+    "generated_at_utc":  "2026-05-07T02:55:56Z",
+    "current_head":  "df4ffaa",
+    "latest_completed_layer":  "Artifact Inspection Runner V1",
+    "latest_completed_commit":  "df4ffaa",
+    "next_build_pointer":  "Living Proof Graph V1",
     "completed_layers":  [
                              "Public Release V1",
                              "Interactive Mode V1",
@@ -13,10 +13,10 @@
                              "Adaptive Reasoning Layer V1",
                              "Governance Brain Adapter V1",
                              "Governance Brain Integration Fix V1",
-                             "Memory Scar Engine V1"
+                             "Memory Scar Engine V1",
+                             "Artifact Inspection Runner V1"
                          ],
     "next_builds":  [
-                        "Artifact Inspection Runner V1",
                         "Living Proof Graph V1",
                         "Evidence Engine V1",
                         "Introspection Gate V1",

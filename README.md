@@ -553,3 +553,9 @@ AION can inspect public-safe local repo artifacts (docs, reports, schemas, examp
 - [AION ICLI Next 8 Builds V1](docs/AION_ICLI_NEXT_8_BUILDS_V1.md)
 - [AION ICLI System Wiring Report V1](docs/AION_ICLI_SYSTEM_WIRING_REPORT_V1.md)
 
+
+## Artifact Inspection Runner V1
+
+- [Artifact Inspection Runner V1](docs/ARTIFACT_INSPECTION_RUNNER_V1.md)
+- AION can inspect repo-local artifacts in read-only mode and classify risk before trust; inspected artifacts are never executed.
+
