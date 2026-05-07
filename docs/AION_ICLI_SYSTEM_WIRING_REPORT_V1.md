@@ -1,6 +1,6 @@
-﻿# AION ICLI System Wiring Report V1
+# AION ICLI System Wiring Report V1
 
-Current head: df4ffaa
+Current head: bcd5e2b
 
 Each layer below is checked for runtime/docs/verifier/linkage and public-safe boundaries.
 
@@ -17,5 +17,6 @@ Each layer below is checked for runtime/docs/verifier/linkage and public-safe bo
 | Governance Brain Integration Fix V1 | src/aion_cli_entry.py | docs/GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.md | VERIFY_GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.ps1 | true | true | true |
 | Memory Scar Engine V1 | src/aion_cli_entry.py + .aion_public/* | docs/MEMORY_SCAR_ENGINE_V1.md | VERIFY_MEMORY_SCAR_ENGINE_V1.ps1 | true | true | true |
 | Artifact Inspection Runner V1 | src/aion_cli_entry.py + examples/inspection/* | docs/ARTIFACT_INSPECTION_RUNNER_V1.md | VERIFY_ARTIFACT_INSPECTION_RUNNER_V1.ps1 | true | true | true |
+| Living Proof Graph V1 | src/aion_cli_entry.py + .aion_public/proof_graph/* | docs/LIVING_PROOF_GRAPH_V1.md | VERIFY_LIVING_PROOF_GRAPH_V1.ps1 | true | true | true |
 
 Public-safe boundary remains: LOCAL_ONLY, network NOT_USED, mutation NOT_PERFORMED, execution NOT_PERFORMED.

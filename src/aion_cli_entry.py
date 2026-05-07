@@ -67,11 +67,17 @@ KNOWN_LAYER_DOCS = {
     "Governance Brain Adapter V1": Path("docs") / "GOVERNANCE_BRAIN_ADAPTER_V1.md",
     "User Guide V1": Path("docs") / "USER_GUIDE_V1.md",
     "Public Release Lock V1": Path("docs") / "PUBLIC_RELEASE_LOCK_V1.md",
+    "Living Proof Graph V1": Path("docs") / "LIVING_PROOF_GRAPH_V1.md",
 }
 
 SCARS_PATH = Path(".aion_public") / "scars" / "scars_seed.jsonl"
 PROOF_GRAPH_PATH = Path(".aion_public") / "graph" / "proof_graph_seed.json"
 EVOLUTION_LEDGER_PATH = Path(".aion_public") / "evolution" / "evolution_ledger_seed.jsonl"
+PROOF_GRAPH_DIR = Path(".aion_public") / "proof_graph"
+PROOF_NODES_PATH = PROOF_GRAPH_DIR / "proof_nodes_v1.json"
+PROOF_EDGES_PATH = PROOF_GRAPH_DIR / "proof_edges_v1.json"
+PROOF_GRAPH_SUMMARY_PATH = PROOF_GRAPH_DIR / "proof_graph_summary_v1.md"
+PROOF_GRAPH_LATEST_PATH = PROOF_GRAPH_DIR / "proof_graph_latest_v1.json"
 
 
 def configure_utf8() -> None:
@@ -145,6 +151,19 @@ def safe_read_text(path: Path) -> str:
         return path.read_text(encoding="utf-8", errors="replace")
     except Exception:
         return ""
+
+
+def safe_read_json(path: Path) -> dict:
+    try:
+        if not path.exists() or not path.is_file():
+            return {}
+        if path.stat().st_size > MAX_FILE_BYTES:
+            return {}
+        raw = path.read_text(encoding="utf-8-sig", errors="replace")
+        obj = json.loads(raw)
+        return obj if isinstance(obj, dict) else {}
+    except Exception:
+        return {}
 
 
 def extract_artifact_path(prompt: str) -> str:
@@ -610,6 +629,255 @@ def load_evolution_ledger() -> list[dict]:
     return rows
 
 
+def discover_proof_graph_nodes() -> list[dict]:
+    nodes: list[dict] = []
+    seen: set[str] = set()
+
+    def add(node_id: str, node_type: str, label: str, path: str = "") -> None:
+        key = f"{node_type}:{node_id}"
+        if key in seen:
+            return
+        seen.add(key)
+        item = {"id": node_id, "type": node_type, "label": label}
+        if path:
+            item["path"] = path
+        nodes.append(item)
+
+    roadmap_path = Path(".aion_public") / "roadmap" / "roadmap_state_v1.json"
+    wiring_path = Path(".aion_public") / "wiring" / "system_wiring_v1.json"
+
+    add("roadmap_state_v1", "RoadmapState", "AION ICLI Roadmap State V1", str(roadmap_path))
+    add("system_wiring_v1", "WiringReport", "AION ICLI System Wiring V1", str(wiring_path))
+
+    roadmap = safe_read_json(roadmap_path)
+    if isinstance(roadmap, dict):
+        latest = str(roadmap.get("latest_completed_layer", "")).strip()
+        if latest:
+            add(f"layer_{latest.lower().replace(' ', '_')}", "Layer", latest)
+        next_build = str(roadmap.get("next_build_pointer", "")).strip()
+        if next_build:
+            add(f"next_{next_build.lower().replace(' ', '_')}", "NextBuild", next_build)
+
+    for doc_path in sorted(Path("docs").glob("*.md")) if Path("docs").exists() else []:
+        if doc_path.stat().st_size > MAX_FILE_BYTES:
+            continue
+        label = doc_path.stem.replace("_", " ")
+        add(f"doc_{doc_path.stem.lower()}", "Doc", label, str(doc_path))
+        if "_V1" in doc_path.stem or "_V2" in doc_path.stem:
+            layer = doc_path.stem.replace("_", " ").replace(" V1", " V1").replace(" V2", " V2")
+            add(f"layer_{doc_path.stem.lower()}", "Layer", layer)
+
+    for vpath in sorted(Path("scripts").glob("VERIFY_*.ps1")) if Path("scripts").exists() else []:
+        add(f"verifier_{vpath.stem.lower()}", "Verifier", vpath.name, str(vpath))
+
+    if SCARS_PATH.exists():
+        add("memory_scars_seed", "MemoryScar", "Memory Scar Seed", str(SCARS_PATH))
+    if RECEIPT_PATH.exists():
+        add("latest_cli_receipt", "Receipt", "Latest CLI Receipt", str(RECEIPT_PATH))
+
+    manifest = Path("packaging") / "public-install" / "public_install_package_v1.manifest.json"
+    if manifest.exists():
+        add("public_release_v1", "Release", "Public Release V1", "docs/GITHUB_RELEASE_V1_DRAFT.md")
+        add("public_package_v1", "Package", "Public Install Package V1", str(manifest))
+        m = safe_read_json(manifest)
+        sha = str((m or {}).get("package_sha256") or (m or {}).get("sha256") or "").strip()
+        if sha:
+            add(f"sha_{sha[:12].lower()}", "Artifact", f"SHA256 {sha[:12]}...", str(manifest))
+
+    for ap in sorted((Path("examples") / "inspection").glob("*")) if (Path("examples") / "inspection").exists() else []:
+        if ap.is_file():
+            add(f"artifact_{ap.name.lower()}", "Artifact", ap.name, str(ap))
+    return nodes
+
+
+def discover_proof_graph_edges(nodes: list[dict]) -> list[dict]:
+    edges: list[dict] = []
+    seen: set[str] = set()
+    by_label = {str(n.get("label", "")).lower(): str(n.get("id", "")) for n in nodes}
+    by_path = {str(n.get("path", "")).lower(): str(n.get("id", "")) for n in nodes if n.get("path")}
+
+    def add(src: str, edge_type: str, dst: str) -> None:
+        if not src or not dst:
+            return
+        key = f"{src}>{edge_type}>{dst}"
+        if key in seen:
+            return
+        seen.add(key)
+        edges.append({"source": src, "type": edge_type, "target": dst})
+
+    for n in nodes:
+        nid = str(n.get("id", ""))
+        ntype = str(n.get("type", ""))
+        path = str(n.get("path", "")).lower()
+        label = str(n.get("label", "")).lower()
+        if ntype == "Layer":
+            for other in nodes:
+                if str(other.get("type")) == "Doc":
+                    ol = str(other.get("label", "")).lower()
+                    if "layer" in label and (label.split(" v")[0] in ol or ol in label):
+                        add(nid, "documented_by", str(other.get("id", "")))
+            for other in nodes:
+                if str(other.get("type")) == "Verifier":
+                    ov = str(other.get("label", "")).lower()
+                    if "artifact_inspection" in label and "artifact_inspection" in ov:
+                        add(nid, "verified_by", str(other.get("id", "")))
+                    if "memory_scar" in label and "memory_scar" in ov:
+                        add(nid, "verified_by", str(other.get("id", "")))
+                    if "roadmap" in label and "roadmap" in ov:
+                        add(nid, "verified_by", str(other.get("id", "")))
+            for other in nodes:
+                if str(other.get("type")) == "Receipt":
+                    add(nid, "emits_receipt", str(other.get("id", "")))
+        if ntype == "RoadmapState":
+            for other in nodes:
+                if str(other.get("type")) == "NextBuild":
+                    add(nid, "points_to_next", str(other.get("id", "")))
+        if ntype == "WiringReport":
+            for other in nodes:
+                if str(other.get("type")) == "Layer":
+                    add(other.get("id", ""), "wired_by", nid)
+        if ntype == "Receipt":
+            for other in nodes:
+                if str(other.get("type")) == "Decision":
+                    add(nid, "supports_decision", str(other.get("id", "")))
+        if ntype == "Release":
+            pkg = by_label.get("public install package v1")
+            if pkg:
+                add(nid, "contains_package", pkg)
+        if ntype == "Package":
+            for other in nodes:
+                if str(other.get("type")) == "Artifact" and "sha256" in str(other.get("label", "")).lower():
+                    add(nid, "has_sha256", str(other.get("id", "")))
+        if ntype == "MemoryScar":
+            for other in nodes:
+                if str(other.get("type")) == "Decision":
+                    add(nid, "constrains_decision", str(other.get("id", "")))
+        if "examples/inspection/" in path:
+            for other in nodes:
+                if str(other.get("type")) == "Receipt":
+                    add(nid, "inspects_artifact", str(other.get("id", "")))
+    return edges
+
+
+def build_living_proof_graph() -> dict:
+    PROOF_GRAPH_DIR.mkdir(parents=True, exist_ok=True)
+    nodes = discover_proof_graph_nodes()
+    # Add canonical decision nodes needed for proof relationships.
+    if not any(str(n.get("type")) == "Decision" for n in nodes):
+        nodes.append({"id": "decision_local_only_guard", "type": "Decision", "label": "Local-only governance decision"})
+    edges = discover_proof_graph_edges(nodes)
+    latest = {
+        "graph_type": "aion_icli_living_proof_graph_v1",
+        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "node_count": len(nodes),
+        "edge_count": len(edges),
+        "node_types": sorted({str(n.get("type", "")) for n in nodes}),
+        "edge_types": sorted({str(e.get("type", "")) for e in edges}),
+        "sources": [
+            "README.md",
+            "docs/*.md",
+            "scripts/VERIFY_*.ps1",
+            str(SCARS_PATH),
+            ".aion_public/roadmap/roadmap_state_v1.json",
+            ".aion_public/wiring/system_wiring_v1.json",
+            str(EVOLUTION_LEDGER_PATH),
+            "packaging/public-install/public_install_package_v1.manifest.json",
+            "reports/PUBLIC_INSTALL_PACKAGE_V1_REPORT.md",
+            str(RECEIPT_PATH),
+            "examples/inspection/*",
+        ],
+    }
+    PROOF_NODES_PATH.write_text(json.dumps({"nodes": nodes}, indent=2), encoding="utf-8")
+    PROOF_EDGES_PATH.write_text(json.dumps({"edges": edges}, indent=2), encoding="utf-8")
+    summary = (
+        "# Living Proof Graph V1\n\n"
+        f"- Nodes: {len(nodes)}\n"
+        f"- Edges: {len(edges)}\n"
+        f"- Node types: {', '.join(latest['node_types'])}\n"
+        f"- Edge types: {', '.join(latest['edge_types'])}\n"
+    )
+    PROOF_GRAPH_SUMMARY_PATH.write_text(summary, encoding="utf-8")
+    PROOF_GRAPH_LATEST_PATH.write_text(json.dumps(latest, indent=2), encoding="utf-8")
+    return latest
+
+
+def load_living_proof_graph() -> dict:
+    if not (PROOF_NODES_PATH.exists() and PROOF_EDGES_PATH.exists() and PROOF_GRAPH_LATEST_PATH.exists()):
+        return build_living_proof_graph()
+    try:
+        latest = json.loads(safe_read_text(PROOF_GRAPH_LATEST_PATH) or "{}")
+        if not isinstance(latest, dict):
+            return build_living_proof_graph()
+        return latest
+    except Exception:
+        return build_living_proof_graph()
+
+
+def summarize_living_proof_graph(graph: dict) -> str:
+    node_count = int(graph.get("node_count", 0) or 0)
+    edge_count = int(graph.get("edge_count", 0) or 0)
+    return f"AION living proof graph is local and active with {node_count} nodes and {edge_count} edges."
+
+
+def proof_graph_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], dict]:
+    graph = load_living_proof_graph()
+    n = normalize(prompt)
+    artifacts = [str(PROOF_NODES_PATH), str(PROOF_EDGES_PATH), str(PROOF_GRAPH_SUMMARY_PATH), str(PROOF_GRAPH_LATEST_PATH)]
+    nodes_json = json.loads(safe_read_text(PROOF_NODES_PATH) or "{\"nodes\":[]}")
+    edges_json = json.loads(safe_read_text(PROOF_EDGES_PATH) or "{\"edges\":[]}")
+    nodes = nodes_json.get("nodes", [])
+    edges = edges_json.get("edges", [])
+    labels = [str(x.get("label", "")) for x in nodes]
+    edge_types = sorted({str(e.get("type", "")) for e in edges})
+    next_build = ""
+    for x in nodes:
+        if str(x.get("type", "")) == "NextBuild":
+            next_build = str(x.get("label", ""))
+            break
+
+    if "what proves artifact inspection" in n:
+        reply = "Artifact Inspection Runner V1 is tied to docs/ARTIFACT_INSPECTION_RUNNER_V1.md, scripts/VERIFY_ARTIFACT_INSPECTION_RUNNER_V1.ps1, and the wiring report."
+    elif "memory scar engine connect" in n:
+        reply = "Memory Scar Engine V1 connects memory scar seeds to decision constraints and receipt-backed governance behavior."
+    elif "next build connected" in n:
+        reply = f"The roadmap node points to next build: {next_build or 'Evidence Engine V1'}."
+    elif "why do you trust this layer" in n or "wired end to end" in n:
+        reply = "Trust comes from relation coverage: documented_by, verified_by, wired_by, emits_receipt, and points_to_next across layer, doc, verifier, receipt, and roadmap nodes."
+    else:
+        preview_layers = ", ".join([l for l in labels if "V1" in l][:8])
+        reply = (
+            f"{summarize_living_proof_graph(graph)} Layer nodes include {preview_layers}. "
+            f"Edge coverage includes {', '.join(edge_types[:8])}. Next pointer: {next_build or 'Evidence Engine V1'}."
+        )
+
+    details = {
+        "living_proof_graph_used": True,
+        "proof_graph_paths": artifacts,
+        "proof_graph_node_count": len(nodes),
+        "proof_graph_edge_count": len(edges),
+        "graph_summary": summarize_living_proof_graph(graph),
+        "source_files_consulted": list(graph.get("sources", [])),
+    }
+    return reply, artifacts, details
+
+
+def maybe_use_proof_graph(prompt: str, capability: str, signals: dict) -> tuple[bool, str, list[str], dict]:
+    n = normalize(prompt)
+    triggers = (
+        "what is connected to proof",
+        "show proof graph",
+        "what proves artifact inspection",
+        "what does memory scar engine connect to",
+        "what is the next build connected to",
+        "why do you trust this layer",
+        "what is wired end to end",
+    )
+    if not any(t in n for t in triggers):
+        return False, "", [], {}
+    response, artifacts, details = proof_graph_answer(prompt, capability, signals)
+    return True, response, artifacts, details
+
+
 def memory_scar_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], list[str], str]:
     scars = load_memory_scars()
     graph = load_proof_graph_seed()
@@ -721,6 +989,12 @@ def write_receipt(
     missing_controls: Optional[list[str]] = None,
     reasons: Optional[list[str]] = None,
     recommended_next_step: str = "",
+    living_proof_graph_used: bool = False,
+    proof_graph_paths: Optional[list[str]] = None,
+    proof_graph_node_count: int = 0,
+    proof_graph_edge_count: int = 0,
+    graph_summary: str = "",
+    source_files_consulted: Optional[list[str]] = None,
 ) -> str:
     RECEIPT_PATH.parent.mkdir(parents=True, exist_ok=True)
     receipt = {
@@ -751,6 +1025,12 @@ def write_receipt(
         "missing_controls": missing_controls or [],
         "reasons": reasons or [],
         "recommended_next_step": recommended_next_step,
+        "living_proof_graph_used": living_proof_graph_used,
+        "proof_graph_paths": proof_graph_paths or [],
+        "proof_graph_node_count": proof_graph_node_count,
+        "proof_graph_edge_count": proof_graph_edge_count,
+        "graph_summary": graph_summary,
+        "source_files_consulted": source_files_consulted or [],
     }
     if extracted_signals:
         receipt["extracted_signals"] = extracted_signals
@@ -783,6 +1063,8 @@ def detect_capability(prompt: str) -> str:
     if "verify" in n or "verifier" in n or "proof marker" in n or "what can you verify" in n:
         return "verify"
     if "what is wired" in n:
+        return "cortex"
+    if "show proof graph" in n or "connected to proof" in n or "what proves artifact inspection" in n:
         return "cortex"
     if "what is missing" in n:
         return "cortex"
@@ -1001,7 +1283,25 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
         "missing_controls": [],
         "reasons": [],
         "recommended_next_step": "",
+        "living_proof_graph_used": False,
+        "proof_graph_paths": [],
+        "proof_graph_node_count": 0,
+        "proof_graph_edge_count": 0,
+        "graph_summary": "",
+        "source_files_consulted": [],
     }
+
+    graph_used, graph_response, graph_artifacts, graph_details = maybe_use_proof_graph(prompt, capability, signals)
+    if graph_used:
+        signals["living_proof_graph_used"] = True
+        signals["proof_graph_paths"] = graph_artifacts
+        signals["proof_graph_node_count"] = int(graph_details.get("proof_graph_node_count", 0) or 0)
+        signals["proof_graph_edge_count"] = int(graph_details.get("proof_graph_edge_count", 0) or 0)
+        signals["graph_summary"] = str(graph_details.get("graph_summary", ""))
+        signals["source_files_consulted"] = list(graph_details.get("source_files_consulted", []))
+        signals["artifacts_consulted"] = graph_artifacts
+        signals["evidence_summary"] = "living_proof_graph"
+        return capability, graph_response, signals
 
     artifact_used, artifact_response, inspected_artifacts, risk = maybe_use_artifact_inspection(prompt, capability, signals)
     if artifact_used:
@@ -1086,6 +1386,13 @@ def print_diagnostics(capability: str, receipt: str, signals: dict) -> None:
     missing_controls = signals.get("missing_controls", [])
     print(blue("Detected patterns > ") + white("; ".join(detected) if detected else "none"))
     print(blue("Missing controls > ") + white("; ".join(missing_controls) if missing_controls else "none"))
+    print(blue("Living proof graph used > ") + white(str(bool(signals.get("living_proof_graph_used", False))).lower()))
+    print(blue("Nodes count > ") + white(str(int(signals.get("proof_graph_node_count", 0) or 0))))
+    print(blue("Edges count > ") + white(str(int(signals.get("proof_graph_edge_count", 0) or 0))))
+    srcs = signals.get("source_files_consulted", [])
+    print(blue("Source files consulted > ") + white("; ".join(srcs) if srcs else "none"))
+    ppaths = signals.get("proof_graph_paths", [])
+    print(blue("Graph path > ") + white("; ".join(ppaths) if ppaths else "none"))
     print(blue("Artifacts consulted > ") + white("; ".join(artifacts) if artifacts else "none"))
     print(blue("Evidence summary > ") + white(str(signals.get("evidence_summary", "")) or "none"))
     print(blue("Boundary   > ") + green("LOCAL_ONLY"))
@@ -1124,6 +1431,12 @@ def run_one_shot(prompt: str) -> int:
         missing_controls=signals.get("missing_controls", []),
         reasons=signals.get("reasons", []),
         recommended_next_step=str(signals.get("recommended_next_step", "")),
+        living_proof_graph_used=bool(signals.get("living_proof_graph_used", False)),
+        proof_graph_paths=signals.get("proof_graph_paths", []),
+        proof_graph_node_count=int(signals.get("proof_graph_node_count", 0) or 0),
+        proof_graph_edge_count=int(signals.get("proof_graph_edge_count", 0) or 0),
+        graph_summary=str(signals.get("graph_summary", "")),
+        source_files_consulted=signals.get("source_files_consulted", []),
     )
     print(white(f"Operator > {prompt}"))
     print("")
@@ -1203,6 +1516,12 @@ def run_interactive() -> int:
             missing_controls=signals.get("missing_controls", []),
             reasons=signals.get("reasons", []),
             recommended_next_step=str(signals.get("recommended_next_step", "")),
+            living_proof_graph_used=bool(signals.get("living_proof_graph_used", False)),
+            proof_graph_paths=signals.get("proof_graph_paths", []),
+            proof_graph_node_count=int(signals.get("proof_graph_node_count", 0) or 0),
+            proof_graph_edge_count=int(signals.get("proof_graph_edge_count", 0) or 0),
+            graph_summary=str(signals.get("graph_summary", "")),
+            source_files_consulted=signals.get("source_files_consulted", []),
         )
 
         print("")

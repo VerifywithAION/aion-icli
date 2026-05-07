@@ -1,181 +1,197 @@
-﻿{
-    "generated_at_utc":  "2026-05-07T02:55:56Z",
-    "current_head":  "df4ffaa",
-    "status":  "PASS",
-    "layers":  [
-                   {
-                       "files_checked":  [
-                                             "scripts/VERIFY_PUBLIC_SAFE.ps1"
-                                         ],
-                       "docs_checked":  [
-                                            "docs/PUBLIC_BOUNDARY.md"
-                                        ],
-                       "cli_wired":  false,
-                       "verifier_checked":  "scripts/VERIFY_PUBLIC_SAFE.ps1",
-                       "receipt_wired":  false,
-                       "public_safe":  true,
-                       "layer_name":  "Public Safe Verifier",
-                       "status":  "PASS",
-                       "notes":  "Public boundary verifier present"
-                   },
-                   {
-                       "files_checked":  [
-                                             "packaging/public-install/public_install_package_v1.manifest.json"
-                                         ],
-                       "docs_checked":  [
-                                            "docs/PUBLIC_INSTALL_PACKAGE_V1.md"
-                                        ],
-                       "cli_wired":  false,
-                       "verifier_checked":  "scripts/VERIFY_PUBLIC_INSTALL_PACKAGE_V1.ps1",
-                       "receipt_wired":  false,
-                       "public_safe":  true,
-                       "layer_name":  "Public Install Package V1",
-                       "status":  "PASS",
-                       "notes":  "Install package proof surface present"
-                   },
-                   {
-                       "files_checked":  [
-                                             "docs/USER_GUIDE_V1.md"
-                                         ],
-                       "docs_checked":  [
-                                            "docs/USER_GUIDE_V1.md"
-                                        ],
-                       "cli_wired":  false,
-                       "verifier_checked":  "scripts/VERIFY_USER_GUIDE_V1.ps1",
-                       "receipt_wired":  false,
-                       "public_safe":  true,
-                       "layer_name":  "User Guide V1",
-                       "status":  "PASS",
-                       "notes":  "User guide and verifier present"
-                   },
-                   {
-                       "files_checked":  [
-                                             "src/aion_cli_entry.py"
-                                         ],
-                       "docs_checked":  [
-                                            "docs/INTERACTIVE_MODE_V1.md"
-                                        ],
-                       "cli_wired":  true,
-                       "verifier_checked":  "scripts/VERIFY_INTERACTIVE_MODE_V1.ps1",
-                       "receipt_wired":  true,
-                       "public_safe":  true,
-                       "layer_name":  "Interactive Mode V1",
-                       "status":  "PASS",
-                       "notes":  "Interactive loop active"
-                   },
-                   {
-                       "files_checked":  [
-                                             "src/aion_cli_entry.py"
-                                         ],
-                       "docs_checked":  [
-                                            "docs/CAPABILITY_ROUTER_V1.md"
-                                        ],
-                       "cli_wired":  true,
-                       "verifier_checked":  "scripts/VERIFY_CAPABILITY_ROUTER_V1.ps1",
-                       "receipt_wired":  true,
-                       "public_safe":  true,
-                       "layer_name":  "Capability Router V1",
-                       "status":  "PASS",
-                       "notes":  "Routing verified"
-                   },
-                   {
-                       "files_checked":  [
-                                             "src/aion_cli_entry.py"
-                                         ],
-                       "docs_checked":  [
-                                            "docs/VOICE_LAYER_V1.md"
-                                        ],
-                       "cli_wired":  true,
-                       "verifier_checked":  "scripts/VERIFY_VOICE_LAYER_V1.ps1",
-                       "receipt_wired":  true,
-                       "public_safe":  true,
-                       "layer_name":  "Voice Layer V1",
-                       "status":  "PASS",
-                       "notes":  "Default human-facing mode with diagnostics gate"
-                   },
-                   {
-                       "files_checked":  [
-                                             "src/aion_cli_entry.py"
-                                         ],
-                       "docs_checked":  [
-                                            "docs/ADAPTIVE_REASONING_LAYER_V1.md"
-                                        ],
-                       "cli_wired":  true,
-                       "verifier_checked":  "scripts/VERIFY_ADAPTIVE_REASONING_LAYER_V1.ps1",
-                       "receipt_wired":  true,
-                       "public_safe":  true,
-                       "layer_name":  "Adaptive Reasoning Layer V1",
-                       "status":  "PASS",
-                       "notes":  "Signal extraction live"
-                   },
-                   {
-                       "files_checked":  [
-                                             "src/aion_cli_entry.py"
-                                         ],
-                       "docs_checked":  [
-                                            "docs/GOVERNANCE_BRAIN_ADAPTER_V1.md"
-                                        ],
-                       "cli_wired":  true,
-                       "verifier_checked":  "scripts/VERIFY_GOVERNANCE_BRAIN_ADAPTER_V1.ps1",
-                       "receipt_wired":  true,
-                       "public_safe":  true,
-                       "layer_name":  "Governance Brain Adapter V1",
-                       "status":  "PASS",
-                       "notes":  "Local artifact evidence responses"
-                   },
-                   {
-                       "files_checked":  [
-                                             "src/aion_cli_entry.py"
-                                         ],
-                       "docs_checked":  [
-                                            "docs/GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.md"
-                                        ],
-                       "cli_wired":  true,
-                       "verifier_checked":  "scripts/VERIFY_GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.ps1",
-                       "receipt_wired":  true,
-                       "public_safe":  true,
-                       "layer_name":  "Governance Brain Integration Fix V1",
-                       "status":  "PASS",
-                       "notes":  "Diagnostics and normal flow aligned"
-                   },
-                   {
-                       "files_checked":  [
-                                             "src/aion_cli_entry.py",
-                                             ".aion_public/scars/scars_seed.jsonl",
-                                             ".aion_public/graph/proof_graph_seed.json",
-                                             ".aion_public/evolution/evolution_ledger_seed.jsonl"
-                                         ],
-                       "docs_checked":  [
-                                            "docs/MEMORY_SCAR_ENGINE_V1.md"
-                                        ],
-                       "cli_wired":  true,
-                       "verifier_checked":  "scripts/VERIFY_MEMORY_SCAR_ENGINE_V1.ps1",
-                       "receipt_wired":  true,
-                       "public_safe":  true,
-                       "layer_name":  "Memory Scar Engine V1",
-                       "status":  "PASS",
-                       "notes":  "Scar-based behavior rules active"
-                   },
-                   {
-                       "layer_name":  "Artifact Inspection Runner V1",
-                       "status":  "PASS",
-                       "files_checked":  [
-                                             "src/aion_cli_entry.py",
-                                             "examples/inspection/fixture_safe_script.ps1",
-                                             "examples/inspection/fixture_risky_script.ps1"
-                                         ],
-                       "docs_checked":  [
-                                            "docs/ARTIFACT_INSPECTION_RUNNER_V1.md"
-                                        ],
-                       "verifier_checked":  "scripts/VERIFY_ARTIFACT_INSPECTION_RUNNER_V1.ps1",
-                       "cli_wired":  true,
-                       "receipt_wired":  true,
-                       "public_safe":  true,
-                       "notes":  "Read-only artifact inspection with risk classification and receipt fields"
-                   }
-               ],
-    "missing_required":  [
-
-                         ],
-    "next_required_action":  "Living Proof Graph V1"
+{
+  "generated_at_utc": "2026-05-07T03:16:32Z",
+  "current_head": "bcd5e2b",
+  "status": "PASS",
+  "layers": [
+    {
+      "files_checked": [
+        "scripts/VERIFY_PUBLIC_SAFE.ps1"
+      ],
+      "docs_checked": [
+        "docs/PUBLIC_BOUNDARY.md"
+      ],
+      "cli_wired": false,
+      "verifier_checked": "scripts/VERIFY_PUBLIC_SAFE.ps1",
+      "receipt_wired": false,
+      "public_safe": true,
+      "layer_name": "Public Safe Verifier",
+      "status": "PASS",
+      "notes": "Public boundary verifier present"
+    },
+    {
+      "files_checked": [
+        "packaging/public-install/public_install_package_v1.manifest.json"
+      ],
+      "docs_checked": [
+        "docs/PUBLIC_INSTALL_PACKAGE_V1.md"
+      ],
+      "cli_wired": false,
+      "verifier_checked": "scripts/VERIFY_PUBLIC_INSTALL_PACKAGE_V1.ps1",
+      "receipt_wired": false,
+      "public_safe": true,
+      "layer_name": "Public Install Package V1",
+      "status": "PASS",
+      "notes": "Install package proof surface present"
+    },
+    {
+      "files_checked": [
+        "docs/USER_GUIDE_V1.md"
+      ],
+      "docs_checked": [
+        "docs/USER_GUIDE_V1.md"
+      ],
+      "cli_wired": false,
+      "verifier_checked": "scripts/VERIFY_USER_GUIDE_V1.ps1",
+      "receipt_wired": false,
+      "public_safe": true,
+      "layer_name": "User Guide V1",
+      "status": "PASS",
+      "notes": "User guide and verifier present"
+    },
+    {
+      "files_checked": [
+        "src/aion_cli_entry.py"
+      ],
+      "docs_checked": [
+        "docs/INTERACTIVE_MODE_V1.md"
+      ],
+      "cli_wired": true,
+      "verifier_checked": "scripts/VERIFY_INTERACTIVE_MODE_V1.ps1",
+      "receipt_wired": true,
+      "public_safe": true,
+      "layer_name": "Interactive Mode V1",
+      "status": "PASS",
+      "notes": "Interactive loop active"
+    },
+    {
+      "files_checked": [
+        "src/aion_cli_entry.py"
+      ],
+      "docs_checked": [
+        "docs/CAPABILITY_ROUTER_V1.md"
+      ],
+      "cli_wired": true,
+      "verifier_checked": "scripts/VERIFY_CAPABILITY_ROUTER_V1.ps1",
+      "receipt_wired": true,
+      "public_safe": true,
+      "layer_name": "Capability Router V1",
+      "status": "PASS",
+      "notes": "Routing verified"
+    },
+    {
+      "files_checked": [
+        "src/aion_cli_entry.py"
+      ],
+      "docs_checked": [
+        "docs/VOICE_LAYER_V1.md"
+      ],
+      "cli_wired": true,
+      "verifier_checked": "scripts/VERIFY_VOICE_LAYER_V1.ps1",
+      "receipt_wired": true,
+      "public_safe": true,
+      "layer_name": "Voice Layer V1",
+      "status": "PASS",
+      "notes": "Default human-facing mode with diagnostics gate"
+    },
+    {
+      "files_checked": [
+        "src/aion_cli_entry.py"
+      ],
+      "docs_checked": [
+        "docs/ADAPTIVE_REASONING_LAYER_V1.md"
+      ],
+      "cli_wired": true,
+      "verifier_checked": "scripts/VERIFY_ADAPTIVE_REASONING_LAYER_V1.ps1",
+      "receipt_wired": true,
+      "public_safe": true,
+      "layer_name": "Adaptive Reasoning Layer V1",
+      "status": "PASS",
+      "notes": "Signal extraction live"
+    },
+    {
+      "files_checked": [
+        "src/aion_cli_entry.py"
+      ],
+      "docs_checked": [
+        "docs/GOVERNANCE_BRAIN_ADAPTER_V1.md"
+      ],
+      "cli_wired": true,
+      "verifier_checked": "scripts/VERIFY_GOVERNANCE_BRAIN_ADAPTER_V1.ps1",
+      "receipt_wired": true,
+      "public_safe": true,
+      "layer_name": "Governance Brain Adapter V1",
+      "status": "PASS",
+      "notes": "Local artifact evidence responses"
+    },
+    {
+      "files_checked": [
+        "src/aion_cli_entry.py"
+      ],
+      "docs_checked": [
+        "docs/GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.md"
+      ],
+      "cli_wired": true,
+      "verifier_checked": "scripts/VERIFY_GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.ps1",
+      "receipt_wired": true,
+      "public_safe": true,
+      "layer_name": "Governance Brain Integration Fix V1",
+      "status": "PASS",
+      "notes": "Diagnostics and normal flow aligned"
+    },
+    {
+      "files_checked": [
+        "src/aion_cli_entry.py",
+        ".aion_public/scars/scars_seed.jsonl",
+        ".aion_public/graph/proof_graph_seed.json",
+        ".aion_public/evolution/evolution_ledger_seed.jsonl"
+      ],
+      "docs_checked": [
+        "docs/MEMORY_SCAR_ENGINE_V1.md"
+      ],
+      "cli_wired": true,
+      "verifier_checked": "scripts/VERIFY_MEMORY_SCAR_ENGINE_V1.ps1",
+      "receipt_wired": true,
+      "public_safe": true,
+      "layer_name": "Memory Scar Engine V1",
+      "status": "PASS",
+      "notes": "Scar-based behavior rules active"
+    },
+    {
+      "layer_name": "Artifact Inspection Runner V1",
+      "status": "PASS",
+      "files_checked": [
+        "src/aion_cli_entry.py",
+        "examples/inspection/fixture_safe_script.ps1",
+        "examples/inspection/fixture_risky_script.ps1"
+      ],
+      "docs_checked": [
+        "docs/ARTIFACT_INSPECTION_RUNNER_V1.md"
+      ],
+      "verifier_checked": "scripts/VERIFY_ARTIFACT_INSPECTION_RUNNER_V1.ps1",
+      "cli_wired": true,
+      "receipt_wired": true,
+      "public_safe": true,
+      "notes": "Read-only artifact inspection with risk classification and receipt fields"
+    },
+    {
+      "layer_name": "Living Proof Graph V1",
+      "status": "PASS",
+      "files_checked": [
+        "src/aion_cli_entry.py",
+        ".aion_public/proof_graph/proof_nodes_v1.json",
+        ".aion_public/proof_graph/proof_edges_v1.json",
+        ".aion_public/proof_graph/proof_graph_latest_v1.json"
+      ],
+      "docs_checked": [
+        "docs/LIVING_PROOF_GRAPH_V1.md"
+      ],
+      "verifier_checked": "scripts/VERIFY_LIVING_PROOF_GRAPH_V1.ps1",
+      "cli_wired": true,
+      "receipt_wired": true,
+      "public_safe": true,
+      "notes": "Local relational proof graph with roadmap/wiring/scar/verifier links"
+    }
+  ],
+  "missing_required": [],
+  "next_required_action": "Evidence Engine V1"
 }

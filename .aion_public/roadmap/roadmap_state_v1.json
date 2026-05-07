@@ -1,31 +1,31 @@
-﻿{
-    "roadmap_type":  "aion_icli_public_safe_roadmap_state_v1",
-    "generated_at_utc":  "2026-05-07T02:55:56Z",
-    "current_head":  "df4ffaa",
-    "latest_completed_layer":  "Artifact Inspection Runner V1",
-    "latest_completed_commit":  "df4ffaa",
-    "next_build_pointer":  "Living Proof Graph V1",
-    "completed_layers":  [
-                             "Public Release V1",
-                             "Interactive Mode V1",
-                             "Capability Router V1",
-                             "Voice Layer V1",
-                             "Adaptive Reasoning Layer V1",
-                             "Governance Brain Adapter V1",
-                             "Governance Brain Integration Fix V1",
-                             "Memory Scar Engine V1",
-                             "Artifact Inspection Runner V1"
-                         ],
-    "next_builds":  [
-                        "Living Proof Graph V1",
-                        "Evidence Engine V1",
-                        "Introspection Gate V1",
-                        "Contradiction Engine V1",
-                        "Self-Repair Planner V1",
-                        "Sentinel Consistency Engine V1",
-                        "Offline AION CLI Bundle V1 / v1.1.0 package"
-                    ],
-    "public_release_caveat":  "GitHub Release v1.0.0-public-icli points to an earlier package state; main now contains newer intelligence layers not yet rebuilt into a new ZIP release.",
-    "end_to_end_wiring_rule":  "A layer is complete only if docs, runtime behavior, verifier coverage, roadmap state, and public-safe boundaries all align.",
-    "no_drift_rule":  "No drift: no lock claim without executable verifier evidence and synchronized roadmap+wiring artifacts."
+{
+  "roadmap_type": "aion_icli_public_safe_roadmap_state_v1",
+  "generated_at_utc": "2026-05-07T03:16:32Z",
+  "current_head": "bcd5e2b",
+  "latest_completed_layer": "Living Proof Graph V1",
+  "latest_completed_commit": "bcd5e2b",
+  "next_build_pointer": "Evidence Engine V1",
+  "completed_layers": [
+    "Public Release V1",
+    "Interactive Mode V1",
+    "Capability Router V1",
+    "Voice Layer V1",
+    "Adaptive Reasoning Layer V1",
+    "Governance Brain Adapter V1",
+    "Governance Brain Integration Fix V1",
+    "Memory Scar Engine V1",
+    "Artifact Inspection Runner V1",
+    "Living Proof Graph V1"
+  ],
+  "next_builds": [
+    "Evidence Engine V1",
+    "Introspection Gate V1",
+    "Contradiction Engine V1",
+    "Self-Repair Planner V1",
+    "Sentinel Consistency Engine V1",
+    "Offline AION CLI Bundle V1 / v1.1.0 package"
+  ],
+  "public_release_caveat": "GitHub Release v1.0.0-public-icli points to an earlier package state; main now contains newer intelligence layers not yet rebuilt into a new ZIP release.",
+  "end_to_end_wiring_rule": "A layer is complete only if docs, runtime behavior, verifier coverage, roadmap state, and public-safe boundaries all align.",
+  "no_drift_rule": "No drift: no lock claim without executable verifier evidence and synchronized roadmap+wiring artifacts."
 }

@@ -1,0 +1,44 @@
+{
+  "graph_type": "aion_icli_living_proof_graph_v1",
+  "generated_at_utc": "2026-05-07T03:17:53Z",
+  "node_count": 90,
+  "edge_count": 64,
+  "node_types": [
+    "Artifact",
+    "Decision",
+    "Doc",
+    "Layer",
+    "MemoryScar",
+    "NextBuild",
+    "Package",
+    "Receipt",
+    "Release",
+    "RoadmapState",
+    "Verifier",
+    "WiringReport"
+  ],
+  "edge_types": [
+    "constrains_decision",
+    "contains_package",
+    "documented_by",
+    "emits_receipt",
+    "has_sha256",
+    "points_to_next",
+    "supports_decision",
+    "verified_by",
+    "wired_by"
+  ],
+  "sources": [
+    "README.md",
+    "docs/*.md",
+    "scripts/VERIFY_*.ps1",
+    ".aion_public\\scars\\scars_seed.jsonl",
+    ".aion_public/roadmap/roadmap_state_v1.json",
+    ".aion_public/wiring/system_wiring_v1.json",
+    ".aion_public\\evolution\\evolution_ledger_seed.jsonl",
+    "packaging/public-install/public_install_package_v1.manifest.json",
+    "reports/PUBLIC_INSTALL_PACKAGE_V1_REPORT.md",
+    "receipts\\local\\aion_cli_receipt_v1.json",
+    "examples/inspection/*"
+  ]
+}

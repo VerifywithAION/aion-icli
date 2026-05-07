@@ -1,6 +1,6 @@
-﻿# AION ICLI Roadmap State V1
+# AION ICLI Roadmap State V1
 
-Current repo head: df4ffaa
+Current repo head: bcd5e2b
 
 ## Completed layers
 
@@ -13,6 +13,7 @@ Current repo head: df4ffaa
 - Governance Brain Integration Fix V1
 - Memory Scar Engine V1
 - Artifact Inspection Runner V1
+- Living Proof Graph V1
 
 ## End-to-end wiring rule
 
@@ -24,15 +25,13 @@ GitHub Release `v1.0.0-public-icli` points to an earlier package state. Main now
 
 ## Alien intelligence stack (planned)
 
-1. Living Proof Graph V1
-2. Evidence Engine V1
-3. Introspection Gate V1
-4. Contradiction Engine V1
-5. Self-Repair Planner V1
-6. Sentinel Consistency Engine V1
-7. Offline AION CLI Bundle V1 / v1.1.0 package
+1. Evidence Engine V1
+2. Introspection Gate V1
+3. Contradiction Engine V1
+4. Self-Repair Planner V1
+5. Sentinel Consistency Engine V1
+6. Offline AION CLI Bundle V1 / v1.1.0 package
 
 ## Next build pointer
 
-Living Proof Graph V1
-
+Evidence Engine V1

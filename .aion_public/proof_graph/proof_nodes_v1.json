@@ -1,0 +1,514 @@
+{
+  "nodes": [
+    {
+      "id": "roadmap_state_v1",
+      "type": "RoadmapState",
+      "label": "AION ICLI Roadmap State V1",
+      "path": ".aion_public\\roadmap\\roadmap_state_v1.json"
+    },
+    {
+      "id": "system_wiring_v1",
+      "type": "WiringReport",
+      "label": "AION ICLI System Wiring V1",
+      "path": ".aion_public\\wiring\\system_wiring_v1.json"
+    },
+    {
+      "id": "layer_living_proof_graph_v1",
+      "type": "Layer",
+      "label": "Living Proof Graph V1"
+    },
+    {
+      "id": "next_evidence_engine_v1",
+      "type": "NextBuild",
+      "label": "Evidence Engine V1"
+    },
+    {
+      "id": "doc_adaptive_reasoning_layer_v1",
+      "type": "Doc",
+      "label": "ADAPTIVE REASONING LAYER V1",
+      "path": "docs\\ADAPTIVE_REASONING_LAYER_V1.md"
+    },
+    {
+      "id": "layer_adaptive_reasoning_layer_v1",
+      "type": "Layer",
+      "label": "ADAPTIVE REASONING LAYER V1"
+    },
+    {
+      "id": "doc_aion_cross_platform_packaging_v1",
+      "type": "Doc",
+      "label": "AION CROSS PLATFORM PACKAGING V1",
+      "path": "docs\\AION_CROSS_PLATFORM_PACKAGING_V1.md"
+    },
+    {
+      "id": "layer_aion_cross_platform_packaging_v1",
+      "type": "Layer",
+      "label": "AION CROSS PLATFORM PACKAGING V1"
+    },
+    {
+      "id": "doc_aion_icli_customer_experience_v1",
+      "type": "Doc",
+      "label": "AION ICLI CUSTOMER EXPERIENCE V1",
+      "path": "docs\\AION_ICLI_CUSTOMER_EXPERIENCE_V1.md"
+    },
+    {
+      "id": "layer_aion_icli_customer_experience_v1",
+      "type": "Layer",
+      "label": "AION ICLI CUSTOMER EXPERIENCE V1"
+    },
+    {
+      "id": "doc_aion_icli_next_8_builds_v1",
+      "type": "Doc",
+      "label": "AION ICLI NEXT 8 BUILDS V1",
+      "path": "docs\\AION_ICLI_NEXT_8_BUILDS_V1.md"
+    },
+    {
+      "id": "layer_aion_icli_next_8_builds_v1",
+      "type": "Layer",
+      "label": "AION ICLI NEXT 8 BUILDS V1"
+    },
+    {
+      "id": "doc_aion_icli_roadmap_state_v1",
+      "type": "Doc",
+      "label": "AION ICLI ROADMAP STATE V1",
+      "path": "docs\\AION_ICLI_ROADMAP_STATE_V1.md"
+    },
+    {
+      "id": "layer_aion_icli_roadmap_state_v1",
+      "type": "Layer",
+      "label": "AION ICLI ROADMAP STATE V1"
+    },
+    {
+      "id": "doc_aion_icli_system_wiring_report_v1",
+      "type": "Doc",
+      "label": "AION ICLI SYSTEM WIRING REPORT V1",
+      "path": "docs\\AION_ICLI_SYSTEM_WIRING_REPORT_V1.md"
+    },
+    {
+      "id": "layer_aion_icli_system_wiring_report_v1",
+      "type": "Layer",
+      "label": "AION ICLI SYSTEM WIRING REPORT V1"
+    },
+    {
+      "id": "doc_artifact_inspection_runner_v1",
+      "type": "Doc",
+      "label": "ARTIFACT INSPECTION RUNNER V1",
+      "path": "docs\\ARTIFACT_INSPECTION_RUNNER_V1.md"
+    },
+    {
+      "id": "layer_artifact_inspection_runner_v1",
+      "type": "Layer",
+      "label": "ARTIFACT INSPECTION RUNNER V1"
+    },
+    {
+      "id": "doc_capability_router_v1",
+      "type": "Doc",
+      "label": "CAPABILITY ROUTER V1",
+      "path": "docs\\CAPABILITY_ROUTER_V1.md"
+    },
+    {
+      "id": "layer_capability_router_v1",
+      "type": "Layer",
+      "label": "CAPABILITY ROUTER V1"
+    },
+    {
+      "id": "doc_connector_policy_v2",
+      "type": "Doc",
+      "label": "CONNECTOR POLICY V2",
+      "path": "docs\\CONNECTOR_POLICY_V2.md"
+    },
+    {
+      "id": "layer_connector_policy_v2",
+      "type": "Layer",
+      "label": "CONNECTOR POLICY V2"
+    },
+    {
+      "id": "doc_connector_sdk_contract_v1",
+      "type": "Doc",
+      "label": "CONNECTOR SDK CONTRACT V1",
+      "path": "docs\\CONNECTOR_SDK_CONTRACT_V1.md"
+    },
+    {
+      "id": "layer_connector_sdk_contract_v1",
+      "type": "Layer",
+      "label": "CONNECTOR SDK CONTRACT V1"
+    },
+    {
+      "id": "doc_github_release_v1_draft",
+      "type": "Doc",
+      "label": "GITHUB RELEASE V1 DRAFT",
+      "path": "docs\\GITHUB_RELEASE_V1_DRAFT.md"
+    },
+    {
+      "id": "layer_github_release_v1_draft",
+      "type": "Layer",
+      "label": "GITHUB RELEASE V1 DRAFT"
+    },
+    {
+      "id": "doc_governance_brain_adapter_v1",
+      "type": "Doc",
+      "label": "GOVERNANCE BRAIN ADAPTER V1",
+      "path": "docs\\GOVERNANCE_BRAIN_ADAPTER_V1.md"
+    },
+    {
+      "id": "layer_governance_brain_adapter_v1",
+      "type": "Layer",
+      "label": "GOVERNANCE BRAIN ADAPTER V1"
+    },
+    {
+      "id": "doc_governance_brain_integration_fix_v1",
+      "type": "Doc",
+      "label": "GOVERNANCE BRAIN INTEGRATION FIX V1",
+      "path": "docs\\GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.md"
+    },
+    {
+      "id": "layer_governance_brain_integration_fix_v1",
+      "type": "Layer",
+      "label": "GOVERNANCE BRAIN INTEGRATION FIX V1"
+    },
+    {
+      "id": "doc_governed_vs_ungoverned_cli_proof_v1",
+      "type": "Doc",
+      "label": "GOVERNED VS UNGOVERNED CLI PROOF V1",
+      "path": "docs\\GOVERNED_VS_UNGOVERNED_CLI_PROOF_V1.md"
+    },
+    {
+      "id": "layer_governed_vs_ungoverned_cli_proof_v1",
+      "type": "Layer",
+      "label": "GOVERNED VS UNGOVERNED CLI PROOF V1"
+    },
+    {
+      "id": "doc_hardening_note_v1",
+      "type": "Doc",
+      "label": "HARDENING NOTE V1",
+      "path": "docs\\HARDENING_NOTE_V1.md"
+    },
+    {
+      "id": "layer_hardening_note_v1",
+      "type": "Layer",
+      "label": "HARDENING NOTE V1"
+    },
+    {
+      "id": "doc_interactive_mode_v1",
+      "type": "Doc",
+      "label": "INTERACTIVE MODE V1",
+      "path": "docs\\INTERACTIVE_MODE_V1.md"
+    },
+    {
+      "id": "layer_interactive_mode_v1",
+      "type": "Layer",
+      "label": "INTERACTIVE MODE V1"
+    },
+    {
+      "id": "doc_living_proof_graph_v1",
+      "type": "Doc",
+      "label": "LIVING PROOF GRAPH V1",
+      "path": "docs\\LIVING_PROOF_GRAPH_V1.md"
+    },
+    {
+      "id": "doc_local_governance_proxy_v1",
+      "type": "Doc",
+      "label": "LOCAL GOVERNANCE PROXY V1",
+      "path": "docs\\LOCAL_GOVERNANCE_PROXY_V1.md"
+    },
+    {
+      "id": "layer_local_governance_proxy_v1",
+      "type": "Layer",
+      "label": "LOCAL GOVERNANCE PROXY V1"
+    },
+    {
+      "id": "doc_memory_scar_engine_v1",
+      "type": "Doc",
+      "label": "MEMORY SCAR ENGINE V1",
+      "path": "docs\\MEMORY_SCAR_ENGINE_V1.md"
+    },
+    {
+      "id": "layer_memory_scar_engine_v1",
+      "type": "Layer",
+      "label": "MEMORY SCAR ENGINE V1"
+    },
+    {
+      "id": "doc_public_boundary",
+      "type": "Doc",
+      "label": "PUBLIC BOUNDARY",
+      "path": "docs\\PUBLIC_BOUNDARY.md"
+    },
+    {
+      "id": "doc_public_install_package_v1",
+      "type": "Doc",
+      "label": "PUBLIC INSTALL PACKAGE V1",
+      "path": "docs\\PUBLIC_INSTALL_PACKAGE_V1.md"
+    },
+    {
+      "id": "layer_public_install_package_v1",
+      "type": "Layer",
+      "label": "PUBLIC INSTALL PACKAGE V1"
+    },
+    {
+      "id": "doc_public_release_lock_v1",
+      "type": "Doc",
+      "label": "PUBLIC RELEASE LOCK V1",
+      "path": "docs\\PUBLIC_RELEASE_LOCK_V1.md"
+    },
+    {
+      "id": "layer_public_release_lock_v1",
+      "type": "Layer",
+      "label": "PUBLIC RELEASE LOCK V1"
+    },
+    {
+      "id": "doc_release_notes_v1",
+      "type": "Doc",
+      "label": "RELEASE NOTES V1",
+      "path": "docs\\RELEASE_NOTES_V1.md"
+    },
+    {
+      "id": "layer_release_notes_v1",
+      "type": "Layer",
+      "label": "RELEASE NOTES V1"
+    },
+    {
+      "id": "doc_repo_guided_tour_v1",
+      "type": "Doc",
+      "label": "REPO GUIDED TOUR V1",
+      "path": "docs\\REPO_GUIDED_TOUR_V1.md"
+    },
+    {
+      "id": "layer_repo_guided_tour_v1",
+      "type": "Layer",
+      "label": "REPO GUIDED TOUR V1"
+    },
+    {
+      "id": "doc_safe_api_adapter_dry_run_v1",
+      "type": "Doc",
+      "label": "SAFE API ADAPTER DRY RUN V1",
+      "path": "docs\\SAFE_API_ADAPTER_DRY_RUN_V1.md"
+    },
+    {
+      "id": "layer_safe_api_adapter_dry_run_v1",
+      "type": "Layer",
+      "label": "SAFE API ADAPTER DRY RUN V1"
+    },
+    {
+      "id": "doc_safe_model_adapter_dry_run_v1",
+      "type": "Doc",
+      "label": "SAFE MODEL ADAPTER DRY RUN V1",
+      "path": "docs\\SAFE_MODEL_ADAPTER_DRY_RUN_V1.md"
+    },
+    {
+      "id": "layer_safe_model_adapter_dry_run_v1",
+      "type": "Layer",
+      "label": "SAFE MODEL ADAPTER DRY RUN V1"
+    },
+    {
+      "id": "doc_sdk_examples_v1",
+      "type": "Doc",
+      "label": "SDK EXAMPLES V1",
+      "path": "docs\\SDK_EXAMPLES_V1.md"
+    },
+    {
+      "id": "layer_sdk_examples_v1",
+      "type": "Layer",
+      "label": "SDK EXAMPLES V1"
+    },
+    {
+      "id": "doc_user_guide_v1",
+      "type": "Doc",
+      "label": "USER GUIDE V1",
+      "path": "docs\\USER_GUIDE_V1.md"
+    },
+    {
+      "id": "layer_user_guide_v1",
+      "type": "Layer",
+      "label": "USER GUIDE V1"
+    },
+    {
+      "id": "doc_voice_layer_v1",
+      "type": "Doc",
+      "label": "VOICE LAYER V1",
+      "path": "docs\\VOICE_LAYER_V1.md"
+    },
+    {
+      "id": "layer_voice_layer_v1",
+      "type": "Layer",
+      "label": "VOICE LAYER V1"
+    },
+    {
+      "id": "verifier_verify_adaptive_reasoning_layer_v1",
+      "type": "Verifier",
+      "label": "VERIFY_ADAPTIVE_REASONING_LAYER_V1.ps1",
+      "path": "scripts\\VERIFY_ADAPTIVE_REASONING_LAYER_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_aion_icli_roadmap_and_wiring_v1",
+      "type": "Verifier",
+      "label": "VERIFY_AION_ICLI_ROADMAP_AND_WIRING_V1.ps1",
+      "path": "scripts\\VERIFY_AION_ICLI_ROADMAP_AND_WIRING_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_artifact_inspection_runner_v1",
+      "type": "Verifier",
+      "label": "VERIFY_ARTIFACT_INSPECTION_RUNNER_V1.ps1",
+      "path": "scripts\\VERIFY_ARTIFACT_INSPECTION_RUNNER_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_capability_router_v1",
+      "type": "Verifier",
+      "label": "VERIFY_CAPABILITY_ROUTER_V1.ps1",
+      "path": "scripts\\VERIFY_CAPABILITY_ROUTER_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_connector_policy_v2",
+      "type": "Verifier",
+      "label": "VERIFY_CONNECTOR_POLICY_V2.ps1",
+      "path": "scripts\\VERIFY_CONNECTOR_POLICY_V2.ps1"
+    },
+    {
+      "id": "verifier_verify_connector_stack_acceptance_report_v1",
+      "type": "Verifier",
+      "label": "VERIFY_CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.ps1",
+      "path": "scripts\\VERIFY_CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_github_release_v1_draft",
+      "type": "Verifier",
+      "label": "VERIFY_GITHUB_RELEASE_V1_DRAFT.ps1",
+      "path": "scripts\\VERIFY_GITHUB_RELEASE_V1_DRAFT.ps1"
+    },
+    {
+      "id": "verifier_verify_governance_brain_adapter_v1",
+      "type": "Verifier",
+      "label": "VERIFY_GOVERNANCE_BRAIN_ADAPTER_V1.ps1",
+      "path": "scripts\\VERIFY_GOVERNANCE_BRAIN_ADAPTER_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_governance_brain_integration_fix_v1",
+      "type": "Verifier",
+      "label": "VERIFY_GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.ps1",
+      "path": "scripts\\VERIFY_GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_interactive_mode_v1",
+      "type": "Verifier",
+      "label": "VERIFY_INTERACTIVE_MODE_V1.ps1",
+      "path": "scripts\\VERIFY_INTERACTIVE_MODE_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_living_proof_graph_v1",
+      "type": "Verifier",
+      "label": "VERIFY_LIVING_PROOF_GRAPH_V1.ps1",
+      "path": "scripts\\VERIFY_LIVING_PROOF_GRAPH_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_local_governance_proxy_v1",
+      "type": "Verifier",
+      "label": "VERIFY_LOCAL_GOVERNANCE_PROXY_V1.ps1",
+      "path": "scripts\\VERIFY_LOCAL_GOVERNANCE_PROXY_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_memory_scar_engine_v1",
+      "type": "Verifier",
+      "label": "VERIFY_MEMORY_SCAR_ENGINE_V1.ps1",
+      "path": "scripts\\VERIFY_MEMORY_SCAR_ENGINE_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_public_install_package_v1",
+      "type": "Verifier",
+      "label": "VERIFY_PUBLIC_INSTALL_PACKAGE_V1.ps1",
+      "path": "scripts\\VERIFY_PUBLIC_INSTALL_PACKAGE_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_public_release_lock_v1",
+      "type": "Verifier",
+      "label": "VERIFY_PUBLIC_RELEASE_LOCK_V1.ps1",
+      "path": "scripts\\VERIFY_PUBLIC_RELEASE_LOCK_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_public_safe",
+      "type": "Verifier",
+      "label": "VERIFY_PUBLIC_SAFE.ps1",
+      "path": "scripts\\VERIFY_PUBLIC_SAFE.ps1"
+    },
+    {
+      "id": "verifier_verify_repo_guided_tour_v2",
+      "type": "Verifier",
+      "label": "VERIFY_REPO_GUIDED_TOUR_V2.ps1",
+      "path": "scripts\\VERIFY_REPO_GUIDED_TOUR_V2.ps1"
+    },
+    {
+      "id": "verifier_verify_safe_api_adapter_dry_run_v1",
+      "type": "Verifier",
+      "label": "VERIFY_SAFE_API_ADAPTER_DRY_RUN_V1.ps1",
+      "path": "scripts\\VERIFY_SAFE_API_ADAPTER_DRY_RUN_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_safe_model_adapter_dry_run_v1",
+      "type": "Verifier",
+      "label": "VERIFY_SAFE_MODEL_ADAPTER_DRY_RUN_V1.ps1",
+      "path": "scripts\\VERIFY_SAFE_MODEL_ADAPTER_DRY_RUN_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_sdk_examples_v1",
+      "type": "Verifier",
+      "label": "VERIFY_SDK_EXAMPLES_V1.ps1",
+      "path": "scripts\\VERIFY_SDK_EXAMPLES_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_user_guide_v1",
+      "type": "Verifier",
+      "label": "VERIFY_USER_GUIDE_V1.ps1",
+      "path": "scripts\\VERIFY_USER_GUIDE_V1.ps1"
+    },
+    {
+      "id": "verifier_verify_voice_layer_v1",
+      "type": "Verifier",
+      "label": "VERIFY_VOICE_LAYER_V1.ps1",
+      "path": "scripts\\VERIFY_VOICE_LAYER_V1.ps1"
+    },
+    {
+      "id": "memory_scars_seed",
+      "type": "MemoryScar",
+      "label": "Memory Scar Seed",
+      "path": ".aion_public\\scars\\scars_seed.jsonl"
+    },
+    {
+      "id": "latest_cli_receipt",
+      "type": "Receipt",
+      "label": "Latest CLI Receipt",
+      "path": "receipts\\local\\aion_cli_receipt_v1.json"
+    },
+    {
+      "id": "public_release_v1",
+      "type": "Release",
+      "label": "Public Release V1",
+      "path": "docs/GITHUB_RELEASE_V1_DRAFT.md"
+    },
+    {
+      "id": "public_package_v1",
+      "type": "Package",
+      "label": "Public Install Package V1",
+      "path": "packaging\\public-install\\public_install_package_v1.manifest.json"
+    },
+    {
+      "id": "sha_8b99c3c7161f",
+      "type": "Artifact",
+      "label": "SHA256 8B99C3C7161F...",
+      "path": "packaging\\public-install\\public_install_package_v1.manifest.json"
+    },
+    {
+      "id": "artifact_fixture_risky_script.ps1",
+      "type": "Artifact",
+      "label": "fixture_risky_script.ps1",
+      "path": "examples\\inspection\\fixture_risky_script.ps1"
+    },
+    {
+      "id": "artifact_fixture_safe_script.ps1",
+      "type": "Artifact",
+      "label": "fixture_safe_script.ps1",
+      "path": "examples\\inspection\\fixture_safe_script.ps1"
+    },
+    {
+      "id": "decision_local_only_guard",
+      "type": "Decision",
+      "label": "Local-only governance decision"
+    }
+  ]
+}

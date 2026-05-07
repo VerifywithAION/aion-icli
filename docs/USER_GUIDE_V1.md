@@ -620,3 +620,12 @@ AION can inspect local artifacts (scripts/docs/config) in read-only mode and ret
 
 Read: docs/ARTIFACT_INSPECTION_RUNNER_V1.md
 
+
+
+## Living Proof Graph V1
+
+AION can answer proof-connectivity questions from a local proof graph.
+
+It links layers, docs, verifiers, receipts, scars, roadmap state, wiring state, and release/package metadata.
+
+See: `docs/LIVING_PROOF_GRAPH_V1.md`.

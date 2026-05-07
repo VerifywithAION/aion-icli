@@ -1,0 +1,324 @@
+{
+  "edges": [
+    {
+      "source": "roadmap_state_v1",
+      "type": "points_to_next",
+      "target": "next_evidence_engine_v1"
+    },
+    {
+      "source": "layer_living_proof_graph_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_adaptive_reasoning_layer_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_aion_cross_platform_packaging_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_aion_icli_customer_experience_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_aion_icli_next_8_builds_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_aion_icli_roadmap_state_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_aion_icli_system_wiring_report_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_artifact_inspection_runner_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_capability_router_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_connector_policy_v2",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_connector_sdk_contract_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_github_release_v1_draft",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_governance_brain_adapter_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_governance_brain_integration_fix_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_governed_vs_ungoverned_cli_proof_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_hardening_note_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_interactive_mode_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_local_governance_proxy_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_memory_scar_engine_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_public_install_package_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_public_release_lock_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_release_notes_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_repo_guided_tour_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_safe_api_adapter_dry_run_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_safe_model_adapter_dry_run_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_sdk_examples_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_user_guide_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_voice_layer_v1",
+      "type": "wired_by",
+      "target": "system_wiring_v1"
+    },
+    {
+      "source": "layer_living_proof_graph_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_adaptive_reasoning_layer_v1",
+      "type": "documented_by",
+      "target": "doc_adaptive_reasoning_layer_v1"
+    },
+    {
+      "source": "layer_adaptive_reasoning_layer_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_aion_cross_platform_packaging_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_aion_icli_customer_experience_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_aion_icli_next_8_builds_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_aion_icli_roadmap_state_v1",
+      "type": "verified_by",
+      "target": "verifier_verify_aion_icli_roadmap_and_wiring_v1"
+    },
+    {
+      "source": "layer_aion_icli_roadmap_state_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_aion_icli_system_wiring_report_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_artifact_inspection_runner_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_capability_router_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_connector_policy_v2",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_connector_sdk_contract_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_github_release_v1_draft",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_governance_brain_adapter_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_governance_brain_integration_fix_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_governed_vs_ungoverned_cli_proof_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_hardening_note_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_interactive_mode_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_local_governance_proxy_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_memory_scar_engine_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_public_install_package_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_public_release_lock_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_release_notes_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_repo_guided_tour_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_safe_api_adapter_dry_run_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_safe_model_adapter_dry_run_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_sdk_examples_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_user_guide_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "layer_voice_layer_v1",
+      "type": "documented_by",
+      "target": "doc_voice_layer_v1"
+    },
+    {
+      "source": "layer_voice_layer_v1",
+      "type": "emits_receipt",
+      "target": "latest_cli_receipt"
+    },
+    {
+      "source": "memory_scars_seed",
+      "type": "constrains_decision",
+      "target": "decision_local_only_guard"
+    },
+    {
+      "source": "latest_cli_receipt",
+      "type": "supports_decision",
+      "target": "decision_local_only_guard"
+    },
+    {
+      "source": "public_release_v1",
+      "type": "contains_package",
+      "target": "public_package_v1"
+    },
+    {
+      "source": "public_package_v1",
+      "type": "has_sha256",
+      "target": "sha_8b99c3c7161f"
+    }
+  ]
+}
