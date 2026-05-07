@@ -1,6 +1,6 @@
 {
   "plan_id": "aion_icli_self_repair_plan_v1",
-  "generated_at_utc": "2026-05-07T05:45:56Z",
+  "generated_at_utc": "2026-05-07T16:10:50Z",
   "source_inputs": [
     ".aion_public\\contradictions\\contradiction_index_v1.json",
     ".aion_public\\evidence\\evidence_index_v1.json",

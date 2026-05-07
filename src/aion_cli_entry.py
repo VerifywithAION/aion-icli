@@ -199,6 +199,14 @@ def safe_read_json(path: Path) -> dict:
         return {}
 
 
+def stable_generated_at(path: Path) -> str:
+    existing = safe_read_json(path)
+    value = str(existing.get("generated_at_utc", "")).strip() if isinstance(existing, dict) else ""
+    if value:
+        return value
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 def extract_artifact_path(prompt: str) -> str:
     n = (prompt or "").strip()
     # Prefer explicit repo-like paths first.
@@ -1283,9 +1291,7 @@ def introspection_gate_wrap(prompt: str, answer: str, capability: str, signals: 
     result = introspect_answer(prompt, answer, capability, signals, context)
     final = repair_answer_if_needed(prompt, answer, capability, signals, context, result)
     summary = {
-        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "prompt": prompt,
-        "capability": capability,
+        "generated_at_utc": stable_generated_at(INTROSPECTION_LATEST_PATH),
         "introspection_used": True,
         "passed": bool(result.get("passed", False)),
         "findings": result.get("findings", []),
@@ -1509,7 +1515,7 @@ def build_contradiction_index() -> dict:
             highest = str(r.get("severity", "INFO"))
     payload = {
         "contradiction_type": "aion_icli_contradiction_engine_v1",
-        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "generated_at_utc": stable_generated_at(CONTRADICTION_INDEX_PATH),
         "contradictions": rows,
         "contradictions_found": len(rows),
         "open_contradictions": len([x for x in rows if str(x.get("status", "")) == "OPEN"]),
@@ -1694,7 +1700,7 @@ def build_self_repair_plan() -> dict:
     blocked = len([r for r in repairs if str(r.get("status", "")) == "BLOCKED"])
     payload = {
         "plan_id": "aion_icli_self_repair_plan_v1",
-        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "generated_at_utc": stable_generated_at(SELF_REPAIR_PLAN_PATH),
         "source_inputs": [str(CONTRADICTION_INDEX_PATH), str(EVIDENCE_INDEX_PATH), ".aion_public/roadmap/roadmap_state_v1.json", ".aion_public/wiring/system_wiring_v1.json"],
         "repair_items": repairs,
         "repair_items_count": len(repairs),
@@ -1833,7 +1839,7 @@ def build_sentinel_state() -> dict:
 
     payload = {
         "sentinel_type": "aion_icli_sentinel_consistency_engine_v1",
-        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "generated_at_utc": stable_generated_at(SENTINEL_STATE_PATH),
         "sentinel_state": sentinel_state,
         "blocking": blocking,
         "highest_severity": highest,
