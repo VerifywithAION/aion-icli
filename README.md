@@ -70,6 +70,22 @@ Expected marker:
 
 Fresh-clone acceptance is verified by `scripts\VERIFY_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.ps1`.
 
+
+## Public Demo Release Pack
+
+- ZIP: `dist\aion-public-demo-release-pack-v1.zip`
+- SHA256: `54FFBD4E701820BEAC261D0043FA67705F90C79EF48AC115B81174535BC7009B`
+
+Verify:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_PUBLIC_DEMO_RELEASE_PACK_V1.ps1
+```
+
+Expected marker:
+
+- `AION_PUBLIC_DEMO_RELEASE_PACK_V1_VERIFY_OK`
+
 ## Documentation Map
 
 Use these links to jump directly into the public AION ICLI release:

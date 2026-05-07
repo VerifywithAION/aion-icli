@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-05-07T18:38:44Z",
-  "current_head": "f06d7af",
+  "generated_at_utc": "2026-05-07T19:18:32Z",
+  "current_head": "a4117e6",
   "status": "PASS",
   "layers": [
     {
@@ -344,8 +344,25 @@
       "receipt_wired": true,
       "public_safe": true,
       "notes": "Fresh-clone acceptance proof for public demo workflow"
+    },
+    {
+      "layer_name": "Public Demo Release Pack V1",
+      "status": "PASS",
+      "files_checked": [
+        "dist/aion-public-demo-release-pack-v1.zip",
+        "packaging/public-demo-release-pack-v1/public_demo_release_pack_v1.manifest.json",
+        "scripts/VERIFY_PUBLIC_DEMO_RELEASE_PACK_V1.ps1"
+      ],
+      "docs_checked": [
+        "docs/PUBLIC_DEMO_RELEASE_PACK_V1.md"
+      ],
+      "verifier_checked": "scripts/VERIFY_PUBLIC_DEMO_RELEASE_PACK_V1.ps1",
+      "cli_wired": true,
+      "receipt_wired": true,
+      "public_safe": true,
+      "notes": "Public demo release artifact with extract-and-verify workflow"
     }
   ],
   "missing_required": [],
-  "next_required_action": "Public Release Notes v1.1.0 Demo Package V1"
+  "next_required_action": "Public Release v1.2.0 Demo Gate"
 }

@@ -1,6 +1,6 @@
 # AION ICLI System Wiring Report V1
 
-Current head: fdff15a
+Current head: a4117e6
 
 Each layer below is checked for runtime/docs/verifier/linkage and public-safe boundaries.
 
@@ -27,5 +27,6 @@ Each layer below is checked for runtime/docs/verifier/linkage and public-safe bo
 | Public Demo: Agent Claim vs AION Proof Gate V1 | demo/agent-claim-proof-gate/* + scripts/RUN_AGENT_CLAIM_PROOF_GATE_DEMO_V1.ps1 | docs/AGENT_CLAIM_PROOF_GATE_DEMO_V1.md | VERIFY_AGENT_CLAIM_PROOF_GATE_DEMO_V1.ps1 | true | true | true |
 | Public Demo Package + README Demo Section V1 | README.md + docs/PUBLIC_DEMO_README_SECTION_V1.md + reports/PUBLIC_DEMO_PACKAGE_V1_REPORT.md | docs/PUBLIC_DEMO_README_SECTION_V1.md | VERIFY_PUBLIC_DEMO_README_SECTION_V1.ps1 | true | true | true |
 | Public Demo Fresh Clone Acceptance V1 | scripts/VERIFY_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.ps1 + docs/PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.md + reports/PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1_REPORT.md | docs/PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.md | VERIFY_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.ps1 | true | true | true |
+| Public Demo Release Pack V1 | dist/aion-public-demo-release-pack-v1.zip + packaging/public-demo-release-pack-v1/public_demo_release_pack_v1.manifest.json + scripts/VERIFY_PUBLIC_DEMO_RELEASE_PACK_V1.ps1 | docs/PUBLIC_DEMO_RELEASE_PACK_V1.md | VERIFY_PUBLIC_DEMO_RELEASE_PACK_V1.ps1 | true | true | true |
 
 Public-safe boundary remains: LOCAL_ONLY, network NOT_USED, mutation NOT_PERFORMED, execution NOT_PERFORMED.

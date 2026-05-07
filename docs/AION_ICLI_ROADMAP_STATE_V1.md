@@ -23,6 +23,7 @@ Current repo head: f06d7af
 - Public Demo: Agent Claim vs AION Proof Gate V1
 - Public Demo Package + README Demo Section V1
 - Public Demo Fresh Clone Acceptance V1
+- Public Demo Release Pack V1
 
 ## End-to-end wiring rule
 
@@ -38,4 +39,4 @@ GitHub Release `v1.0.0-public-icli` points to an earlier package state. Main now
 
 ## Next build pointer
 
-Public Release Notes v1.1.0 Demo Package V1
+Public Release v1.2.0 Demo Gate

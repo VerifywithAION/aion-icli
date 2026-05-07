@@ -1,4 +1,4 @@
-ï»¿# AION ICLI User Guide V1
+# AION ICLI User Guide V1
 
 ## What is AION ICLI?
 
@@ -535,7 +535,7 @@ ICLI now separates internal routing from default visible language:
 
 - Default visible output: natural operator-facing AION response.
 - Proof footer remains visible:
-  - `Proof: local-only Â· no network Â· no mutation Â· no execution Â· receipt written`
+  - `Proof: local-only · no network · no mutation · no execution · receipt written`
 - Internal capability routing remains in receipts and diagnostics.
 - Diagnostics commands:
   - `diagnostics on`
@@ -712,3 +712,21 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_PUBLIC_DEMO
 Expected marker:
 
 - `AION_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1_PASS`
+
+
+## Public Demo Release Pack
+
+- ZIP: `dist\aion-public-demo-release-pack-v1.zip`
+- SHA256: `54FFBD4E701820BEAC261D0043FA67705F90C79EF48AC115B81174535BC7009B`
+
+Verify:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_PUBLIC_DEMO_RELEASE_PACK_V1.ps1
+```
+
+Expected marker:
+
+- `AION_PUBLIC_DEMO_RELEASE_PACK_V1_VERIFY_OK`
+
+

@@ -1,0 +1,25 @@
+{
+  "package_name": "aion-public-demo-release-pack-v1",
+  "package_version": "v1",
+  "source_head": "a4117e6",
+  "zip_path": "dist\\aion-public-demo-release-pack-v1.zip",
+  "sha256": "54FFBD4E701820BEAC261D0043FA67705F90C79EF48AC115B81174535BC7009B",
+  "included_demo": "Agent Claim vs AION Proof Gate V1",
+  "included_scripts": [
+    "scripts\\RUN_AGENT_CLAIM_PROOF_GATE_DEMO_V1.ps1",
+    "scripts\\VERIFY_AGENT_CLAIM_PROOF_GATE_DEMO_V1.ps1",
+    "scripts\\VERIFY_PUBLIC_DEMO_README_SECTION_V1.ps1",
+    "scripts\\VERIFY_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.ps1"
+  ],
+  "expected_markers": [
+    "AION_PUBLIC_DEMO_RELEASE_PACK_V1_VERIFY_OK",
+    "AION_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1_PASS",
+    "AION_PUBLIC_DEMO_README_SECTION_V1_VERIFY_OK",
+    "AION_AGENT_CLAIM_PROOF_GATE_DEMO_V1_VERIFY_OK"
+  ],
+  "public_safe": true,
+  "no_network": true,
+  "no_mutation": true,
+  "no_execution_of_user_artifacts": true,
+  "generated_at_utc": "2026-05-07T19:17:37Z"
+}
