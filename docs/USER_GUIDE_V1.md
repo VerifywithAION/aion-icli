@@ -668,3 +668,12 @@ Sentinel reports one of: HEALTHY, DEGRADED_ACCEPTED_CAVEAT, DEGRADED_NEEDS_REPAI
 It does not auto-repair; it reports next required action only.
 
 See: `docs/SENTINEL_CONSISTENCY_ENGINE_V1.md`.
+
+
+## Offline AION CLI Bundle V1.1.0
+
+The v1.1.0 offline bundle is the current package for the post-v1.0.0 intelligence layers.
+
+- Doc: `docs/OFFLINE_AION_CLI_BUNDLE_V1_1_0.md`
+- Report: `reports/OFFLINE_AION_CLI_BUNDLE_V1_1_0_REPORT.md`
+- Manifest: `packaging/offline-bundle-v1.1.0/offline_bundle_v1_1_0.manifest.json`

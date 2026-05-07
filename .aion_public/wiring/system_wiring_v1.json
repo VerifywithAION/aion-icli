@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-05-07T16:06:44Z",
-  "current_head": "1a9f7ab",
+  "generated_at_utc": "2026-05-07T17:33:58Z",
+  "current_head": "5532ae2",
   "status": "PASS",
   "layers": [
     {
@@ -275,8 +275,25 @@
       "receipt_wired": true,
       "public_safe": true,
       "notes": "Local system health monitor over roadmap/wiring/contradiction/evidence/self-repair surfaces"
+    },
+    {
+      "layer_name": "Offline AION CLI Bundle V1.1.0",
+      "status": "PASS",
+      "files_checked": [
+        "dist/aion-icli-offline-bundle-v1.1.0.zip",
+        "packaging/offline-bundle-v1.1.0/offline_bundle_v1_1_0.manifest.json",
+        "reports/OFFLINE_AION_CLI_BUNDLE_V1_1_0_REPORT.md"
+      ],
+      "docs_checked": [
+        "docs/OFFLINE_AION_CLI_BUNDLE_V1_1_0.md"
+      ],
+      "verifier_checked": "scripts/VERIFY_OFFLINE_AION_CLI_BUNDLE_V1_1_0.ps1 + scripts/VERIFY_OFFLINE_AION_CLI_BUNDLE_V1_1_0_FRESH_INSTALL.ps1",
+      "cli_wired": true,
+      "receipt_wired": true,
+      "public_safe": true,
+      "notes": "Offline v1.1.0 bundle with fresh install acceptance proof"
     }
   ],
   "missing_required": [],
-  "next_required_action": "Offline AION CLI Bundle V1.1.0"
+  "next_required_action": "Public Demo: Agent Claim vs AION Proof Gate V1"
 }

@@ -59,6 +59,7 @@ Use these links to jump directly into the public AION ICLI release:
 | Contradiction engine | [Contradiction Engine V1](docs/CONTRADICTION_ENGINE_V1.md) | Detects roadmap/wiring/evidence/release mismatches and tracks accepted caveats |
 | Self-repair planner | [Self-Repair Planner V1](docs/SELF_REPAIR_PLANNER_V1.md) | Review-only remediation plans for contradictions and evidence gaps |
 | Sentinel consistency engine | [Sentinel Consistency Engine V1](docs/SENTINEL_CONSISTENCY_ENGINE_V1.md) | Local organism health monitor over roadmap, wiring, contradictions, evidence, and repair state |
+| Offline bundle | [Offline AION CLI Bundle V1.1.0](docs/OFFLINE_AION_CLI_BUNDLE_V1_1_0.md) | Current offline bundle covering post-v1.0.0 intelligence layers and fresh-install proof |
 | CLI proof | [Governed vs Ungoverned CLI Proof V1](docs/GOVERNED_VS_UNGOVERNED_CLI_PROOF_V1.md) | Difference between invisible trust and governed trust |
 | Acceptance proof | [Connector Stack Acceptance Report V1](reports/CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.md) | Fresh-clone proof of the full connector stack |
 

@@ -1,6 +1,6 @@
 # AION ICLI Roadmap State V1
 
-Current repo head: 1a9f7ab
+Current repo head: 5532ae2
 
 ## Completed layers
 
@@ -19,6 +19,7 @@ Current repo head: 1a9f7ab
 - Contradiction Engine V1
 - Self-Repair Planner V1
 - Sentinel Consistency Engine V1
+- Offline AION CLI Bundle V1.1.0
 
 ## End-to-end wiring rule
 
@@ -30,8 +31,8 @@ GitHub Release `v1.0.0-public-icli` points to an earlier package state. Main now
 
 ## Alien intelligence stack (planned)
 
-1. Offline AION CLI Bundle V1.1.0
+1. Public Demo: Agent Claim vs AION Proof Gate V1
 
 ## Next build pointer
 
-Offline AION CLI Bundle V1.1.0
+Public Demo: Agent Claim vs AION Proof Gate V1
