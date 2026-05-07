@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-05-07T03:42:43Z",
-  "current_head": "e8e0ccd",
+  "generated_at_utc": "2026-05-07T04:07:09Z",
+  "current_head": "4148449",
   "status": "PASS",
   "layers": [
     {
@@ -224,8 +224,25 @@
       "receipt_wired": true,
       "public_safe": true,
       "notes": "Self-audit before output with repair rules"
+    },
+    {
+      "layer_name": "Contradiction Engine V1",
+      "status": "PASS",
+      "files_checked": [
+        "src/aion_cli_entry.py",
+        ".aion_public/contradictions/contradiction_index_v1.json",
+        ".aion_public/contradictions/contradiction_latest_v1.json"
+      ],
+      "docs_checked": [
+        "docs/CONTRADICTION_ENGINE_V1.md"
+      ],
+      "verifier_checked": "scripts/VERIFY_CONTRADICTION_ENGINE_V1.ps1",
+      "cli_wired": true,
+      "receipt_wired": true,
+      "public_safe": true,
+      "notes": "Cross-surface mismatch and drift detection with accepted caveats"
     }
   ],
   "missing_required": [],
-  "next_required_action": "Contradiction Engine V1"
+  "next_required_action": "Self-Repair Planner V1"
 }

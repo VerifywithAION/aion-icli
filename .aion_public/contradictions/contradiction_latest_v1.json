@@ -1,0 +1,52 @@
+{
+  "contradiction_type": "aion_icli_contradiction_engine_v1",
+  "generated_at_utc": "2026-05-07T04:09:14Z",
+  "contradictions": [
+    {
+      "contradiction_id": "missing_wiring_public_release_v1",
+      "type": "completed_layer_missing_wiring_entry",
+      "severity": "MEDIUM",
+      "status": "NEEDS_REVIEW",
+      "claim": "Public Release V1 is completed",
+      "evidence_against": [
+        "missing wiring PASS entry"
+      ],
+      "evidence_for": [
+        ".aion_public/roadmap/roadmap_state_v1.json"
+      ],
+      "affected_layer": "Public Release V1",
+      "source_files": [
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json"
+      ],
+      "recommended_repair": "Add wiring layer row with verifier/docs/runtime references.",
+      "public_safe": true
+    },
+    {
+      "contradiction_id": "release_package_stale_relative_to_main",
+      "type": "release_package_stale_relative_to_main",
+      "severity": "MEDIUM",
+      "status": "ACCEPTED_CAVEAT",
+      "claim": "public package reflects latest main features",
+      "evidence_against": [
+        "post-release layers exist in roadmap/wiring/evidence but package is tied to earlier public release"
+      ],
+      "evidence_for": [
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        "reports/PUBLIC_INSTALL_PACKAGE_V1_REPORT.md"
+      ],
+      "affected_layer": "Public Release V1",
+      "source_files": [
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        "reports/PUBLIC_INSTALL_PACKAGE_V1_REPORT.md",
+        "packaging/public-install/public_install_package_v1.manifest.json"
+      ],
+      "recommended_repair": "Rebuild package in Offline AION CLI Bundle v1.1.0 and refresh release proof.",
+      "public_safe": true
+    }
+  ],
+  "contradictions_found": 2,
+  "open_contradictions": 0,
+  "accepted_caveats": 1,
+  "highest_severity": "MEDIUM"
+}

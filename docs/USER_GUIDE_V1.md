@@ -643,3 +643,10 @@ See: `docs/EVIDENCE_ENGINE_V1.md`.
 AION self-audits answers before speaking to reduce overclaim and enforce local-safe boundaries.
 
 See: `docs/INTROSPECTION_GATE_V1.md`.
+
+
+## Contradiction Engine V1
+
+AION can detect local proof drift and mismatch across roadmap, wiring, evidence, receipts, and release packaging.
+
+See: `docs/CONTRADICTION_ENGINE_V1.md`.

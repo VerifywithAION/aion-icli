@@ -86,6 +86,10 @@ INTROSPECTION_DIR = Path(".aion_public") / "introspection"
 INTROSPECTION_RULES_PATH = INTROSPECTION_DIR / "introspection_rules_v1.json"
 INTROSPECTION_LATEST_PATH = INTROSPECTION_DIR / "introspection_latest_v1.json"
 INTROSPECTION_SUMMARY_PATH = INTROSPECTION_DIR / "introspection_summary_v1.md"
+CONTRADICTION_DIR = Path(".aion_public") / "contradictions"
+CONTRADICTION_INDEX_PATH = CONTRADICTION_DIR / "contradiction_index_v1.json"
+CONTRADICTION_SUMMARY_PATH = CONTRADICTION_DIR / "contradiction_summary_v1.md"
+CONTRADICTION_LATEST_PATH = CONTRADICTION_DIR / "contradiction_latest_v1.json"
 
 EVIDENCE_LEVELS = {
     "MISSING": 0,
@@ -1290,6 +1294,296 @@ def introspection_gate_wrap(prompt: str, answer: str, capability: str, signals: 
     return final, summary
 
 
+def detect_roadmap_wiring_contradictions() -> list[dict]:
+    rows: list[dict] = []
+    roadmap = safe_read_json(Path(".aion_public") / "roadmap" / "roadmap_state_v1.json")
+    wiring = safe_read_json(Path(".aion_public") / "wiring" / "system_wiring_v1.json")
+    completed = list(roadmap.get("completed_layers", []))
+    wiring_layers = {str(x.get("layer_name", "")) for x in list(wiring.get("layers", []))}
+    for layer in completed:
+        expected = "VERIFY_" + layer.upper().replace(" ", "_").replace("+", "").replace("-", "_") + ".PS1"
+        has_verifier = any(p.name.upper() == expected for p in Path("scripts").glob("VERIFY_*.ps1"))
+        if not has_verifier and layer not in {"Public Release V1"}:
+            rows.append({
+                "contradiction_id": f"missing_verifier_{layer.lower().replace(' ','_')}",
+                "type": "completed_layer_missing_verifier",
+                "severity": "MEDIUM",
+                "status": "OPEN",
+                "claim": f"{layer} is completed",
+                "evidence_against": [f"no expected verifier file {expected}"],
+                "evidence_for": [".aion_public/roadmap/roadmap_state_v1.json"],
+                "affected_layer": layer,
+                "source_files": [".aion_public/roadmap/roadmap_state_v1.json", "scripts/VERIFY_*.ps1"],
+                "recommended_repair": "Add layer verifier or explicit exception note.",
+                "public_safe": True,
+            })
+        if layer not in wiring_layers:
+            rows.append({
+                "contradiction_id": f"missing_wiring_{layer.lower().replace(' ','_')}",
+                "type": "completed_layer_missing_wiring_entry",
+                "severity": "MEDIUM",
+                "status": "NEEDS_REVIEW",
+                "claim": f"{layer} is completed",
+                "evidence_against": ["missing wiring PASS entry"],
+                "evidence_for": [".aion_public/roadmap/roadmap_state_v1.json"],
+                "affected_layer": layer,
+                "source_files": [".aion_public/roadmap/roadmap_state_v1.json", ".aion_public/wiring/system_wiring_v1.json"],
+                "recommended_repair": "Add wiring layer row with verifier/docs/runtime references.",
+                "public_safe": True,
+            })
+    return rows
+
+
+def detect_evidence_graph_contradictions() -> list[dict]:
+    rows: list[dict] = []
+    evidence = safe_read_json(EVIDENCE_INDEX_PATH)
+    roadmap = safe_read_json(Path(".aion_public") / "roadmap" / "roadmap_state_v1.json")
+    graph = safe_read_json(PROOF_GRAPH_LATEST_PATH)
+    completed = set(list(roadmap.get("completed_layers", [])))
+    for item in list(evidence.get("layers", [])):
+        layer = str(item.get("layer_name", ""))
+        level = str(item.get("evidence_level", "MISSING"))
+        if level == "ROADMAP_WIRED" and layer not in completed:
+            rows.append({
+                "contradiction_id": f"evidence_roadmap_mismatch_{layer.lower().replace(' ','_')}",
+                "type": "evidence_graph_roadmap_mismatch",
+                "severity": "HIGH",
+                "status": "OPEN",
+                "claim": f"{layer} is ROADMAP_WIRED",
+                "evidence_against": ["layer not in roadmap completed list"],
+                "evidence_for": [str(EVIDENCE_INDEX_PATH)],
+                "affected_layer": layer,
+                "source_files": [str(EVIDENCE_INDEX_PATH), ".aion_public/roadmap/roadmap_state_v1.json"],
+                "recommended_repair": "Downgrade evidence level or update roadmap completion state.",
+                "public_safe": True,
+            })
+        if level in {"RELEASE_PACKAGED", "FRESH_CLONE_PROVEN"} and layer not in {"Public Release V1"}:
+            rows.append({
+                "contradiction_id": f"evidence_overclaim_{layer.lower().replace(' ','_')}",
+                "type": "evidence_level_overclaim",
+                "severity": "HIGH",
+                "status": "OPEN",
+                "claim": f"{layer} marked {level}",
+                "evidence_against": ["post-v1.0.0 layers cannot be marked packaged/fresh clone without rebuilt package proof"],
+                "evidence_for": [str(EVIDENCE_INDEX_PATH)],
+                "affected_layer": layer,
+                "source_files": [str(EVIDENCE_INDEX_PATH), "reports/PUBLIC_INSTALL_PACKAGE_V1_REPORT.md"],
+                "recommended_repair": "Set level to ROADMAP_WIRED/ADMISSIBLE until rebuilt package proof exists.",
+                "public_safe": True,
+            })
+    if graph and int(graph.get("node_count", 0) or 0) <= 0:
+        rows.append({
+            "contradiction_id": "empty_proof_graph_state",
+            "type": "evidence_graph_empty",
+            "severity": "MEDIUM",
+            "status": "NEEDS_REVIEW",
+            "claim": "proof graph is active",
+            "evidence_against": ["node_count is 0"],
+            "evidence_for": [str(PROOF_GRAPH_LATEST_PATH)],
+            "affected_layer": "Living Proof Graph V1",
+            "source_files": [str(PROOF_GRAPH_LATEST_PATH)],
+            "recommended_repair": "Rebuild living proof graph from local sources.",
+            "public_safe": True,
+        })
+    return rows
+
+
+def detect_release_package_contradictions() -> list[dict]:
+    rows: list[dict] = []
+    roadmap = safe_read_json(Path(".aion_public") / "roadmap" / "roadmap_state_v1.json")
+    completed = set(list(roadmap.get("completed_layers", [])))
+    post_release_layers = {"Artifact Inspection Runner V1", "Living Proof Graph V1", "Evidence Engine V1", "Introspection Gate V1"}
+    report_text = safe_read_text(Path("reports") / "PUBLIC_INSTALL_PACKAGE_V1_REPORT.md").lower()
+    stale = any(x in completed for x in post_release_layers) and ("v1.0.0-public-icli" in report_text or Path("dist").joinpath("aion-icli-public-install-package-v1.zip").exists())
+    if stale:
+        rows.append({
+            "contradiction_id": "release_package_stale_relative_to_main",
+            "type": "release_package_stale_relative_to_main",
+            "severity": "MEDIUM",
+            "status": "ACCEPTED_CAVEAT",
+            "claim": "public package reflects latest main features",
+            "evidence_against": ["post-release layers exist in roadmap/wiring/evidence but package is tied to earlier public release"],
+            "evidence_for": [".aion_public/roadmap/roadmap_state_v1.json", "reports/PUBLIC_INSTALL_PACKAGE_V1_REPORT.md"],
+            "affected_layer": "Public Release V1",
+            "source_files": [".aion_public/roadmap/roadmap_state_v1.json", "reports/PUBLIC_INSTALL_PACKAGE_V1_REPORT.md", "packaging/public-install/public_install_package_v1.manifest.json"],
+            "recommended_repair": "Rebuild package in Offline AION CLI Bundle v1.1.0 and refresh release proof.",
+            "public_safe": True,
+        })
+    return rows
+
+
+def detect_docs_runtime_contradictions() -> list[dict]:
+    rows: list[dict] = []
+    roadmap = safe_read_json(Path(".aion_public") / "roadmap" / "roadmap_state_v1.json")
+    completed = list(roadmap.get("completed_layers", []))
+    doc_map = {
+        "Interactive Mode V1": "docs/INTERACTIVE_MODE_V1.md",
+        "Capability Router V1": "docs/CAPABILITY_ROUTER_V1.md",
+        "Voice Layer V1": "docs/VOICE_LAYER_V1.md",
+        "Adaptive Reasoning Layer V1": "docs/ADAPTIVE_REASONING_LAYER_V1.md",
+        "Governance Brain Adapter V1": "docs/GOVERNANCE_BRAIN_ADAPTER_V1.md",
+        "Governance Brain Integration Fix V1": "docs/GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.md",
+        "Memory Scar Engine V1": "docs/MEMORY_SCAR_ENGINE_V1.md",
+        "Artifact Inspection Runner V1": "docs/ARTIFACT_INSPECTION_RUNNER_V1.md",
+        "Living Proof Graph V1": "docs/LIVING_PROOF_GRAPH_V1.md",
+        "Evidence Engine V1": "docs/EVIDENCE_ENGINE_V1.md",
+        "Introspection Gate V1": "docs/INTROSPECTION_GATE_V1.md",
+    }
+    for layer in completed:
+        p = Path(doc_map.get(layer, ""))
+        if str(p) and not p.exists():
+            rows.append({
+                "contradiction_id": f"missing_doc_{layer.lower().replace(' ','_')}",
+                "type": "completed_layer_missing_docs",
+                "severity": "MEDIUM",
+                "status": "OPEN",
+                "claim": f"{layer} completed",
+                "evidence_against": [f"missing docs file {p}"],
+                "evidence_for": [".aion_public/roadmap/roadmap_state_v1.json"],
+                "affected_layer": layer,
+                "source_files": [".aion_public/roadmap/roadmap_state_v1.json", "docs/*.md"],
+                "recommended_repair": "Add missing layer documentation or remove from completed.",
+                "public_safe": True,
+            })
+    return rows
+
+
+def detect_receipt_state_contradictions() -> list[dict]:
+    rows: list[dict] = []
+    receipt = safe_read_json(RECEIPT_PATH)
+    if receipt:
+        if bool(receipt.get("evidence_engine_used", False)) and not EVIDENCE_INDEX_PATH.exists():
+            rows.append({
+                "contradiction_id": "receipt_evidence_engine_without_state",
+                "type": "receipt_state_missing_evidence_files",
+                "severity": "MEDIUM",
+                "status": "NEEDS_REVIEW",
+                "claim": "receipt says evidence engine used",
+                "evidence_against": ["evidence index file missing"],
+                "evidence_for": [str(RECEIPT_PATH)],
+                "affected_layer": "Evidence Engine V1",
+                "source_files": [str(RECEIPT_PATH), str(EVIDENCE_INDEX_PATH)],
+                "recommended_repair": "Rebuild evidence index before answering evidence questions.",
+                "public_safe": True,
+            })
+        if bool(receipt.get("living_proof_graph_used", False)) and not PROOF_GRAPH_LATEST_PATH.exists():
+            rows.append({
+                "contradiction_id": "receipt_graph_engine_without_state",
+                "type": "receipt_state_missing_graph_files",
+                "severity": "MEDIUM",
+                "status": "NEEDS_REVIEW",
+                "claim": "receipt says proof graph used",
+                "evidence_against": ["proof graph latest file missing"],
+                "evidence_for": [str(RECEIPT_PATH)],
+                "affected_layer": "Living Proof Graph V1",
+                "source_files": [str(RECEIPT_PATH), str(PROOF_GRAPH_LATEST_PATH)],
+                "recommended_repair": "Rebuild proof graph from local sources.",
+                "public_safe": True,
+            })
+    return rows
+
+
+def build_contradiction_index() -> dict:
+    CONTRADICTION_DIR.mkdir(parents=True, exist_ok=True)
+    rows = []
+    rows.extend(detect_roadmap_wiring_contradictions())
+    rows.extend(detect_evidence_graph_contradictions())
+    rows.extend(detect_release_package_contradictions())
+    rows.extend(detect_docs_runtime_contradictions())
+    rows.extend(detect_receipt_state_contradictions())
+    severity_order = {"INFO": 0, "LOW": 1, "MEDIUM": 2, "HIGH": 3, "CRITICAL": 4}
+    highest = "INFO"
+    for r in rows:
+        if severity_order.get(str(r.get("severity", "INFO")), 0) > severity_order.get(highest, 0):
+            highest = str(r.get("severity", "INFO"))
+    payload = {
+        "contradiction_type": "aion_icli_contradiction_engine_v1",
+        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "contradictions": rows,
+        "contradictions_found": len(rows),
+        "open_contradictions": len([x for x in rows if str(x.get("status", "")) == "OPEN"]),
+        "accepted_caveats": len([x for x in rows if str(x.get("status", "")) == "ACCEPTED_CAVEAT"]),
+        "highest_severity": highest,
+    }
+    CONTRADICTION_INDEX_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    CONTRADICTION_LATEST_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    CONTRADICTION_SUMMARY_PATH.write_text(
+        "# Contradiction Engine V1 Summary\n\n"
+        + f"- Contradictions found: {payload['contradictions_found']}\n"
+        + f"- Open contradictions: {payload['open_contradictions']}\n"
+        + f"- Accepted caveats: {payload['accepted_caveats']}\n"
+        + f"- Highest severity: {payload['highest_severity']}\n",
+        encoding="utf-8",
+    )
+    return payload
+
+
+def load_contradiction_index() -> dict:
+    # Rebuild each time to keep contradiction state synchronized with current local truth.
+    return build_contradiction_index()
+
+
+def summarize_contradictions(data: dict) -> str:
+    return (
+        f"Contradictions found: {int(data.get('contradictions_found', 0))}. "
+        f"Open: {int(data.get('open_contradictions', 0))}. "
+        f"Accepted caveats: {int(data.get('accepted_caveats', 0))}. "
+        f"Highest severity: {data.get('highest_severity', 'INFO')}."
+    )
+
+
+def contradiction_engine_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], dict]:
+    data = load_contradiction_index()
+    contradictions = list(data.get("contradictions", []))
+    n = normalize(prompt)
+    refs = [str(CONTRADICTION_INDEX_PATH), str(CONTRADICTION_SUMMARY_PATH), str(CONTRADICTION_LATEST_PATH)]
+    stale = next((x for x in contradictions if str(x.get("type", "")) == "release_package_stale_relative_to_main"), None)
+    if "release stale" in n or "release" in n:
+        if stale:
+            text = (
+                "I see one accepted caveat: public package is stale relative to main. "
+                "Main includes newer layers beyond the current public ZIP state. "
+                "Recommended repair: rebuild the v1.1.0 offline bundle."
+            )
+        else:
+            text = "No release/package stale contradiction detected right now."
+    elif "needs repair" in n:
+        opens = [x for x in contradictions if str(x.get("status", "")) in {"OPEN", "NEEDS_REVIEW"}]
+        text = "Repairs needed: " + (", ".join([str(x.get("recommended_repair", "")) for x in opens][:4]) if opens else "none.")
+    elif "what contradicts" in n or "inconsistent" in n or "drift" in n:
+        text = summarize_contradictions(data)
+    else:
+        text = summarize_contradictions(data)
+    details = {
+        "contradiction_engine_used": True,
+        "contradictions_found": int(data.get("contradictions_found", 0)),
+        "open_contradictions": int(data.get("open_contradictions", 0)),
+        "accepted_caveats": int(data.get("accepted_caveats", 0)),
+        "highest_severity": str(data.get("highest_severity", "INFO")),
+        "contradiction_index_path": str(CONTRADICTION_INDEX_PATH),
+        "contradiction_summary": summarize_contradictions(data),
+        "contradiction_paths": refs,
+    }
+    return text, refs, details
+
+
+def maybe_use_contradiction_engine(prompt: str, capability: str, signals: dict) -> tuple[bool, str, list[str], dict]:
+    n = normalize(prompt)
+    triggers = (
+        "contradiction summary",
+        "what contradicts",
+        "what is inconsistent",
+        "what drift do you see",
+        "is the release stale",
+        "what proof does not match",
+        "what needs repair",
+    )
+    if not any(t in n for t in triggers):
+        return False, "", [], {}
+    response, refs, details = contradiction_engine_answer(prompt, capability, signals)
+    return True, response, refs, details
+
+
 def memory_scar_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], list[str], str]:
     scars = load_memory_scars()
     graph = load_proof_graph_seed()
@@ -1419,6 +1713,13 @@ def write_receipt(
     introspection_findings: Optional[list[str]] = None,
     introspection_repairs_applied: Optional[list[str]] = None,
     introspection_risk_level: str = "",
+    contradiction_engine_used: bool = False,
+    contradictions_found: int = 0,
+    open_contradictions: int = 0,
+    accepted_caveats: int = 0,
+    highest_severity: str = "",
+    contradiction_index_path: str = "",
+    contradiction_summary: str = "",
 ) -> str:
     RECEIPT_PATH.parent.mkdir(parents=True, exist_ok=True)
     receipt = {
@@ -1467,6 +1768,13 @@ def write_receipt(
         "introspection_findings": introspection_findings or [],
         "introspection_repairs_applied": introspection_repairs_applied or [],
         "introspection_risk_level": introspection_risk_level,
+        "contradiction_engine_used": contradiction_engine_used,
+        "contradictions_found": contradictions_found,
+        "open_contradictions": open_contradictions,
+        "accepted_caveats": accepted_caveats,
+        "highest_severity": highest_severity,
+        "contradiction_index_path": contradiction_index_path,
+        "contradiction_summary": contradiction_summary,
     }
     if extracted_signals:
         receipt["extracted_signals"] = extracted_signals
@@ -1501,6 +1809,8 @@ def detect_capability(prompt: str) -> str:
     if "what is wired" in n:
         return "cortex"
     if "evidence summary" in n or "what evidence" in n or "admissible" in n or "evidence is weak" in n:
+        return "verify"
+    if "contradiction summary" in n or "what contradicts" in n or "inconsistent" in n or "release stale" in n or "what needs repair" in n or "what drift do you see" in n or "what proof does not match" in n:
         return "verify"
     if "show proof graph" in n or "connected to proof" in n or "what proves artifact inspection" in n:
         return "cortex"
@@ -1738,7 +2048,28 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
         "introspection_findings": [],
         "introspection_repairs_applied": [],
         "introspection_risk_level": "",
+        "contradiction_engine_used": False,
+        "contradictions_found": 0,
+        "open_contradictions": 0,
+        "accepted_caveats": 0,
+        "highest_severity": "",
+        "contradiction_index_path": "",
+        "contradiction_summary": "",
+        "contradiction_paths": [],
     }
+
+    contradiction_used, contradiction_response, contradiction_refs, contradiction_details = maybe_use_contradiction_engine(prompt, capability, signals)
+    if contradiction_used:
+        signals["contradiction_engine_used"] = True
+        signals["contradictions_found"] = int(contradiction_details.get("contradictions_found", 0) or 0)
+        signals["open_contradictions"] = int(contradiction_details.get("open_contradictions", 0) or 0)
+        signals["accepted_caveats"] = int(contradiction_details.get("accepted_caveats", 0) or 0)
+        signals["highest_severity"] = str(contradiction_details.get("highest_severity", "INFO"))
+        signals["contradiction_index_path"] = str(contradiction_details.get("contradiction_index_path", ""))
+        signals["contradiction_summary"] = str(contradiction_details.get("contradiction_summary", ""))
+        signals["contradiction_paths"] = list(contradiction_details.get("contradiction_paths", contradiction_refs))
+        signals["artifacts_consulted"] = list(contradiction_refs)
+        return capability, contradiction_response, signals
 
     evidence_used, evidence_response, evidence_refs, evidence_details = maybe_use_evidence_engine(prompt, capability, signals)
     if evidence_used:
@@ -1872,6 +2203,13 @@ def print_diagnostics(capability: str, receipt: str, signals: dict) -> None:
     print(blue("Findings > ") + white("; ".join(ifind) if ifind else "none"))
     print(blue("Repairs applied > ") + white("; ".join(irep) if irep else "none"))
     print(blue("Risk level > ") + white(str(signals.get("introspection_risk_level", "")) or "none"))
+    print(blue("Contradiction engine used > ") + white(str(bool(signals.get("contradiction_engine_used", False))).lower()))
+    print(blue("Contradictions found > ") + white(str(int(signals.get("contradictions_found", 0) or 0))))
+    print(blue("Open contradictions > ") + white(str(int(signals.get("open_contradictions", 0) or 0))))
+    print(blue("Accepted caveats > ") + white(str(int(signals.get("accepted_caveats", 0) or 0))))
+    print(blue("Highest severity > ") + white(str(signals.get("highest_severity", "")) or "none"))
+    cpaths = signals.get("contradiction_paths", [])
+    print(blue("Contradiction paths > ") + white("; ".join(cpaths) if cpaths else "none"))
     print(blue("Artifacts consulted > ") + white("; ".join(artifacts) if artifacts else "none"))
     print(blue("Evidence summary > ") + white(str(signals.get("evidence_summary", "")) or "none"))
     print(blue("Boundary   > ") + green("LOCAL_ONLY"))
@@ -1940,6 +2278,13 @@ def run_one_shot(prompt: str) -> int:
         introspection_findings=signals.get("introspection_findings", []),
         introspection_repairs_applied=signals.get("introspection_repairs_applied", []),
         introspection_risk_level=str(signals.get("introspection_risk_level", "")),
+        contradiction_engine_used=bool(signals.get("contradiction_engine_used", False)),
+        contradictions_found=int(signals.get("contradictions_found", 0) or 0),
+        open_contradictions=int(signals.get("open_contradictions", 0) or 0),
+        accepted_caveats=int(signals.get("accepted_caveats", 0) or 0),
+        highest_severity=str(signals.get("highest_severity", "")),
+        contradiction_index_path=str(signals.get("contradiction_index_path", "")),
+        contradiction_summary=str(signals.get("contradiction_summary", "")),
     )
     print(white(f"Operator > {prompt}"))
     print("")
@@ -2049,6 +2394,13 @@ def run_interactive() -> int:
             introspection_findings=signals.get("introspection_findings", []),
             introspection_repairs_applied=signals.get("introspection_repairs_applied", []),
             introspection_risk_level=str(signals.get("introspection_risk_level", "")),
+            contradiction_engine_used=bool(signals.get("contradiction_engine_used", False)),
+            contradictions_found=int(signals.get("contradictions_found", 0) or 0),
+            open_contradictions=int(signals.get("open_contradictions", 0) or 0),
+            accepted_caveats=int(signals.get("accepted_caveats", 0) or 0),
+            highest_severity=str(signals.get("highest_severity", "")),
+            contradiction_index_path=str(signals.get("contradiction_index_path", "")),
+            contradiction_summary=str(signals.get("contradiction_summary", "")),
         )
 
         print("")

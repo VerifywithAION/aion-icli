@@ -1,6 +1,6 @@
 # AION ICLI System Wiring Report V1
 
-Current head: e8e0ccd
+Current head: 4148449
 
 Each layer below is checked for runtime/docs/verifier/linkage and public-safe boundaries.
 
@@ -20,5 +20,6 @@ Each layer below is checked for runtime/docs/verifier/linkage and public-safe bo
 | Living Proof Graph V1 | src/aion_cli_entry.py + .aion_public/proof_graph/* | docs/LIVING_PROOF_GRAPH_V1.md | VERIFY_LIVING_PROOF_GRAPH_V1.ps1 | true | true | true |
 | Evidence Engine V1 | src/aion_cli_entry.py + .aion_public/evidence/* | docs/EVIDENCE_ENGINE_V1.md | VERIFY_EVIDENCE_ENGINE_V1.ps1 | true | true | true |
 | Introspection Gate V1 | src/aion_cli_entry.py + .aion_public/introspection/* | docs/INTROSPECTION_GATE_V1.md | VERIFY_INTROSPECTION_GATE_V1.ps1 | true | true | true |
+| Contradiction Engine V1 | src/aion_cli_entry.py + .aion_public/contradictions/* | docs/CONTRADICTION_ENGINE_V1.md | VERIFY_CONTRADICTION_ENGINE_V1.ps1 | true | true | true |
 
 Public-safe boundary remains: LOCAL_ONLY, network NOT_USED, mutation NOT_PERFORMED, execution NOT_PERFORMED.
