@@ -57,6 +57,10 @@ KNOWN_LAYER_DOCS = {
     "Public Release Lock V1": Path("docs") / "PUBLIC_RELEASE_LOCK_V1.md",
 }
 
+SCARS_PATH = Path(".aion_public") / "scars" / "scars_seed.jsonl"
+PROOF_GRAPH_PATH = Path(".aion_public") / "graph" / "proof_graph_seed.json"
+EVOLUTION_LEDGER_PATH = Path(".aion_public") / "evolution" / "evolution_ledger_seed.jsonl"
+
 
 def configure_utf8() -> None:
     os.environ.setdefault("PYTHONIOENCODING", "utf-8")
@@ -354,6 +358,129 @@ def summarize_missing_state(state: dict) -> tuple[str, list[str], str]:
     return base, [], "missing_summary"
 
 
+def load_memory_scars() -> list[dict]:
+    scars: list[dict] = []
+    text = safe_read_text(SCARS_PATH)
+    if not text:
+        return scars
+    for line in text.splitlines():
+        s = line.strip()
+        if not s:
+            continue
+        try:
+            row = json.loads(s)
+            if isinstance(row, dict):
+                scars.append(row)
+        except Exception:
+            continue
+    return scars
+
+
+def summarize_memory_scars(scars: list[dict]) -> tuple[str, list[str], list[str], str]:
+    if not scars:
+        return (
+            "I do not have memory scars loaded yet. Add public-safe scars to ground caution rules.",
+            [],
+            [],
+            "no_scar_memory",
+        )
+    ids = [str(s.get("scar_id", "")) for s in scars if s.get("scar_id")]
+    future_rules = [str(s.get("future_rule", "")) for s in scars if s.get("future_rule")]
+    top = scars[:3]
+    if top:
+        anchor = top[0]
+        anchor_rule = str(anchor.get("future_rule", "")).strip()
+        anchor_harm = str(anchor.get("harm", "")).strip()
+        anchor_id = str(anchor.get("scar_id", "scar")).strip()
+        text = (
+            f"I ask for the artifact because I carry a scar ({anchor_id}): {anchor_harm}. "
+            f"The rule now is simple: {anchor_rule}. No artifact, no judgment; no verifier, no lock."
+        )
+    else:
+        text = "I keep scar memory to avoid repeating verifier and evidence failures."
+    return text, ids[:6], future_rules[:6], "memory_scar_summary"
+
+
+def load_proof_graph_seed() -> dict:
+    try:
+        text = safe_read_text(PROOF_GRAPH_PATH)
+        if not text:
+            return {}
+        row = json.loads(text)
+        return row if isinstance(row, dict) else {}
+    except Exception:
+        return {}
+
+
+def summarize_proof_graph(graph: dict) -> str:
+    nodes = graph.get("nodes", []) if isinstance(graph, dict) else []
+    edges = graph.get("edges", []) if isinstance(graph, dict) else []
+    return f"Proof graph seed is loaded with {len(nodes)} nodes and {len(edges)} edges."
+
+
+def load_evolution_ledger() -> list[dict]:
+    rows: list[dict] = []
+    text = safe_read_text(EVOLUTION_LEDGER_PATH)
+    if not text:
+        return rows
+    for line in text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            item = json.loads(line)
+            if isinstance(item, dict):
+                rows.append(item)
+        except Exception:
+            continue
+    return rows
+
+
+def memory_scar_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], list[str], str]:
+    scars = load_memory_scars()
+    graph = load_proof_graph_seed()
+    ledger = load_evolution_ledger()
+    n = normalize(prompt)
+    text, ids, rules, summary = summarize_memory_scars(scars)
+    artifacts = [str(SCARS_PATH), str(PROOF_GRAPH_PATH), str(EVOLUTION_LEDGER_PATH)]
+
+    if "how do you learn" in n:
+        return (
+            f"{text} {summarize_proof_graph(graph)} Evolution ledger entries: {len(ledger)}.",
+            artifacts,
+            rules,
+            summary,
+        )
+    if "what have you learned" in n or "what mistakes do you remember" in n or "what broke before" in n or "what scars do you have" in n or "what is your memory" in n:
+        listing = ", ".join(ids) if ids else "none"
+        return (f"{text} Current public-safe scars: {listing}.", artifacts, rules, summary)
+    if "why are you asking for the artifact" in n or "why do you need proof" in n or "why not run it" in n or "why are you cautious" in n:
+        return (text, artifacts, rules, summary)
+    return "", [], [], ""
+
+
+def maybe_use_memory_scar_engine(prompt: str, capability: str, signals: dict) -> tuple[bool, str, list[str], list[str], str]:
+    n = normalize(prompt)
+    triggers = (
+        "why are you asking for the artifact",
+        "why do you need proof",
+        "why not run it",
+        "what have you learned",
+        "what mistakes do you remember",
+        "what broke before",
+        "why are you cautious",
+        "how do you learn",
+        "what scars do you have",
+        "what is your memory",
+    )
+    if not any(t in n for t in triggers):
+        return False, "", [], [], ""
+    response, artifacts, rules, summary = memory_scar_answer(prompt, capability, signals)
+    if response:
+        return True, response, artifacts, rules, summary
+    return False, "", [], [], ""
+
+
 def governance_brain_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], str]:
     n = normalize(prompt)
     state = read_public_state()
@@ -407,6 +534,9 @@ def write_receipt(
     governance_brain_used: bool = False,
     artifacts_consulted: Optional[list[str]] = None,
     evidence_summary: str = "",
+    memory_scar_engine_used: bool = False,
+    scars_consulted: Optional[list[str]] = None,
+    future_rules: Optional[list[str]] = None,
 ) -> str:
     RECEIPT_PATH.parent.mkdir(parents=True, exist_ok=True)
     receipt = {
@@ -424,6 +554,9 @@ def write_receipt(
         "governance_brain_used": governance_brain_used,
         "artifacts_consulted": artifacts_consulted or [],
         "evidence_summary": evidence_summary,
+        "memory_scar_engine_used": memory_scar_engine_used,
+        "scars_consulted": scars_consulted or [],
+        "future_rules": future_rules or [],
     }
     if extracted_signals:
         receipt["extracted_signals"] = extracted_signals
@@ -661,7 +794,18 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
         "governance_brain_used": False,
         "artifacts_consulted": [],
         "evidence_summary": "",
+        "memory_scar_engine_used": False,
+        "scars_consulted": [],
+        "future_rules": [],
     }
+
+    scar_used, scar_response, scar_artifacts, scar_rules, scar_summary = maybe_use_memory_scar_engine(prompt, capability, signals)
+    if scar_used and scar_response:
+        signals["memory_scar_engine_used"] = True
+        signals["scars_consulted"] = scar_artifacts
+        signals["future_rules"] = scar_rules
+        signals["evidence_summary"] = scar_summary
+        return capability, scar_response, signals
 
     # Legacy command-style responses preserved for direct mode commands.
     if is_legacy_command_prompt(prompt):
@@ -706,9 +850,14 @@ def print_diagnostics(capability: str, receipt: str, signals: dict) -> None:
     missing = signals.get("missing_evidence", [])
     risks = signals.get("risk_lens", [])
     artifacts = signals.get("artifacts_consulted", [])
+    scars_consulted = signals.get("scars_consulted", [])
+    future_rules = signals.get("future_rules", [])
     print(blue("Missing evidence > ") + white(", ".join(missing) if missing else "none"))
     print(blue("Risk lens  > ") + white(", ".join(risks) if risks else "none"))
     print(blue("Governance brain used > ") + white(str(bool(signals.get("governance_brain_used", False))).lower()))
+    print(blue("Memory scar engine used > ") + white(str(bool(signals.get("memory_scar_engine_used", False))).lower()))
+    print(blue("Scars consulted > ") + white("; ".join(scars_consulted) if scars_consulted else "none"))
+    print(blue("Future rule > ") + white("; ".join(future_rules) if future_rules else "none"))
     print(blue("Artifacts consulted > ") + white("; ".join(artifacts) if artifacts else "none"))
     print(blue("Evidence summary > ") + white(str(signals.get("evidence_summary", "")) or "none"))
     print(blue("Boundary   > ") + green("LOCAL_ONLY"))
@@ -734,6 +883,9 @@ def run_one_shot(prompt: str) -> int:
         governance_brain_used=bool(signals.get("governance_brain_used", False)),
         artifacts_consulted=signals.get("artifacts_consulted", []),
         evidence_summary=str(signals.get("evidence_summary", "")),
+        memory_scar_engine_used=bool(signals.get("memory_scar_engine_used", False)),
+        scars_consulted=signals.get("scars_consulted", []),
+        future_rules=signals.get("future_rules", []),
     )
     print(white(f"Operator > {prompt}"))
     print("")
@@ -800,6 +952,9 @@ def run_interactive() -> int:
             governance_brain_used=bool(signals.get("governance_brain_used", False)),
             artifacts_consulted=signals.get("artifacts_consulted", []),
             evidence_summary=str(signals.get("evidence_summary", "")),
+            memory_scar_engine_used=bool(signals.get("memory_scar_engine_used", False)),
+            scars_consulted=signals.get("scars_consulted", []),
+            future_rules=signals.get("future_rules", []),
         )
 
         print("")

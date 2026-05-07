@@ -599,3 +599,10 @@ This fix ensures release-state answers consistently use local governance evidenc
 
 Read: docs/GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.md
 
+
+## Memory Scar Engine V1
+
+AION now keeps public-safe scar memory for failure patterns and future rules (trigger, harm, repair, future_rule).
+
+Read: docs/MEMORY_SCAR_ENGINE_V1.md
+

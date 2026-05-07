@@ -1,0 +1,16 @@
+﻿{
+  "graph_id": "aion_public_proof_graph_seed_v1",
+  "public_safe": true,
+  "nodes": [
+    {"id":"scar:adaptive_layer_under_specified_answer","type":"scar"},
+    {"id":"rule:no_artifact_no_judgment","type":"rule"},
+    {"id":"proof:verify_public_install_package_v1","type":"proof"},
+    {"id":"scar:diagnostics_governance_brain_bypass","type":"scar"},
+    {"id":"rule:no_mode_specific_evidence_bypass","type":"rule"}
+  ],
+  "edges": [
+    {"type":"caused","from":"scar:adaptive_layer_under_specified_answer","to":"rule:no_artifact_no_judgment"},
+    {"type":"supports","from":"proof:verify_public_install_package_v1","to":"rule:no_artifact_no_judgment"},
+    {"type":"caused","from":"scar:diagnostics_governance_brain_bypass","to":"rule:no_mode_specific_evidence_bypass"}
+  ]
+}

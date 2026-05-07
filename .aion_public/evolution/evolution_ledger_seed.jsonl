@@ -1,0 +1,4 @@
+﻿{"entry_id":"evo-001","change":"voice_layer_v1","learning":"hide internal routing in normal mode","public_safe":true}
+{"entry_id":"evo-002","change":"adaptive_reasoning_v1","learning":"ask for evidence before judgment","public_safe":true}
+{"entry_id":"evo-003","change":"governance_brain_integration_fix_v1","learning":"diagnostics and normal flow must share evidence engine","public_safe":true}
+{"entry_id":"evo-004","change":"memory_scar_seed_v1","learning":"store trigger-harm-repair-future_rule to prevent repeat failures","public_safe":true}

@@ -540,3 +540,9 @@ AION can inspect public-safe local repo artifacts (docs, reports, schemas, examp
 - [Governance Brain Integration Fix V1](docs/GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.md)
 - Ensures release-state questions use governance brain evidence in both normal and diagnostics mode, with accurate artifacts consulted and evidence summary.
 
+
+## Memory Scar Engine V1
+
+- [Memory Scar Engine V1](docs/MEMORY_SCAR_ENGINE_V1.md)
+- AION learns from verifier failures, integration drift, missing evidence, and repair rules using public-safe local scar memory.
+
