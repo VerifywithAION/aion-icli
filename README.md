@@ -68,6 +68,8 @@ Expected marker:
 
 - `AION_AGENT_CLAIM_PROOF_GATE_DEMO_V1_VERIFY_OK`
 
+Fresh-clone acceptance is verified by `scripts\VERIFY_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.ps1`.
+
 ## Documentation Map
 
 Use these links to jump directly into the public AION ICLI release:

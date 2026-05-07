@@ -26,5 +26,6 @@ Each layer below is checked for runtime/docs/verifier/linkage and public-safe bo
 | Offline AION CLI Bundle V1.1.0 | dist/aion-icli-offline-bundle-v1.1.0.zip + packaging/offline-bundle-v1.1.0/* | docs/OFFLINE_AION_CLI_BUNDLE_V1_1_0.md | VERIFY_OFFLINE_AION_CLI_BUNDLE_V1_1_0.ps1 + VERIFY_OFFLINE_AION_CLI_BUNDLE_V1_1_0_FRESH_INSTALL.ps1 | true | true | true |
 | Public Demo: Agent Claim vs AION Proof Gate V1 | demo/agent-claim-proof-gate/* + scripts/RUN_AGENT_CLAIM_PROOF_GATE_DEMO_V1.ps1 | docs/AGENT_CLAIM_PROOF_GATE_DEMO_V1.md | VERIFY_AGENT_CLAIM_PROOF_GATE_DEMO_V1.ps1 | true | true | true |
 | Public Demo Package + README Demo Section V1 | README.md + docs/PUBLIC_DEMO_README_SECTION_V1.md + reports/PUBLIC_DEMO_PACKAGE_V1_REPORT.md | docs/PUBLIC_DEMO_README_SECTION_V1.md | VERIFY_PUBLIC_DEMO_README_SECTION_V1.ps1 | true | true | true |
+| Public Demo Fresh Clone Acceptance V1 | scripts/VERIFY_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.ps1 + docs/PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.md + reports/PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1_REPORT.md | docs/PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.md | VERIFY_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.ps1 | true | true | true |
 
 Public-safe boundary remains: LOCAL_ONLY, network NOT_USED, mutation NOT_PERFORMED, execution NOT_PERFORMED.

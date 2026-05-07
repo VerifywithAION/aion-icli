@@ -1,6 +1,6 @@
 # AION ICLI Roadmap State V1
 
-Current repo head: fdff15a
+Current repo head: f06d7af
 
 ## Completed layers
 
@@ -22,6 +22,7 @@ Current repo head: fdff15a
 - Offline AION CLI Bundle V1.1.0
 - Public Demo: Agent Claim vs AION Proof Gate V1
 - Public Demo Package + README Demo Section V1
+- Public Demo Fresh Clone Acceptance V1
 
 ## End-to-end wiring rule
 
@@ -37,4 +38,4 @@ GitHub Release `v1.0.0-public-icli` points to an earlier package state. Main now
 
 ## Next build pointer
 
-Public Demo Fresh Clone Acceptance V1
+Public Release Notes v1.1.0 Demo Package V1

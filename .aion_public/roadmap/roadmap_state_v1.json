@@ -1,10 +1,10 @@
 {
   "roadmap_type": "aion_icli_public_safe_roadmap_state_v1",
-  "generated_at_utc": "2026-05-07T18:25:01Z",
-  "current_head": "f04f6f6",
-  "latest_completed_layer": "Public Demo Package + README Demo Section V1",
-  "latest_completed_commit": "f04f6f6",
-  "next_build_pointer": "Public Demo Fresh Clone Acceptance V1",
+  "generated_at_utc": "2026-05-07T18:38:44Z",
+  "current_head": "f06d7af",
+  "latest_completed_layer": "Public Demo Fresh Clone Acceptance V1",
+  "latest_completed_commit": "f06d7af",
+  "next_build_pointer": "Public Release Notes v1.1.0 Demo Package V1",
   "completed_layers": [
     "Public Release V1",
     "Interactive Mode V1",
@@ -23,10 +23,11 @@
     "Sentinel Consistency Engine V1",
     "Offline AION CLI Bundle V1.1.0",
     "Public Demo: Agent Claim vs AION Proof Gate V1",
-    "Public Demo Package + README Demo Section V1"
+    "Public Demo Package + README Demo Section V1",
+    "Public Demo Fresh Clone Acceptance V1"
   ],
   "next_builds": [
-    "Public Demo Fresh Clone Acceptance V1"
+    "Public Release Notes v1.1.0 Demo Package V1"
   ],
   "public_release_caveat": "GitHub Release v1.0.0-public-icli points to an earlier package state; main now contains newer intelligence layers not yet rebuilt into a new ZIP release.",
   "end_to_end_wiring_rule": "A layer is complete only if docs, runtime behavior, verifier coverage, roadmap state, and public-safe boundaries all align.",

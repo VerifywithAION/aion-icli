@@ -699,3 +699,16 @@ Verify:
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_AGENT_CLAIM_PROOF_GATE_DEMO_V1.ps1
 ```
+
+
+## Public Demo Fresh-Clone Acceptance
+
+Run:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.ps1
+```
+
+Expected marker:
+
+- `AION_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1_PASS`

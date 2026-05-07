@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-05-07T18:25:01Z",
-  "current_head": "f04f6f6",
+  "generated_at_utc": "2026-05-07T18:38:44Z",
+  "current_head": "f06d7af",
   "status": "PASS",
   "layers": [
     {
@@ -327,8 +327,25 @@
       "receipt_wired": true,
       "public_safe": true,
       "notes": "Public-facing README wedge demo package with local verification commands"
+    },
+    {
+      "layer_name": "Public Demo Fresh Clone Acceptance V1",
+      "status": "PASS",
+      "files_checked": [
+        "scripts/VERIFY_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.ps1",
+        "docs/PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.md",
+        "reports/PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1_REPORT.md"
+      ],
+      "docs_checked": [
+        "docs/PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.md"
+      ],
+      "verifier_checked": "scripts/VERIFY_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.ps1",
+      "cli_wired": true,
+      "receipt_wired": true,
+      "public_safe": true,
+      "notes": "Fresh-clone acceptance proof for public demo workflow"
     }
   ],
   "missing_required": [],
-  "next_required_action": "Public Demo Fresh Clone Acceptance V1"
+  "next_required_action": "Public Release Notes v1.1.0 Demo Package V1"
 }
