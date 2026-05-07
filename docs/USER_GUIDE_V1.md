@@ -606,3 +606,10 @@ AION now keeps public-safe scar memory for failure patterns and future rules (tr
 
 Read: docs/MEMORY_SCAR_ENGINE_V1.md
 
+
+## Roadmap and Wiring State V1
+
+- docs/AION_ICLI_ROADMAP_STATE_V1.md
+- docs/AION_ICLI_NEXT_8_BUILDS_V1.md
+- docs/AION_ICLI_SYSTEM_WIRING_REPORT_V1.md
+

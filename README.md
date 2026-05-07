@@ -546,3 +546,10 @@ AION can inspect public-safe local repo artifacts (docs, reports, schemas, examp
 - [Memory Scar Engine V1](docs/MEMORY_SCAR_ENGINE_V1.md)
 - AION learns from verifier failures, integration drift, missing evidence, and repair rules using public-safe local scar memory.
 
+
+## Roadmap and Wiring State V1
+
+- [AION ICLI Roadmap State V1](docs/AION_ICLI_ROADMAP_STATE_V1.md)
+- [AION ICLI Next 8 Builds V1](docs/AION_ICLI_NEXT_8_BUILDS_V1.md)
+- [AION ICLI System Wiring Report V1](docs/AION_ICLI_SYSTEM_WIRING_REPORT_V1.md)
+
