@@ -34,6 +34,40 @@ If you want a CLI that makes AI/system actions more inspectable, constrained, an
 
 ---
 
+
+## Demo: Your agent said it was done. AION proved whether it was admissible.
+
+Problem: agents can claim completion without admissible local evidence.
+
+AION answer: run a local proof gate that checks claims against artifacts and returns governed decisions.
+
+Run:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\RUN_AGENT_CLAIM_PROOF_GATE_DEMO_V1.ps1
+```
+
+Expected decisions:
+
+- PASS
+- WARN
+- BLOCK
+
+Output paths:
+
+- `demo\agent-claim-proof-gate\output\agent_claim_proof_gate_results_v1.json`
+- `demo\agent-claim-proof-gate\output\agent_claim_proof_gate_results_v1.md`
+
+Verify:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_AGENT_CLAIM_PROOF_GATE_DEMO_V1.ps1
+```
+
+Expected marker:
+
+- `AION_AGENT_CLAIM_PROOF_GATE_DEMO_V1_VERIFY_OK`
+
 ## Documentation Map
 
 Use these links to jump directly into the public AION ICLI release:

@@ -684,3 +684,18 @@ The v1.1.0 offline bundle is the current package for the post-v1.0.0 intelligenc
 Your agent said it was done. AION checks whether the claim is admissible against local evidence.
 
 See: `docs/AGENT_CLAIM_PROOF_GATE_DEMO_V1.md`.
+
+
+## Public Demo
+
+Run:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\RUN_AGENT_CLAIM_PROOF_GATE_DEMO_V1.ps1
+```
+
+Verify:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\VERIFY_AGENT_CLAIM_PROOF_GATE_DEMO_V1.ps1
+```
