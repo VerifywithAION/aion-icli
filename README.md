@@ -54,6 +54,7 @@ Use these links to jump directly into the public AION ICLI release:
 | Voice layer | [Voice Layer V1](docs/VOICE_LAYER_V1.md) | Human-facing AION voice with optional diagnostics |
 | Adaptive reasoning | [Adaptive Reasoning Layer V1](docs/ADAPTIVE_REASONING_LAYER_V1.md) | Signal-based operator responses from real prompt wording |
 | Living proof graph | [Living Proof Graph V1](docs/LIVING_PROOF_GRAPH_V1.md) | Local relational proof memory across layers, verifiers, receipts, and roadmap state |
+| Evidence engine | [Evidence Engine V1](docs/EVIDENCE_ENGINE_V1.md) | Admissibility scoring for claims, docs, verifiers, roadmap wiring, and release packaging |
 | CLI proof | [Governed vs Ungoverned CLI Proof V1](docs/GOVERNED_VS_UNGOVERNED_CLI_PROOF_V1.md) | Difference between invisible trust and governed trust |
 | Acceptance proof | [Connector Stack Acceptance Report V1](reports/CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.md) | Fresh-clone proof of the full connector stack |
 

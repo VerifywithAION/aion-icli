@@ -78,6 +78,23 @@ PROOF_NODES_PATH = PROOF_GRAPH_DIR / "proof_nodes_v1.json"
 PROOF_EDGES_PATH = PROOF_GRAPH_DIR / "proof_edges_v1.json"
 PROOF_GRAPH_SUMMARY_PATH = PROOF_GRAPH_DIR / "proof_graph_summary_v1.md"
 PROOF_GRAPH_LATEST_PATH = PROOF_GRAPH_DIR / "proof_graph_latest_v1.json"
+EVIDENCE_DIR = Path(".aion_public") / "evidence"
+EVIDENCE_INDEX_PATH = EVIDENCE_DIR / "evidence_index_v1.json"
+EVIDENCE_SUMMARY_PATH = EVIDENCE_DIR / "evidence_summary_v1.md"
+EVIDENCE_LATEST_PATH = EVIDENCE_DIR / "evidence_latest_v1.json"
+
+EVIDENCE_LEVELS = {
+    "MISSING": 0,
+    "CLAIM_ONLY": 1,
+    "DOC_ONLY": 2,
+    "RECEIPT_ONLY": 3,
+    "VERIFIER_PRESENT": 4,
+    "VERIFIER_MARKER_PRESENT": 5,
+    "ROADMAP_WIRED": 6,
+    "RELEASE_PACKAGED": 7,
+    "FRESH_CLONE_PROVEN": 8,
+    "ADMISSIBLE": 9,
+}
 
 
 def configure_utf8() -> None:
@@ -878,6 +895,253 @@ def maybe_use_proof_graph(prompt: str, capability: str, signals: dict) -> tuple[
     return True, response, artifacts, details
 
 
+def classify_evidence_level(item: dict) -> tuple[str, int]:
+    if bool(item.get("admissible", False)):
+        return "ADMISSIBLE", EVIDENCE_LEVELS["ADMISSIBLE"]
+    if bool(item.get("fresh_clone_proven", False)):
+        return "FRESH_CLONE_PROVEN", EVIDENCE_LEVELS["FRESH_CLONE_PROVEN"]
+    if bool(item.get("release_packaged", False)):
+        return "RELEASE_PACKAGED", EVIDENCE_LEVELS["RELEASE_PACKAGED"]
+    if bool(item.get("roadmap_wired", False)):
+        return "ROADMAP_WIRED", EVIDENCE_LEVELS["ROADMAP_WIRED"]
+    if bool(item.get("verifier_marker_present", False)):
+        return "VERIFIER_MARKER_PRESENT", EVIDENCE_LEVELS["VERIFIER_MARKER_PRESENT"]
+    if bool(item.get("verifier_present", False)):
+        return "VERIFIER_PRESENT", EVIDENCE_LEVELS["VERIFIER_PRESENT"]
+    if bool(item.get("receipt_present", False)):
+        return "RECEIPT_ONLY", EVIDENCE_LEVELS["RECEIPT_ONLY"]
+    if bool(item.get("docs_present", False)):
+        return "DOC_ONLY", EVIDENCE_LEVELS["DOC_ONLY"]
+    if bool(item.get("claimed", False)):
+        return "CLAIM_ONLY", EVIDENCE_LEVELS["CLAIM_ONLY"]
+    return "MISSING", EVIDENCE_LEVELS["MISSING"]
+
+
+def score_evidence_for_layer(layer_name: str) -> dict:
+    docs_map = {
+        "Public Release V1": Path("docs") / "PUBLIC_RELEASE_LOCK_V1.md",
+        "User Guide V1": Path("docs") / "USER_GUIDE_V1.md",
+        "Interactive Mode V1": Path("docs") / "INTERACTIVE_MODE_V1.md",
+        "Capability Router V1": Path("docs") / "CAPABILITY_ROUTER_V1.md",
+        "Voice Layer V1": Path("docs") / "VOICE_LAYER_V1.md",
+        "Adaptive Reasoning Layer V1": Path("docs") / "ADAPTIVE_REASONING_LAYER_V1.md",
+        "Governance Brain Adapter V1": Path("docs") / "GOVERNANCE_BRAIN_ADAPTER_V1.md",
+        "Governance Brain Integration Fix V1": Path("docs") / "GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.md",
+        "Memory Scar Engine V1": Path("docs") / "MEMORY_SCAR_ENGINE_V1.md",
+        "Roadmap Sync + End-to-End Wiring Verification V1": Path("docs") / "AION_ICLI_ROADMAP_STATE_V1.md",
+        "Artifact Inspection Runner V1": Path("docs") / "ARTIFACT_INSPECTION_RUNNER_V1.md",
+        "Living Proof Graph V1": Path("docs") / "LIVING_PROOF_GRAPH_V1.md",
+        "Evidence Engine V1": Path("docs") / "EVIDENCE_ENGINE_V1.md",
+    }
+    verifier_map = {
+        "Public Release V1": "VERIFY_PUBLIC_RELEASE_LOCK_V1.ps1",
+        "User Guide V1": "VERIFY_USER_GUIDE_V1.ps1",
+        "Interactive Mode V1": "VERIFY_INTERACTIVE_MODE_V1.ps1",
+        "Capability Router V1": "VERIFY_CAPABILITY_ROUTER_V1.ps1",
+        "Voice Layer V1": "VERIFY_VOICE_LAYER_V1.ps1",
+        "Adaptive Reasoning Layer V1": "VERIFY_ADAPTIVE_REASONING_LAYER_V1.ps1",
+        "Governance Brain Adapter V1": "VERIFY_GOVERNANCE_BRAIN_ADAPTER_V1.ps1",
+        "Governance Brain Integration Fix V1": "VERIFY_GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.ps1",
+        "Memory Scar Engine V1": "VERIFY_MEMORY_SCAR_ENGINE_V1.ps1",
+        "Roadmap Sync + End-to-End Wiring Verification V1": "VERIFY_AION_ICLI_ROADMAP_AND_WIRING_V1.ps1",
+        "Artifact Inspection Runner V1": "VERIFY_ARTIFACT_INSPECTION_RUNNER_V1.ps1",
+        "Living Proof Graph V1": "VERIFY_LIVING_PROOF_GRAPH_V1.ps1",
+        "Evidence Engine V1": "VERIFY_EVIDENCE_ENGINE_V1.ps1",
+    }
+
+    road = safe_read_json(Path(".aion_public") / "roadmap" / "roadmap_state_v1.json")
+    wire = safe_read_json(Path(".aion_public") / "wiring" / "system_wiring_v1.json")
+    latest_graph = safe_read_json(PROOF_GRAPH_LATEST_PATH)
+    report_text = safe_read_text(Path("reports") / "PUBLIC_INSTALL_PACKAGE_V1_REPORT.md")
+    manifest = safe_read_json(Path("packaging") / "public-install" / "public_install_package_v1.manifest.json")
+
+    dpath = docs_map.get(layer_name, Path(""))
+    vname = verifier_map.get(layer_name, "")
+    verifier_path = Path("scripts") / vname if vname else Path("")
+    docs_present = bool(dpath and dpath.exists())
+    verifier_present = bool(vname and verifier_path.exists())
+    marker_present = False
+    if docs_present and vname:
+        marker_present = ("VERIFY_OK" in safe_read_text(dpath)) or (vname.replace(".ps1", "").upper() in safe_read_text(dpath).upper())
+    roadmap_wired = layer_name in list(road.get("completed_layers", []))
+    wiring_report_present = any(str(x.get("layer_name", "")) == layer_name for x in list(wire.get("layers", [])))
+    release_packaged = False
+    if layer_name == "Public Release V1":
+        release_packaged = bool(Path("dist") .joinpath("aion-icli-public-install-package-v1.zip").exists())
+    else:
+        release_packaged = layer_name in report_text and "v1.0.0-public-icli" in report_text and "not yet rebuilt" not in safe_read_text(Path("docs") / "AION_ICLI_ROADMAP_STATE_V1.md")
+    fresh_clone_proven = layer_name in report_text and ("fresh-clone" in report_text.lower() or "fresh clone" in report_text.lower())
+    if layer_name != "Public Release V1":
+        fresh_clone_proven = False
+    claimed = docs_present or verifier_present
+    receipt_present = RECEIPT_PATH.exists()
+    admissible = roadmap_wired and verifier_present and docs_present and wiring_report_present
+    if layer_name != "Public Release V1" and manifest:
+        # prevent overclaiming package coverage for post-package layers
+        admissible = admissible and True
+        if release_packaged:
+            release_packaged = False
+
+    refs = []
+    if docs_present:
+        refs.append(str(dpath))
+    if verifier_present:
+        refs.append(str(verifier_path))
+    if roadmap_wired:
+        refs.append(".aion_public/roadmap/roadmap_state_v1.json")
+    if wiring_report_present:
+        refs.append(".aion_public/wiring/system_wiring_v1.json")
+    if latest_graph:
+        refs.append(str(PROOF_GRAPH_LATEST_PATH))
+
+    item = {
+        "layer_name": layer_name,
+        "docs_present": docs_present,
+        "verifier_present": verifier_present,
+        "verifier_marker_present": marker_present,
+        "roadmap_wired": roadmap_wired,
+        "wiring_report_present": wiring_report_present,
+        "release_packaged": release_packaged,
+        "fresh_clone_proven": fresh_clone_proven,
+        "admissible": admissible,
+        "receipt_present": receipt_present,
+        "claimed": claimed,
+        "evidence_refs": refs,
+    }
+    level, score = classify_evidence_level(item)
+    gaps = []
+    if not docs_present:
+        gaps.append("missing_docs")
+    if not verifier_present:
+        gaps.append("missing_verifier")
+    if not roadmap_wired:
+        gaps.append("not_in_roadmap_completed")
+    if not wiring_report_present:
+        gaps.append("not_in_wiring_report")
+    if not release_packaged and layer_name != "Public Release V1":
+        gaps.append("not_in_rebuilt_public_package")
+    item["evidence_level"] = level
+    item["evidence_score"] = score
+    item["gaps"] = gaps
+    item["recommended_next_step"] = (
+        "Include in next offline bundle/release package proof."
+        if "not_in_rebuilt_public_package" in gaps
+        else ("Add missing verifier coverage." if "missing_verifier" in gaps else "Maintain verifier and roadmap/wiring sync.")
+    )
+    return item
+
+
+def build_evidence_index() -> dict:
+    EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
+    layers = [
+        "Public Release V1",
+        "User Guide V1",
+        "Interactive Mode V1",
+        "Capability Router V1",
+        "Voice Layer V1",
+        "Adaptive Reasoning Layer V1",
+        "Governance Brain Adapter V1",
+        "Governance Brain Integration Fix V1",
+        "Memory Scar Engine V1",
+        "Roadmap Sync + End-to-End Wiring Verification V1",
+        "Artifact Inspection Runner V1",
+        "Living Proof Graph V1",
+        "Evidence Engine V1",
+    ]
+    items = [score_evidence_for_layer(x) for x in layers]
+    strongest = max(items, key=lambda x: int(x.get("evidence_score", 0)))
+    weakest = sorted(items, key=lambda x: int(x.get("evidence_score", 0)))[:3]
+    payload = {
+        "evidence_type": "aion_icli_evidence_engine_v1",
+        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "layers": items,
+        "evidence_items_evaluated": len(items),
+        "strongest_evidence_level": strongest.get("evidence_level", "MISSING"),
+        "weakest_layers": [x.get("layer_name", "") for x in weakest],
+        "public_release_caveat": "Do not overclaim RELEASE_PACKAGED for post-v1.0.0 features until package is rebuilt.",
+    }
+    EVIDENCE_INDEX_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    summary = ["# Evidence Engine V1 Summary", "", f"- Items evaluated: {len(items)}", f"- Strongest level: {payload['strongest_evidence_level']}", f"- Weakest layers: {', '.join(payload['weakest_layers'])}"]
+    EVIDENCE_SUMMARY_PATH.write_text("\n".join(summary) + "\n", encoding="utf-8")
+    EVIDENCE_LATEST_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    return payload
+
+
+def load_evidence_index() -> dict:
+    if not (EVIDENCE_INDEX_PATH.exists() and EVIDENCE_LATEST_PATH.exists()):
+        return build_evidence_index()
+    data = safe_read_json(EVIDENCE_LATEST_PATH)
+    return data if data else build_evidence_index()
+
+
+def summarize_evidence_index(data: dict) -> str:
+    return (
+        f"Evidence index evaluated {int(data.get('evidence_items_evaluated', 0))} layers. "
+        f"Strongest level is {data.get('strongest_evidence_level', 'MISSING')}."
+    )
+
+
+def evidence_engine_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], dict]:
+    data = load_evidence_index()
+    items = list(data.get("layers", []))
+    n = normalize(prompt)
+    refs = [str(EVIDENCE_INDEX_PATH), str(EVIDENCE_SUMMARY_PATH), str(EVIDENCE_LATEST_PATH)]
+    by_name = {str(x.get("layer_name", "")).lower(): x for x in items}
+
+    if "artifact inspection" in n:
+        it = by_name.get("artifact inspection runner v1", {})
+        text = f"Artifact Inspection Runner V1 is {it.get('evidence_level','MISSING')}. Gap: {', '.join(it.get('gaps',[])) or 'none'}. Recommended next step: {it.get('recommended_next_step','n/a')}"
+    elif "memory scar engine" in n:
+        it = by_name.get("memory scar engine v1", {})
+        text = f"Memory Scar Engine V1 is {it.get('evidence_level','MISSING')}. It is {'admissible' if it.get('admissible',False) else 'not fully admissible'}."
+    elif "living proof graph" in n:
+        it = by_name.get("living proof graph v1", {})
+        text = f"Living Proof Graph V1 is {it.get('evidence_level','MISSING')} with score {it.get('evidence_score',0)}."
+    elif "only documented" in n:
+        docs_only = [x.get("layer_name","") for x in items if x.get("evidence_level") in {"DOC_ONLY","CLAIM_ONLY"}]
+        text = f"Claims that are only documented/weak: {', '.join(docs_only) if docs_only else 'none'}."
+    elif "admissible" in n:
+        ad = [x.get("layer_name","") for x in items if bool(x.get("admissible",False))]
+        text = f"Admissible right now: {', '.join(ad) if ad else 'none'}."
+    elif "weak" in n:
+        weak = sorted(items, key=lambda x: int(x.get("evidence_score", 0)))[:4]
+        text = "Weak evidence layers: " + ", ".join([f"{x.get('layer_name','')} ({x.get('evidence_level','MISSING')})" for x in weak])
+    elif "release" in n:
+        pub = by_name.get("public release v1", {})
+        text = f"Release evidence is {pub.get('evidence_level','MISSING')}. Post-v1.0.0 layers remain not release-packaged until a rebuilt ZIP proof exists."
+    else:
+        text = summarize_evidence_index(data)
+
+    details = {
+        "evidence_engine_used": True,
+        "evidence_items_evaluated": int(data.get("evidence_items_evaluated", 0)),
+        "evidence_index_path": str(EVIDENCE_INDEX_PATH),
+        "evidence_summary": summarize_evidence_index(data),
+        "strongest_evidence_level": str(data.get("strongest_evidence_level", "MISSING")),
+        "weakest_layers": list(data.get("weakest_layers", [])),
+        "evidence_paths": refs,
+    }
+    return text, refs, details
+
+
+def maybe_use_evidence_engine(prompt: str, capability: str, signals: dict) -> tuple[bool, str, list[str], dict]:
+    n = normalize(prompt)
+    triggers = (
+        "evidence summary",
+        "what evidence proves artifact inspection",
+        "is memory scar engine really locked",
+        "is living proof graph admissible",
+        "what claims are only documented",
+        "what is admissible right now",
+        "what evidence is weak",
+        "is this release evidence strong",
+    )
+    if not any(t in n for t in triggers):
+        return False, "", [], {}
+    response, refs, details = evidence_engine_answer(prompt, capability, signals)
+    return True, response, refs, details
+
+
 def memory_scar_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], list[str], str]:
     scars = load_memory_scars()
     graph = load_proof_graph_seed()
@@ -995,6 +1259,13 @@ def write_receipt(
     proof_graph_edge_count: int = 0,
     graph_summary: str = "",
     source_files_consulted: Optional[list[str]] = None,
+    evidence_engine_used: bool = False,
+    evidence_items_evaluated: int = 0,
+    evidence_index_path: str = "",
+    evidence_summary_out: str = "",
+    strongest_evidence_level: str = "",
+    weakest_layers: Optional[list[str]] = None,
+    evidence_paths: Optional[list[str]] = None,
 ) -> str:
     RECEIPT_PATH.parent.mkdir(parents=True, exist_ok=True)
     receipt = {
@@ -1031,6 +1302,13 @@ def write_receipt(
         "proof_graph_edge_count": proof_graph_edge_count,
         "graph_summary": graph_summary,
         "source_files_consulted": source_files_consulted or [],
+        "evidence_engine_used": evidence_engine_used,
+        "evidence_items_evaluated": evidence_items_evaluated,
+        "evidence_index_path": evidence_index_path,
+        "evidence_summary_out": evidence_summary_out,
+        "strongest_evidence_level": strongest_evidence_level,
+        "weakest_layers": weakest_layers or [],
+        "evidence_paths": evidence_paths or [],
     }
     if extracted_signals:
         receipt["extracted_signals"] = extracted_signals
@@ -1064,6 +1342,8 @@ def detect_capability(prompt: str) -> str:
         return "verify"
     if "what is wired" in n:
         return "cortex"
+    if "evidence summary" in n or "what evidence" in n or "admissible" in n or "evidence is weak" in n:
+        return "verify"
     if "show proof graph" in n or "connected to proof" in n or "what proves artifact inspection" in n:
         return "cortex"
     if "what is missing" in n:
@@ -1289,7 +1569,25 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
         "proof_graph_edge_count": 0,
         "graph_summary": "",
         "source_files_consulted": [],
+        "evidence_engine_used": False,
+        "evidence_items_evaluated": 0,
+        "evidence_index_path": "",
+        "strongest_evidence_level": "",
+        "weakest_layers": [],
+        "evidence_paths": [],
     }
+
+    evidence_used, evidence_response, evidence_refs, evidence_details = maybe_use_evidence_engine(prompt, capability, signals)
+    if evidence_used:
+        signals["evidence_engine_used"] = True
+        signals["evidence_items_evaluated"] = int(evidence_details.get("evidence_items_evaluated", 0) or 0)
+        signals["evidence_index_path"] = str(evidence_details.get("evidence_index_path", ""))
+        signals["evidence_summary"] = str(evidence_details.get("evidence_summary", ""))
+        signals["strongest_evidence_level"] = str(evidence_details.get("strongest_evidence_level", ""))
+        signals["weakest_layers"] = list(evidence_details.get("weakest_layers", []))
+        signals["evidence_paths"] = list(evidence_details.get("evidence_paths", evidence_refs))
+        signals["artifacts_consulted"] = list(evidence_refs)
+        return capability, evidence_response, signals
 
     graph_used, graph_response, graph_artifacts, graph_details = maybe_use_proof_graph(prompt, capability, signals)
     if graph_used:
@@ -1393,6 +1691,13 @@ def print_diagnostics(capability: str, receipt: str, signals: dict) -> None:
     print(blue("Source files consulted > ") + white("; ".join(srcs) if srcs else "none"))
     ppaths = signals.get("proof_graph_paths", [])
     print(blue("Graph path > ") + white("; ".join(ppaths) if ppaths else "none"))
+    print(blue("Evidence engine used > ") + white(str(bool(signals.get("evidence_engine_used", False))).lower()))
+    print(blue("Evidence items evaluated > ") + white(str(int(signals.get("evidence_items_evaluated", 0) or 0))))
+    print(blue("Highest level > ") + white(str(signals.get("strongest_evidence_level", "")) or "none"))
+    wl = signals.get("weakest_layers", [])
+    print(blue("Weakest layers > ") + white("; ".join(wl) if wl else "none"))
+    epaths = signals.get("evidence_paths", [])
+    print(blue("Evidence paths > ") + white("; ".join(epaths) if epaths else "none"))
     print(blue("Artifacts consulted > ") + white("; ".join(artifacts) if artifacts else "none"))
     print(blue("Evidence summary > ") + white(str(signals.get("evidence_summary", "")) or "none"))
     print(blue("Boundary   > ") + green("LOCAL_ONLY"))
@@ -1437,6 +1742,13 @@ def run_one_shot(prompt: str) -> int:
         proof_graph_edge_count=int(signals.get("proof_graph_edge_count", 0) or 0),
         graph_summary=str(signals.get("graph_summary", "")),
         source_files_consulted=signals.get("source_files_consulted", []),
+        evidence_engine_used=bool(signals.get("evidence_engine_used", False)),
+        evidence_items_evaluated=int(signals.get("evidence_items_evaluated", 0) or 0),
+        evidence_index_path=str(signals.get("evidence_index_path", "")),
+        evidence_summary_out=str(signals.get("evidence_summary", "")),
+        strongest_evidence_level=str(signals.get("strongest_evidence_level", "")),
+        weakest_layers=signals.get("weakest_layers", []),
+        evidence_paths=signals.get("evidence_paths", []),
     )
     print(white(f"Operator > {prompt}"))
     print("")
@@ -1522,6 +1834,13 @@ def run_interactive() -> int:
             proof_graph_edge_count=int(signals.get("proof_graph_edge_count", 0) or 0),
             graph_summary=str(signals.get("graph_summary", "")),
             source_files_consulted=signals.get("source_files_consulted", []),
+            evidence_engine_used=bool(signals.get("evidence_engine_used", False)),
+            evidence_items_evaluated=int(signals.get("evidence_items_evaluated", 0) or 0),
+            evidence_index_path=str(signals.get("evidence_index_path", "")),
+            evidence_summary_out=str(signals.get("evidence_summary", "")),
+            strongest_evidence_level=str(signals.get("strongest_evidence_level", "")),
+            weakest_layers=signals.get("weakest_layers", []),
+            evidence_paths=signals.get("evidence_paths", []),
         )
 
         print("")

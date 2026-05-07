@@ -629,3 +629,10 @@ AION can answer proof-connectivity questions from a local proof graph.
 It links layers, docs, verifiers, receipts, scars, roadmap state, wiring state, and release/package metadata.
 
 See: `docs/LIVING_PROOF_GRAPH_V1.md`.
+
+
+## Evidence Engine V1
+
+AION can classify proof strength (claim/doc/verifier/marker/wired/release/admissible) before trust decisions.
+
+See: `docs/EVIDENCE_ENGINE_V1.md`.

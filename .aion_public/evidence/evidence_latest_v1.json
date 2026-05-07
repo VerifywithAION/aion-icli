@@ -1,0 +1,351 @@
+{
+  "evidence_type": "aion_icli_evidence_engine_v1",
+  "generated_at_utc": "2026-05-07T03:34:22Z",
+  "layers": [
+    {
+      "layer_name": "Public Release V1",
+      "docs_present": true,
+      "verifier_present": true,
+      "verifier_marker_present": true,
+      "roadmap_wired": true,
+      "wiring_report_present": false,
+      "release_packaged": true,
+      "fresh_clone_proven": false,
+      "admissible": false,
+      "receipt_present": false,
+      "claimed": true,
+      "evidence_refs": [
+        "docs\\PUBLIC_RELEASE_LOCK_V1.md",
+        "scripts\\VERIFY_PUBLIC_RELEASE_LOCK_V1.ps1",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public\\proof_graph\\proof_graph_latest_v1.json"
+      ],
+      "evidence_level": "RELEASE_PACKAGED",
+      "evidence_score": 7,
+      "gaps": [
+        "not_in_wiring_report"
+      ],
+      "recommended_next_step": "Maintain verifier and roadmap/wiring sync."
+    },
+    {
+      "layer_name": "User Guide V1",
+      "docs_present": true,
+      "verifier_present": true,
+      "verifier_marker_present": true,
+      "roadmap_wired": false,
+      "wiring_report_present": true,
+      "release_packaged": false,
+      "fresh_clone_proven": false,
+      "admissible": false,
+      "receipt_present": false,
+      "claimed": true,
+      "evidence_refs": [
+        "docs\\USER_GUIDE_V1.md",
+        "scripts\\VERIFY_USER_GUIDE_V1.ps1",
+        ".aion_public/wiring/system_wiring_v1.json",
+        ".aion_public\\proof_graph\\proof_graph_latest_v1.json"
+      ],
+      "evidence_level": "VERIFIER_MARKER_PRESENT",
+      "evidence_score": 5,
+      "gaps": [
+        "not_in_roadmap_completed",
+        "not_in_rebuilt_public_package"
+      ],
+      "recommended_next_step": "Include in next offline bundle/release package proof."
+    },
+    {
+      "layer_name": "Interactive Mode V1",
+      "docs_present": true,
+      "verifier_present": true,
+      "verifier_marker_present": true,
+      "roadmap_wired": true,
+      "wiring_report_present": true,
+      "release_packaged": false,
+      "fresh_clone_proven": false,
+      "admissible": true,
+      "receipt_present": false,
+      "claimed": true,
+      "evidence_refs": [
+        "docs\\INTERACTIVE_MODE_V1.md",
+        "scripts\\VERIFY_INTERACTIVE_MODE_V1.ps1",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        ".aion_public\\proof_graph\\proof_graph_latest_v1.json"
+      ],
+      "evidence_level": "ADMISSIBLE",
+      "evidence_score": 9,
+      "gaps": [
+        "not_in_rebuilt_public_package"
+      ],
+      "recommended_next_step": "Include in next offline bundle/release package proof."
+    },
+    {
+      "layer_name": "Capability Router V1",
+      "docs_present": true,
+      "verifier_present": true,
+      "verifier_marker_present": true,
+      "roadmap_wired": true,
+      "wiring_report_present": true,
+      "release_packaged": false,
+      "fresh_clone_proven": false,
+      "admissible": true,
+      "receipt_present": false,
+      "claimed": true,
+      "evidence_refs": [
+        "docs\\CAPABILITY_ROUTER_V1.md",
+        "scripts\\VERIFY_CAPABILITY_ROUTER_V1.ps1",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        ".aion_public\\proof_graph\\proof_graph_latest_v1.json"
+      ],
+      "evidence_level": "ADMISSIBLE",
+      "evidence_score": 9,
+      "gaps": [
+        "not_in_rebuilt_public_package"
+      ],
+      "recommended_next_step": "Include in next offline bundle/release package proof."
+    },
+    {
+      "layer_name": "Voice Layer V1",
+      "docs_present": true,
+      "verifier_present": true,
+      "verifier_marker_present": true,
+      "roadmap_wired": true,
+      "wiring_report_present": true,
+      "release_packaged": false,
+      "fresh_clone_proven": false,
+      "admissible": true,
+      "receipt_present": false,
+      "claimed": true,
+      "evidence_refs": [
+        "docs\\VOICE_LAYER_V1.md",
+        "scripts\\VERIFY_VOICE_LAYER_V1.ps1",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        ".aion_public\\proof_graph\\proof_graph_latest_v1.json"
+      ],
+      "evidence_level": "ADMISSIBLE",
+      "evidence_score": 9,
+      "gaps": [
+        "not_in_rebuilt_public_package"
+      ],
+      "recommended_next_step": "Include in next offline bundle/release package proof."
+    },
+    {
+      "layer_name": "Adaptive Reasoning Layer V1",
+      "docs_present": true,
+      "verifier_present": true,
+      "verifier_marker_present": true,
+      "roadmap_wired": true,
+      "wiring_report_present": true,
+      "release_packaged": false,
+      "fresh_clone_proven": false,
+      "admissible": true,
+      "receipt_present": false,
+      "claimed": true,
+      "evidence_refs": [
+        "docs\\ADAPTIVE_REASONING_LAYER_V1.md",
+        "scripts\\VERIFY_ADAPTIVE_REASONING_LAYER_V1.ps1",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        ".aion_public\\proof_graph\\proof_graph_latest_v1.json"
+      ],
+      "evidence_level": "ADMISSIBLE",
+      "evidence_score": 9,
+      "gaps": [
+        "not_in_rebuilt_public_package"
+      ],
+      "recommended_next_step": "Include in next offline bundle/release package proof."
+    },
+    {
+      "layer_name": "Governance Brain Adapter V1",
+      "docs_present": true,
+      "verifier_present": true,
+      "verifier_marker_present": true,
+      "roadmap_wired": true,
+      "wiring_report_present": true,
+      "release_packaged": false,
+      "fresh_clone_proven": false,
+      "admissible": true,
+      "receipt_present": false,
+      "claimed": true,
+      "evidence_refs": [
+        "docs\\GOVERNANCE_BRAIN_ADAPTER_V1.md",
+        "scripts\\VERIFY_GOVERNANCE_BRAIN_ADAPTER_V1.ps1",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        ".aion_public\\proof_graph\\proof_graph_latest_v1.json"
+      ],
+      "evidence_level": "ADMISSIBLE",
+      "evidence_score": 9,
+      "gaps": [
+        "not_in_rebuilt_public_package"
+      ],
+      "recommended_next_step": "Include in next offline bundle/release package proof."
+    },
+    {
+      "layer_name": "Governance Brain Integration Fix V1",
+      "docs_present": true,
+      "verifier_present": true,
+      "verifier_marker_present": true,
+      "roadmap_wired": true,
+      "wiring_report_present": true,
+      "release_packaged": false,
+      "fresh_clone_proven": false,
+      "admissible": true,
+      "receipt_present": false,
+      "claimed": true,
+      "evidence_refs": [
+        "docs\\GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.md",
+        "scripts\\VERIFY_GOVERNANCE_BRAIN_INTEGRATION_FIX_V1.ps1",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        ".aion_public\\proof_graph\\proof_graph_latest_v1.json"
+      ],
+      "evidence_level": "ADMISSIBLE",
+      "evidence_score": 9,
+      "gaps": [
+        "not_in_rebuilt_public_package"
+      ],
+      "recommended_next_step": "Include in next offline bundle/release package proof."
+    },
+    {
+      "layer_name": "Memory Scar Engine V1",
+      "docs_present": true,
+      "verifier_present": true,
+      "verifier_marker_present": true,
+      "roadmap_wired": true,
+      "wiring_report_present": true,
+      "release_packaged": false,
+      "fresh_clone_proven": false,
+      "admissible": true,
+      "receipt_present": false,
+      "claimed": true,
+      "evidence_refs": [
+        "docs\\MEMORY_SCAR_ENGINE_V1.md",
+        "scripts\\VERIFY_MEMORY_SCAR_ENGINE_V1.ps1",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        ".aion_public\\proof_graph\\proof_graph_latest_v1.json"
+      ],
+      "evidence_level": "ADMISSIBLE",
+      "evidence_score": 9,
+      "gaps": [
+        "not_in_rebuilt_public_package"
+      ],
+      "recommended_next_step": "Include in next offline bundle/release package proof."
+    },
+    {
+      "layer_name": "Roadmap Sync + End-to-End Wiring Verification V1",
+      "docs_present": true,
+      "verifier_present": true,
+      "verifier_marker_present": false,
+      "roadmap_wired": false,
+      "wiring_report_present": false,
+      "release_packaged": false,
+      "fresh_clone_proven": false,
+      "admissible": false,
+      "receipt_present": false,
+      "claimed": true,
+      "evidence_refs": [
+        "docs\\AION_ICLI_ROADMAP_STATE_V1.md",
+        "scripts\\VERIFY_AION_ICLI_ROADMAP_AND_WIRING_V1.ps1",
+        ".aion_public\\proof_graph\\proof_graph_latest_v1.json"
+      ],
+      "evidence_level": "VERIFIER_PRESENT",
+      "evidence_score": 4,
+      "gaps": [
+        "not_in_roadmap_completed",
+        "not_in_wiring_report",
+        "not_in_rebuilt_public_package"
+      ],
+      "recommended_next_step": "Include in next offline bundle/release package proof."
+    },
+    {
+      "layer_name": "Artifact Inspection Runner V1",
+      "docs_present": true,
+      "verifier_present": true,
+      "verifier_marker_present": true,
+      "roadmap_wired": true,
+      "wiring_report_present": true,
+      "release_packaged": false,
+      "fresh_clone_proven": false,
+      "admissible": true,
+      "receipt_present": false,
+      "claimed": true,
+      "evidence_refs": [
+        "docs\\ARTIFACT_INSPECTION_RUNNER_V1.md",
+        "scripts\\VERIFY_ARTIFACT_INSPECTION_RUNNER_V1.ps1",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        ".aion_public\\proof_graph\\proof_graph_latest_v1.json"
+      ],
+      "evidence_level": "ADMISSIBLE",
+      "evidence_score": 9,
+      "gaps": [
+        "not_in_rebuilt_public_package"
+      ],
+      "recommended_next_step": "Include in next offline bundle/release package proof."
+    },
+    {
+      "layer_name": "Living Proof Graph V1",
+      "docs_present": true,
+      "verifier_present": true,
+      "verifier_marker_present": true,
+      "roadmap_wired": true,
+      "wiring_report_present": true,
+      "release_packaged": false,
+      "fresh_clone_proven": false,
+      "admissible": true,
+      "receipt_present": false,
+      "claimed": true,
+      "evidence_refs": [
+        "docs\\LIVING_PROOF_GRAPH_V1.md",
+        "scripts\\VERIFY_LIVING_PROOF_GRAPH_V1.ps1",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        ".aion_public\\proof_graph\\proof_graph_latest_v1.json"
+      ],
+      "evidence_level": "ADMISSIBLE",
+      "evidence_score": 9,
+      "gaps": [
+        "not_in_rebuilt_public_package"
+      ],
+      "recommended_next_step": "Include in next offline bundle/release package proof."
+    },
+    {
+      "layer_name": "Evidence Engine V1",
+      "docs_present": true,
+      "verifier_present": true,
+      "verifier_marker_present": true,
+      "roadmap_wired": true,
+      "wiring_report_present": true,
+      "release_packaged": false,
+      "fresh_clone_proven": false,
+      "admissible": true,
+      "receipt_present": false,
+      "claimed": true,
+      "evidence_refs": [
+        "docs\\EVIDENCE_ENGINE_V1.md",
+        "scripts\\VERIFY_EVIDENCE_ENGINE_V1.ps1",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        ".aion_public\\proof_graph\\proof_graph_latest_v1.json"
+      ],
+      "evidence_level": "ADMISSIBLE",
+      "evidence_score": 9,
+      "gaps": [
+        "not_in_rebuilt_public_package"
+      ],
+      "recommended_next_step": "Include in next offline bundle/release package proof."
+    }
+  ],
+  "evidence_items_evaluated": 13,
+  "strongest_evidence_level": "ADMISSIBLE",
+  "weakest_layers": [
+    "Roadmap Sync + End-to-End Wiring Verification V1",
+    "User Guide V1",
+    "Public Release V1"
+  ],
+  "public_release_caveat": "Do not overclaim RELEASE_PACKAGED for post-v1.0.0 features until package is rebuilt."
+}
