@@ -94,6 +94,10 @@ SELF_REPAIR_DIR = Path(".aion_public") / "self_repair"
 SELF_REPAIR_PLAN_PATH = SELF_REPAIR_DIR / "self_repair_plan_v1.json"
 SELF_REPAIR_SUMMARY_PATH = SELF_REPAIR_DIR / "self_repair_summary_v1.md"
 SELF_REPAIR_LATEST_PATH = SELF_REPAIR_DIR / "self_repair_latest_v1.json"
+SENTINEL_DIR = Path(".aion_public") / "sentinel"
+SENTINEL_STATE_PATH = SENTINEL_DIR / "sentinel_state_v1.json"
+SENTINEL_SUMMARY_PATH = SENTINEL_DIR / "sentinel_summary_v1.md"
+SENTINEL_LATEST_PATH = SENTINEL_DIR / "sentinel_latest_v1.json"
 
 EVIDENCE_LEVELS = {
     "MISSING": 0,
@@ -944,6 +948,7 @@ def score_evidence_for_layer(layer_name: str) -> dict:
         "Artifact Inspection Runner V1": Path("docs") / "ARTIFACT_INSPECTION_RUNNER_V1.md",
         "Living Proof Graph V1": Path("docs") / "LIVING_PROOF_GRAPH_V1.md",
         "Evidence Engine V1": Path("docs") / "EVIDENCE_ENGINE_V1.md",
+        "Sentinel Consistency Engine V1": Path("docs") / "SENTINEL_CONSISTENCY_ENGINE_V1.md",
     }
     verifier_map = {
         "Public Release V1": "VERIFY_PUBLIC_RELEASE_LOCK_V1.ps1",
@@ -959,6 +964,7 @@ def score_evidence_for_layer(layer_name: str) -> dict:
         "Artifact Inspection Runner V1": "VERIFY_ARTIFACT_INSPECTION_RUNNER_V1.ps1",
         "Living Proof Graph V1": "VERIFY_LIVING_PROOF_GRAPH_V1.ps1",
         "Evidence Engine V1": "VERIFY_EVIDENCE_ENGINE_V1.ps1",
+        "Sentinel Consistency Engine V1": "VERIFY_SENTINEL_CONSISTENCY_ENGINE_V1.ps1",
     }
 
     road = safe_read_json(Path(".aion_public") / "roadmap" / "roadmap_state_v1.json")
@@ -1059,6 +1065,7 @@ def build_evidence_index() -> dict:
         "Artifact Inspection Runner V1",
         "Living Proof Graph V1",
         "Evidence Engine V1",
+        "Sentinel Consistency Engine V1",
     ]
     items = [score_evidence_for_layer(x) for x in layers]
     strongest = max(items, key=lambda x: int(x.get("evidence_score", 0)))
@@ -1771,6 +1778,147 @@ def maybe_use_self_repair_planner(prompt: str, capability: str, signals: dict) -
     return True, response, refs, details
 
 
+
+def compute_sentinel_health(critical_contradictions: int, open_contradictions: int, accepted_caveats: int, ready_for_review: int, missing_required: list[str], highest_severity: str) -> tuple[str, bool, str]:
+    if critical_contradictions > 0:
+        return "BLOCKED", True, "critical_contradictions_present"
+    if highest_severity == "HIGH" and open_contradictions > 0:
+        return "INCONSISTENT", False, "high_open_contradictions_present"
+    if accepted_caveats > 0 and open_contradictions == 0:
+        return "DEGRADED_ACCEPTED_CAVEAT", False, "accepted_caveat_active"
+    if ready_for_review > 0 or missing_required:
+        return "DEGRADED_NEEDS_REPAIR", False, "repair_queue_or_missing_state"
+    if missing_required:
+        return "UNKNOWN", False, "required_state_missing"
+    return "HEALTHY", False, "all_monitored_surfaces_consistent"
+
+
+def build_sentinel_state() -> dict:
+    SENTINEL_DIR.mkdir(parents=True, exist_ok=True)
+    monitored = [
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        str(CONTRADICTION_INDEX_PATH),
+        str(EVIDENCE_INDEX_PATH),
+        str(SELF_REPAIR_PLAN_PATH),
+        str(PROOF_GRAPH_LATEST_PATH),
+        str(SCARS_PATH),
+        "docs/AION_ICLI_SYSTEM_WIRING_REPORT_V1.md",
+        "docs/AION_ICLI_ROADMAP_STATE_V1.md",
+        "scripts/VERIFY_*.ps1",
+    ]
+    missing_required = [p for p in monitored[:-1] if not Path(p).exists()]
+
+    contradictions = load_contradiction_index()
+    repairs = load_self_repair_plan()
+    critical = len([c for c in list(contradictions.get("contradictions", [])) if str(c.get("severity", "")) == "CRITICAL"])
+    open_contra = int(contradictions.get("open_contradictions", 0) or 0)
+    accepted = int(contradictions.get("accepted_caveats", 0) or 0)
+    highest = str(contradictions.get("highest_severity", "INFO"))
+    repair_items = int(repairs.get("repair_items_count", 0) or 0)
+    ready = int(repairs.get("ready_for_review", 0) or 0)
+
+    sentinel_state, blocking, reason = compute_sentinel_health(
+        critical,
+        open_contra,
+        accepted,
+        ready,
+        missing_required,
+        highest,
+    )
+
+    next_action = str(repairs.get("repair_items", [{}])[0].get("repair_id", "review_contradictions")) if repairs.get("repair_items") else "review_contradictions"
+    if sentinel_state == "DEGRADED_ACCEPTED_CAVEAT":
+        next_action = "build_and_verify_offline_bundle_v1_1_0"
+
+    payload = {
+        "sentinel_type": "aion_icli_sentinel_consistency_engine_v1",
+        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "sentinel_state": sentinel_state,
+        "blocking": blocking,
+        "highest_severity": highest,
+        "reasons": [reason],
+        "accepted_caveats": accepted,
+        "open_contradictions": open_contra,
+        "critical_contradictions": critical,
+        "repair_items": repair_items,
+        "next_required_action": next_action,
+        "monitored_surfaces": monitored,
+        "missing_required": missing_required,
+        "public_safe": True,
+    }
+    SENTINEL_STATE_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    SENTINEL_LATEST_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    SENTINEL_SUMMARY_PATH.write_text(
+        "# Sentinel Consistency Engine V1 Summary\n\n"
+        + f"- Sentinel state: {sentinel_state}\n"
+        + f"- Blocking: {str(blocking).lower()}\n"
+        + f"- Highest severity: {highest}\n"
+        + f"- Accepted caveats: {accepted}\n"
+        + f"- Open contradictions: {open_contra}\n"
+        + f"- Repair items: {repair_items}\n"
+        + f"- Next required action: {next_action}\n",
+        encoding="utf-8",
+    )
+    return payload
+
+
+def load_sentinel_state() -> dict:
+    return build_sentinel_state()
+
+
+def summarize_sentinel_state(data: dict) -> str:
+    return (
+        f"AION_SENTINEL_STATE: {data.get('sentinel_state','UNKNOWN')}. "
+        f"Blocking: {str(bool(data.get('blocking', False))).lower()}. "
+        f"Highest severity: {data.get('highest_severity','INFO')}. "
+        f"Next action: {data.get('next_required_action','review_contradictions')}."
+    )
+
+
+def sentinel_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], dict]:
+    data = load_sentinel_state()
+    n = normalize(prompt)
+    refs = [str(SENTINEL_STATE_PATH), str(SENTINEL_SUMMARY_PATH), str(SENTINEL_LATEST_PATH)]
+    if "blocked" in n:
+        text = f"AION_SENTINEL_STATE: {data.get('sentinel_state','UNKNOWN')}. Blocking: {str(bool(data.get('blocking', False))).lower()}."
+    elif "next required action" in n or "what should we monitor" in n:
+        text = f"Sentinel monitors roadmap, wiring, contradictions, evidence, self-repair, proof graph, scars, and verifiers. Next required action: {data.get('next_required_action','review_contradictions')}."
+    else:
+        text = summarize_sentinel_state(data)
+    details = {
+        "sentinel_used": True,
+        "sentinel_state": str(data.get("sentinel_state", "UNKNOWN")),
+        "blocking": bool(data.get("blocking", False)),
+        "highest_severity": str(data.get("highest_severity", "INFO")),
+        "accepted_caveats": int(data.get("accepted_caveats", 0) or 0),
+        "open_contradictions": int(data.get("open_contradictions", 0) or 0),
+        "critical_contradictions": int(data.get("critical_contradictions", 0) or 0),
+        "repair_items": int(data.get("repair_items", 0) or 0),
+        "next_required_action": str(data.get("next_required_action", "review_contradictions")),
+        "sentinel_state_path": str(SENTINEL_STATE_PATH),
+        "sentinel_paths": refs,
+    }
+    return text, refs, details
+
+
+def maybe_use_sentinel(prompt: str, capability: str, signals: dict) -> tuple[bool, str, list[str], dict]:
+    n = normalize(prompt)
+    triggers = (
+        "sentinel state",
+        "system health",
+        "is aion healthy",
+        "is aion blocked",
+        "what is the current status",
+        "is the organism healthy",
+        "what should we monitor",
+        "what is the next required action",
+    )
+    if not any(t in n for t in triggers):
+        return False, "", [], {}
+    response, refs, details = sentinel_answer(prompt, capability, signals)
+    return True, response, refs, details
+
 def memory_scar_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], list[str], str]:
     scars = load_memory_scars()
     graph = load_proof_graph_seed()
@@ -1913,6 +2061,11 @@ def write_receipt(
     ready_for_review: int = 0,
     blocked: int = 0,
     recommended_next_action: str = "",
+    sentinel_used: bool = False,
+    sentinel_state: str = "UNKNOWN",
+    blocking: bool = False,
+    critical_contradictions: int = 0,
+    sentinel_state_path: str = "",
 ) -> str:
     RECEIPT_PATH.parent.mkdir(parents=True, exist_ok=True)
     receipt = {
@@ -1974,6 +2127,11 @@ def write_receipt(
         "ready_for_review": ready_for_review,
         "blocked": blocked,
         "recommended_next_action": recommended_next_action,
+        "sentinel_used": sentinel_used,
+        "sentinel_state": sentinel_state,
+        "blocking": blocking,
+        "critical_contradictions": critical_contradictions,
+        "sentinel_state_path": sentinel_state_path,
     }
     if extracted_signals:
         receipt["extracted_signals"] = extracted_signals
@@ -2012,6 +2170,8 @@ def detect_capability(prompt: str) -> str:
     if "contradiction summary" in n or "what contradicts" in n or "inconsistent" in n or "release stale" in n or "what needs repair" in n or "what drift do you see" in n or "what proof does not match" in n:
         return "verify"
     if "repair plan" in n or "safest repair plan" in n or "fix the stale package" in n or "what should we repair next" in n:
+        return "verify"
+    if "sentinel state" in n or "system health" in n or "is aion healthy" in n or "is aion blocked" in n or "organism healthy" in n or "next required action" in n:
         return "verify"
     if "show proof graph" in n or "connected to proof" in n or "what proves artifact inspection" in n:
         return "cortex"
@@ -2264,7 +2424,29 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
         "blocked": 0,
         "recommended_next_action": "",
         "plan_paths": [],
+        "sentinel_used": False,
+        "sentinel_state": "UNKNOWN",
+        "blocking": False,
+        "critical_contradictions": 0,
+        "sentinel_state_path": "",
+        "sentinel_paths": [],
     }
+
+    sentinel_used, sentinel_response, sentinel_refs, sentinel_details = maybe_use_sentinel(prompt, capability, signals)
+    if sentinel_used:
+        signals["sentinel_used"] = True
+        signals["sentinel_state"] = str(sentinel_details.get("sentinel_state", "UNKNOWN"))
+        signals["blocking"] = bool(sentinel_details.get("blocking", False))
+        signals["highest_severity"] = str(sentinel_details.get("highest_severity", signals.get("highest_severity", "")))
+        signals["accepted_caveats"] = int(sentinel_details.get("accepted_caveats", 0) or 0)
+        signals["open_contradictions"] = int(sentinel_details.get("open_contradictions", 0) or 0)
+        signals["critical_contradictions"] = int(sentinel_details.get("critical_contradictions", 0) or 0)
+        signals["repair_items"] = int(sentinel_details.get("repair_items", 0) or 0)
+        signals["recommended_next_action"] = str(sentinel_details.get("next_required_action", "review_contradictions"))
+        signals["sentinel_state_path"] = str(sentinel_details.get("sentinel_state_path", ""))
+        signals["sentinel_paths"] = list(sentinel_details.get("sentinel_paths", sentinel_refs))
+        signals["artifacts_consulted"] = list(sentinel_refs)
+        return capability, sentinel_response, signals
 
     sr_used, sr_response, sr_refs, sr_details = maybe_use_self_repair_planner(prompt, capability, signals)
     if sr_used:
@@ -2438,6 +2620,11 @@ def print_diagnostics(capability: str, receipt: str, signals: dict) -> None:
     print(blue("Plan path > ") + white(str(signals.get("repair_plan_path", "")) or "none"))
     print(blue("Artifacts consulted > ") + white("; ".join(artifacts) if artifacts else "none"))
     print(blue("Evidence summary > ") + white(str(signals.get("evidence_summary", "")) or "none"))
+    print(blue("Sentinel used > ") + white(str(bool(signals.get("sentinel_used", False))).lower()))
+    print(blue("Sentinel state > ") + white(str(signals.get("sentinel_state", "UNKNOWN"))))
+    print(blue("Blocking > ") + white(str(bool(signals.get("blocking", False))).lower()))
+    print(blue("Critical contradictions > ") + white(str(int(signals.get("critical_contradictions", 0) or 0))))
+    print(blue("State path > ") + white(str(signals.get("sentinel_state_path", "")) or "none"))
     print(blue("Boundary   > ") + green("LOCAL_ONLY"))
     print(blue("Network    > ") + green("NOT_USED"))
     print(blue("Mutation   > ") + green("NOT_PERFORMED"))
@@ -2517,6 +2704,11 @@ def run_one_shot(prompt: str) -> int:
         ready_for_review=int(signals.get("ready_for_review", 0) or 0),
         blocked=int(signals.get("blocked", 0) or 0),
         recommended_next_action=str(signals.get("recommended_next_action", "")),
+        sentinel_used=bool(signals.get("sentinel_used", False)),
+        sentinel_state=str(signals.get("sentinel_state", "UNKNOWN")),
+        blocking=bool(signals.get("blocking", False)),
+        critical_contradictions=int(signals.get("critical_contradictions", 0) or 0),
+        sentinel_state_path=str(signals.get("sentinel_state_path", "")),
     )
     print(white(f"Operator > {prompt}"))
     print("")
@@ -2639,6 +2831,11 @@ def run_interactive() -> int:
             ready_for_review=int(signals.get("ready_for_review", 0) or 0),
             blocked=int(signals.get("blocked", 0) or 0),
             recommended_next_action=str(signals.get("recommended_next_action", "")),
+            sentinel_used=bool(signals.get("sentinel_used", False)),
+            sentinel_state=str(signals.get("sentinel_state", "UNKNOWN")),
+            blocking=bool(signals.get("blocking", False)),
+            critical_contradictions=int(signals.get("critical_contradictions", 0) or 0),
+            sentinel_state_path=str(signals.get("sentinel_state_path", "")),
         )
 
         print("")

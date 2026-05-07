@@ -1,10 +1,10 @@
 {
   "roadmap_type": "aion_icli_public_safe_roadmap_state_v1",
-  "generated_at_utc": "2026-05-07T05:44:48Z",
-  "current_head": "705d5d8",
-  "latest_completed_layer": "Self-Repair Planner V1",
-  "latest_completed_commit": "705d5d8",
-  "next_build_pointer": "Sentinel Consistency Engine V1",
+  "generated_at_utc": "2026-05-07T16:06:44Z",
+  "current_head": "1a9f7ab",
+  "latest_completed_layer": "Sentinel Consistency Engine V1",
+  "latest_completed_commit": "1a9f7ab",
+  "next_build_pointer": "Offline AION CLI Bundle V1.1.0",
   "completed_layers": [
     "Public Release V1",
     "Interactive Mode V1",
@@ -19,11 +19,11 @@
     "Evidence Engine V1",
     "Introspection Gate V1",
     "Contradiction Engine V1",
-    "Self-Repair Planner V1"
+    "Self-Repair Planner V1",
+    "Sentinel Consistency Engine V1"
   ],
   "next_builds": [
-    "Sentinel Consistency Engine V1",
-    "Offline AION CLI Bundle V1 / v1.1.0 package"
+    "Offline AION CLI Bundle V1.1.0"
   ],
   "public_release_caveat": "GitHub Release v1.0.0-public-icli points to an earlier package state; main now contains newer intelligence layers not yet rebuilt into a new ZIP release.",
   "end_to_end_wiring_rule": "A layer is complete only if docs, runtime behavior, verifier coverage, roadmap state, and public-safe boundaries all align.",

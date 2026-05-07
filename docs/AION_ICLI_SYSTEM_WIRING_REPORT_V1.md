@@ -1,6 +1,6 @@
 # AION ICLI System Wiring Report V1
 
-Current head: 705d5d8
+Current head: 1a9f7ab
 
 Each layer below is checked for runtime/docs/verifier/linkage and public-safe boundaries.
 
@@ -22,5 +22,6 @@ Each layer below is checked for runtime/docs/verifier/linkage and public-safe bo
 | Introspection Gate V1 | src/aion_cli_entry.py + .aion_public/introspection/* | docs/INTROSPECTION_GATE_V1.md | VERIFY_INTROSPECTION_GATE_V1.ps1 | true | true | true |
 | Contradiction Engine V1 | src/aion_cli_entry.py + .aion_public/contradictions/* | docs/CONTRADICTION_ENGINE_V1.md | VERIFY_CONTRADICTION_ENGINE_V1.ps1 | true | true | true |
 | Self-Repair Planner V1 | src/aion_cli_entry.py + .aion_public/self_repair/* | docs/SELF_REPAIR_PLANNER_V1.md | VERIFY_SELF_REPAIR_PLANNER_V1.ps1 | true | true | true |
+| Sentinel Consistency Engine V1 | src/aion_cli_entry.py + .aion_public/sentinel/* | docs/SENTINEL_CONSISTENCY_ENGINE_V1.md | VERIFY_SENTINEL_CONSISTENCY_ENGINE_V1.ps1 | true | true | true |
 
 Public-safe boundary remains: LOCAL_ONLY, network NOT_USED, mutation NOT_PERFORMED, execution NOT_PERFORMED.

@@ -1,0 +1,29 @@
+{
+  "sentinel_type": "aion_icli_sentinel_consistency_engine_v1",
+  "generated_at_utc": "2026-05-07T16:10:50Z",
+  "sentinel_state": "DEGRADED_ACCEPTED_CAVEAT",
+  "blocking": false,
+  "highest_severity": "MEDIUM",
+  "reasons": [
+    "accepted_caveat_active"
+  ],
+  "accepted_caveats": 1,
+  "open_contradictions": 0,
+  "critical_contradictions": 0,
+  "repair_items": 2,
+  "next_required_action": "build_and_verify_offline_bundle_v1_1_0",
+  "monitored_surfaces": [
+    ".aion_public/roadmap/roadmap_state_v1.json",
+    ".aion_public/wiring/system_wiring_v1.json",
+    ".aion_public\\contradictions\\contradiction_index_v1.json",
+    ".aion_public\\evidence\\evidence_index_v1.json",
+    ".aion_public\\self_repair\\self_repair_plan_v1.json",
+    ".aion_public\\proof_graph\\proof_graph_latest_v1.json",
+    ".aion_public\\scars\\scars_seed.jsonl",
+    "docs/AION_ICLI_SYSTEM_WIRING_REPORT_V1.md",
+    "docs/AION_ICLI_ROADMAP_STATE_V1.md",
+    "scripts/VERIFY_*.ps1"
+  ],
+  "missing_required": [],
+  "public_safe": true
+}

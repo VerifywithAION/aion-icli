@@ -657,3 +657,14 @@ See: `docs/CONTRADICTION_ENGINE_V1.md`.
 AION can generate review-only repair plans from contradiction and evidence drift signals.
 
 See: `docs/SELF_REPAIR_PLANNER_V1.md`.
+
+
+## Sentinel Consistency Engine V1
+
+AION can report organism health from local roadmap, wiring, contradiction, evidence, proof-graph, and self-repair surfaces.
+
+Sentinel reports one of: HEALTHY, DEGRADED_ACCEPTED_CAVEAT, DEGRADED_NEEDS_REPAIR, INCONSISTENT, BLOCKED, UNKNOWN.
+
+It does not auto-repair; it reports next required action only.
+
+See: `docs/SENTINEL_CONSISTENCY_ENGINE_V1.md`.
