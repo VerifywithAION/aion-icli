@@ -57,6 +57,7 @@ Use these links to jump directly into the public AION ICLI release:
 | Evidence engine | [Evidence Engine V1](docs/EVIDENCE_ENGINE_V1.md) | Admissibility scoring for claims, docs, verifiers, roadmap wiring, and release packaging |
 | Introspection gate | [Introspection Gate V1](docs/INTROSPECTION_GATE_V1.md) | Self-audit before final output to prevent overclaim and boundary leaks |
 | Contradiction engine | [Contradiction Engine V1](docs/CONTRADICTION_ENGINE_V1.md) | Detects roadmap/wiring/evidence/release mismatches and tracks accepted caveats |
+| Self-repair planner | [Self-Repair Planner V1](docs/SELF_REPAIR_PLANNER_V1.md) | Review-only remediation plans for contradictions and evidence gaps |
 | CLI proof | [Governed vs Ungoverned CLI Proof V1](docs/GOVERNED_VS_UNGOVERNED_CLI_PROOF_V1.md) | Difference between invisible trust and governed trust |
 | Acceptance proof | [Connector Stack Acceptance Report V1](reports/CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.md) | Fresh-clone proof of the full connector stack |
 

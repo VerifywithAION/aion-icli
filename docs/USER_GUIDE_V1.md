@@ -650,3 +650,10 @@ See: `docs/INTROSPECTION_GATE_V1.md`.
 AION can detect local proof drift and mismatch across roadmap, wiring, evidence, receipts, and release packaging.
 
 See: `docs/CONTRADICTION_ENGINE_V1.md`.
+
+
+## Self-Repair Planner V1
+
+AION can generate review-only repair plans from contradiction and evidence drift signals.
+
+See: `docs/SELF_REPAIR_PLANNER_V1.md`.

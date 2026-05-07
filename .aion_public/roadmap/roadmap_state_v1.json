@@ -1,10 +1,10 @@
 {
   "roadmap_type": "aion_icli_public_safe_roadmap_state_v1",
-  "generated_at_utc": "2026-05-07T04:07:09Z",
-  "current_head": "4148449",
-  "latest_completed_layer": "Contradiction Engine V1",
-  "latest_completed_commit": "4148449",
-  "next_build_pointer": "Self-Repair Planner V1",
+  "generated_at_utc": "2026-05-07T05:44:48Z",
+  "current_head": "705d5d8",
+  "latest_completed_layer": "Self-Repair Planner V1",
+  "latest_completed_commit": "705d5d8",
+  "next_build_pointer": "Sentinel Consistency Engine V1",
   "completed_layers": [
     "Public Release V1",
     "Interactive Mode V1",
@@ -18,10 +18,10 @@
     "Living Proof Graph V1",
     "Evidence Engine V1",
     "Introspection Gate V1",
-    "Contradiction Engine V1"
+    "Contradiction Engine V1",
+    "Self-Repair Planner V1"
   ],
   "next_builds": [
-    "Self-Repair Planner V1",
     "Sentinel Consistency Engine V1",
     "Offline AION CLI Bundle V1 / v1.1.0 package"
   ],

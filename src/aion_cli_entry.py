@@ -90,6 +90,10 @@ CONTRADICTION_DIR = Path(".aion_public") / "contradictions"
 CONTRADICTION_INDEX_PATH = CONTRADICTION_DIR / "contradiction_index_v1.json"
 CONTRADICTION_SUMMARY_PATH = CONTRADICTION_DIR / "contradiction_summary_v1.md"
 CONTRADICTION_LATEST_PATH = CONTRADICTION_DIR / "contradiction_latest_v1.json"
+SELF_REPAIR_DIR = Path(".aion_public") / "self_repair"
+SELF_REPAIR_PLAN_PATH = SELF_REPAIR_DIR / "self_repair_plan_v1.json"
+SELF_REPAIR_SUMMARY_PATH = SELF_REPAIR_DIR / "self_repair_summary_v1.md"
+SELF_REPAIR_LATEST_PATH = SELF_REPAIR_DIR / "self_repair_latest_v1.json"
 
 EVIDENCE_LEVELS = {
     "MISSING": 0,
@@ -1584,6 +1588,189 @@ def maybe_use_contradiction_engine(prompt: str, capability: str, signals: dict) 
     return True, response, refs, details
 
 
+def plan_repairs_from_contradictions() -> list[dict]:
+    out: list[dict] = []
+    data = safe_read_json(CONTRADICTION_INDEX_PATH)
+    contradictions = list(data.get("contradictions", []))
+    stale = next((x for x in contradictions if str(x.get("type", "")) == "release_package_stale_relative_to_main"), None)
+    if stale:
+        out.append({
+            "repair_id": "rebuild_public_offline_bundle_v1_1_0",
+            "source_type": "package_gap",
+            "severity": "MEDIUM",
+            "status": "ACCEPTED_CAVEAT",
+            "affected_layer": "Public Release V1",
+            "problem": "Public package is stale relative to main layer set.",
+            "why_it_matters": "Public users cannot install the latest verified governance stack from package alone.",
+            "recommended_steps": [
+                "Do not overwrite v1.0.0 release.",
+                "Rebuild public ZIP package from current main.",
+                "Update manifest/report SHA256.",
+                "Run public install package verifier.",
+                "Run fresh ZIP install acceptance test.",
+                "Update release draft/checklist for v1.1.0.",
+                "Tag only after all markers pass.",
+            ],
+            "forbidden_steps": [
+                "Do not pop stash.",
+                "Do not mix unrelated hygiene work.",
+                "Do not call network providers.",
+                "Do not claim fresh-clone proof before running it.",
+            ],
+            "verification_steps": [
+                "Run VERIFY_PUBLIC_INSTALL_PACKAGE_V1.ps1",
+                "Run fresh ZIP install acceptance verifier",
+                "Confirm new SHA256 in manifest/report",
+            ],
+            "rollback_notes": "Keep v1.0.0 untouched; publish v1.1.0 as additive release.",
+            "expected_marker": "AION_PUBLIC_OFFLINE_BUNDLE_V1_1_0_VERIFY_OK",
+            "public_safe": True,
+        })
+    for c in contradictions:
+        status = str(c.get("status", ""))
+        if status in {"OPEN", "NEEDS_REVIEW"}:
+            out.append({
+                "repair_id": f"repair_{str(c.get('contradiction_id','x'))}",
+                "source_type": "contradiction",
+                "severity": str(c.get("severity", "LOW")),
+                "status": "READY_FOR_REVIEW",
+                "affected_layer": str(c.get("affected_layer", "")),
+                "problem": str(c.get("claim", "")),
+                "why_it_matters": "Unresolved contradiction weakens admissibility and trust.",
+                "recommended_steps": [str(c.get("recommended_repair", "Review contradiction and patch evidence/docs/verifier alignment."))],
+                "forbidden_steps": ["Do not auto-edit unrelated files.", "Do not claim resolved before verifier passes."],
+                "verification_steps": ["Run layer verifier", "Run roadmap/wiring verifier", "Re-run contradiction verifier"],
+                "rollback_notes": "If repair regresses verifiers, revert only scoped repair files.",
+                "expected_marker": "AION_CONTRADICTION_ENGINE_V1_VERIFY_OK",
+                "public_safe": True,
+            })
+    return out
+
+
+def plan_repairs_from_evidence_gaps() -> list[dict]:
+    out: list[dict] = []
+    evidence = safe_read_json(EVIDENCE_INDEX_PATH)
+    for item in list(evidence.get("layers", [])):
+        level = str(item.get("evidence_level", "MISSING"))
+        layer = str(item.get("layer_name", ""))
+        if level == "ROADMAP_WIRED" and (not bool(item.get("release_packaged", False)) or not bool(item.get("fresh_clone_proven", False))):
+            out.append({
+                "repair_id": f"bundle_gap_{layer.lower().replace(' ','_')}",
+                "source_type": "evidence_gap",
+                "severity": "LOW",
+                "status": "PROPOSED",
+                "affected_layer": layer,
+                "problem": f"{layer} is roadmap-wired but not package/fresh-clone proven.",
+                "why_it_matters": "Public distribution proof is incomplete for this layer.",
+                "recommended_steps": ["Include layer in next offline bundle.", "Run fresh-clone acceptance for this layer."],
+                "forbidden_steps": ["Do not mark RELEASE_PACKAGED before package proof exists."],
+                "verification_steps": ["Run evidence verifier", "Run package verifier"],
+                "rollback_notes": "Keep release claims at ROADMAP_WIRED until package proof is confirmed.",
+                "expected_marker": "AION_PUBLIC_OFFLINE_BUNDLE_V1_1_0_VERIFY_OK",
+                "public_safe": True,
+            })
+    return out
+
+
+def build_self_repair_plan() -> dict:
+    SELF_REPAIR_DIR.mkdir(parents=True, exist_ok=True)
+    repairs = []
+    repairs.extend(plan_repairs_from_contradictions())
+    repairs.extend(plan_repairs_from_evidence_gaps())
+    sev_order = {"INFO": 0, "LOW": 1, "MEDIUM": 2, "HIGH": 3, "CRITICAL": 4}
+    highest = "INFO"
+    for r in repairs:
+        s = str(r.get("severity", "INFO"))
+        if sev_order.get(s, 0) > sev_order.get(highest, 0):
+            highest = s
+    ready = len([r for r in repairs if str(r.get("status", "")) == "READY_FOR_REVIEW"])
+    blocked = len([r for r in repairs if str(r.get("status", "")) == "BLOCKED"])
+    payload = {
+        "plan_id": "aion_icli_self_repair_plan_v1",
+        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "source_inputs": [str(CONTRADICTION_INDEX_PATH), str(EVIDENCE_INDEX_PATH), ".aion_public/roadmap/roadmap_state_v1.json", ".aion_public/wiring/system_wiring_v1.json"],
+        "repair_items": repairs,
+        "repair_items_count": len(repairs),
+        "highest_severity": highest,
+        "ready_for_review": ready,
+        "blocked": blocked,
+    }
+    SELF_REPAIR_PLAN_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    SELF_REPAIR_LATEST_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    SELF_REPAIR_SUMMARY_PATH.write_text(
+        "# Self-Repair Planner V1 Summary\n\n"
+        + f"- Repair items: {len(repairs)}\n"
+        + f"- Highest severity: {highest}\n"
+        + f"- Ready for review: {ready}\n"
+        + f"- Blocked: {blocked}\n",
+        encoding="utf-8",
+    )
+    return payload
+
+
+def load_self_repair_plan() -> dict:
+    return build_self_repair_plan()
+
+
+def summarize_self_repair_plan(data: dict) -> str:
+    return (
+        f"Repair items: {int(data.get('repair_items_count', 0))}. "
+        f"Highest severity: {data.get('highest_severity', 'INFO')}. "
+        f"Ready for review: {int(data.get('ready_for_review', 0))}."
+    )
+
+
+def self_repair_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], dict]:
+    data = load_self_repair_plan()
+    items = list(data.get("repair_items", []))
+    n = normalize(prompt)
+    refs = [str(SELF_REPAIR_PLAN_PATH), str(SELF_REPAIR_SUMMARY_PATH), str(SELF_REPAIR_LATEST_PATH)]
+    stale_item = next((x for x in items if str(x.get("repair_id", "")) == "rebuild_public_offline_bundle_v1_1_0"), None)
+    if "stale package" in n or "fix the stale package" in n:
+        if stale_item:
+            text = (
+                "Safest repair: accepted stale-package caveat. Do not overwrite v1.0.0. "
+                "Build v1.1.0 offline bundle from current main, update SHA reports, run package verifier and fresh ZIP acceptance, then tag only after markers pass."
+            )
+        else:
+            text = "No stale-package repair item detected right now."
+    elif "what should we repair next" in n or "what should i do next" in n or "safest repair plan" in n:
+        text = (
+            "Next repair priority: "
+            + (str(stale_item.get("repair_id", "")) if stale_item else "review OPEN/NEEDS_REVIEW contradictions")
+            + ". Planner is review-only and does not modify files."
+        )
+    else:
+        text = summarize_self_repair_plan(data)
+    details = {
+        "self_repair_planner_used": True,
+        "repair_plan_path": str(SELF_REPAIR_PLAN_PATH),
+        "repair_items": int(data.get("repair_items_count", 0)),
+        "highest_severity": str(data.get("highest_severity", "INFO")),
+        "ready_for_review": int(data.get("ready_for_review", 0)),
+        "blocked": int(data.get("blocked", 0)),
+        "recommended_next_action": "rebuild_public_offline_bundle_v1_1_0" if stale_item else "review_open_repairs",
+        "plan_paths": refs,
+    }
+    return text, refs, details
+
+
+def maybe_use_self_repair_planner(prompt: str, capability: str, signals: dict) -> tuple[bool, str, list[str], dict]:
+    n = normalize(prompt)
+    triggers = (
+        "repair plan",
+        "what should we repair next",
+        "how do we fix the stale package",
+        "what is the safest repair plan",
+        "what should i do next",
+        "what needs repair",
+    )
+    if not any(t in n for t in triggers):
+        return False, "", [], {}
+    response, refs, details = self_repair_answer(prompt, capability, signals)
+    return True, response, refs, details
+
+
 def memory_scar_answer(prompt: str, capability: str, signals: dict) -> tuple[str, list[str], list[str], str]:
     scars = load_memory_scars()
     graph = load_proof_graph_seed()
@@ -1720,6 +1907,12 @@ def write_receipt(
     highest_severity: str = "",
     contradiction_index_path: str = "",
     contradiction_summary: str = "",
+    self_repair_planner_used: bool = False,
+    repair_plan_path: str = "",
+    repair_items: int = 0,
+    ready_for_review: int = 0,
+    blocked: int = 0,
+    recommended_next_action: str = "",
 ) -> str:
     RECEIPT_PATH.parent.mkdir(parents=True, exist_ok=True)
     receipt = {
@@ -1775,6 +1968,12 @@ def write_receipt(
         "highest_severity": highest_severity,
         "contradiction_index_path": contradiction_index_path,
         "contradiction_summary": contradiction_summary,
+        "self_repair_planner_used": self_repair_planner_used,
+        "repair_plan_path": repair_plan_path,
+        "repair_items": repair_items,
+        "ready_for_review": ready_for_review,
+        "blocked": blocked,
+        "recommended_next_action": recommended_next_action,
     }
     if extracted_signals:
         receipt["extracted_signals"] = extracted_signals
@@ -1811,6 +2010,8 @@ def detect_capability(prompt: str) -> str:
     if "evidence summary" in n or "what evidence" in n or "admissible" in n or "evidence is weak" in n:
         return "verify"
     if "contradiction summary" in n or "what contradicts" in n or "inconsistent" in n or "release stale" in n or "what needs repair" in n or "what drift do you see" in n or "what proof does not match" in n:
+        return "verify"
+    if "repair plan" in n or "safest repair plan" in n or "fix the stale package" in n or "what should we repair next" in n:
         return "verify"
     if "show proof graph" in n or "connected to proof" in n or "what proves artifact inspection" in n:
         return "cortex"
@@ -2056,7 +2257,27 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
         "contradiction_index_path": "",
         "contradiction_summary": "",
         "contradiction_paths": [],
+        "self_repair_planner_used": False,
+        "repair_plan_path": "",
+        "repair_items": 0,
+        "ready_for_review": 0,
+        "blocked": 0,
+        "recommended_next_action": "",
+        "plan_paths": [],
     }
+
+    sr_used, sr_response, sr_refs, sr_details = maybe_use_self_repair_planner(prompt, capability, signals)
+    if sr_used:
+        signals["self_repair_planner_used"] = True
+        signals["repair_plan_path"] = str(sr_details.get("repair_plan_path", ""))
+        signals["repair_items"] = int(sr_details.get("repair_items", 0) or 0)
+        signals["highest_severity"] = str(sr_details.get("highest_severity", signals.get("highest_severity", "")))
+        signals["ready_for_review"] = int(sr_details.get("ready_for_review", 0) or 0)
+        signals["blocked"] = int(sr_details.get("blocked", 0) or 0)
+        signals["recommended_next_action"] = str(sr_details.get("recommended_next_action", ""))
+        signals["plan_paths"] = list(sr_details.get("plan_paths", sr_refs))
+        signals["artifacts_consulted"] = list(sr_refs)
+        return capability, sr_response, signals
 
     contradiction_used, contradiction_response, contradiction_refs, contradiction_details = maybe_use_contradiction_engine(prompt, capability, signals)
     if contradiction_used:
@@ -2210,6 +2431,11 @@ def print_diagnostics(capability: str, receipt: str, signals: dict) -> None:
     print(blue("Highest severity > ") + white(str(signals.get("highest_severity", "")) or "none"))
     cpaths = signals.get("contradiction_paths", [])
     print(blue("Contradiction paths > ") + white("; ".join(cpaths) if cpaths else "none"))
+    print(blue("Self-repair planner used > ") + white(str(bool(signals.get("self_repair_planner_used", False))).lower()))
+    print(blue("Repair items > ") + white(str(int(signals.get("repair_items", 0) or 0))))
+    print(blue("Ready for review > ") + white(str(int(signals.get("ready_for_review", 0) or 0))))
+    print(blue("Blocked > ") + white(str(int(signals.get("blocked", 0) or 0))))
+    print(blue("Plan path > ") + white(str(signals.get("repair_plan_path", "")) or "none"))
     print(blue("Artifacts consulted > ") + white("; ".join(artifacts) if artifacts else "none"))
     print(blue("Evidence summary > ") + white(str(signals.get("evidence_summary", "")) or "none"))
     print(blue("Boundary   > ") + green("LOCAL_ONLY"))
@@ -2285,6 +2511,12 @@ def run_one_shot(prompt: str) -> int:
         highest_severity=str(signals.get("highest_severity", "")),
         contradiction_index_path=str(signals.get("contradiction_index_path", "")),
         contradiction_summary=str(signals.get("contradiction_summary", "")),
+        self_repair_planner_used=bool(signals.get("self_repair_planner_used", False)),
+        repair_plan_path=str(signals.get("repair_plan_path", "")),
+        repair_items=int(signals.get("repair_items", 0) or 0),
+        ready_for_review=int(signals.get("ready_for_review", 0) or 0),
+        blocked=int(signals.get("blocked", 0) or 0),
+        recommended_next_action=str(signals.get("recommended_next_action", "")),
     )
     print(white(f"Operator > {prompt}"))
     print("")
@@ -2401,6 +2633,12 @@ def run_interactive() -> int:
             highest_severity=str(signals.get("highest_severity", "")),
             contradiction_index_path=str(signals.get("contradiction_index_path", "")),
             contradiction_summary=str(signals.get("contradiction_summary", "")),
+            self_repair_planner_used=bool(signals.get("self_repair_planner_used", False)),
+            repair_plan_path=str(signals.get("repair_plan_path", "")),
+            repair_items=int(signals.get("repair_items", 0) or 0),
+            ready_for_review=int(signals.get("ready_for_review", 0) or 0),
+            blocked=int(signals.get("blocked", 0) or 0),
+            recommended_next_action=str(signals.get("recommended_next_action", "")),
         )
 
         print("")

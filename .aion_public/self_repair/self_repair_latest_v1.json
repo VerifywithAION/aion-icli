@@ -1,0 +1,72 @@
+{
+  "plan_id": "aion_icli_self_repair_plan_v1",
+  "generated_at_utc": "2026-05-07T05:45:56Z",
+  "source_inputs": [
+    ".aion_public\\contradictions\\contradiction_index_v1.json",
+    ".aion_public\\evidence\\evidence_index_v1.json",
+    ".aion_public/roadmap/roadmap_state_v1.json",
+    ".aion_public/wiring/system_wiring_v1.json"
+  ],
+  "repair_items": [
+    {
+      "repair_id": "rebuild_public_offline_bundle_v1_1_0",
+      "source_type": "package_gap",
+      "severity": "MEDIUM",
+      "status": "ACCEPTED_CAVEAT",
+      "affected_layer": "Public Release V1",
+      "problem": "Public package is stale relative to main layer set.",
+      "why_it_matters": "Public users cannot install the latest verified governance stack from package alone.",
+      "recommended_steps": [
+        "Do not overwrite v1.0.0 release.",
+        "Rebuild public ZIP package from current main.",
+        "Update manifest/report SHA256.",
+        "Run public install package verifier.",
+        "Run fresh ZIP install acceptance test.",
+        "Update release draft/checklist for v1.1.0.",
+        "Tag only after all markers pass."
+      ],
+      "forbidden_steps": [
+        "Do not pop stash.",
+        "Do not mix unrelated hygiene work.",
+        "Do not call network providers.",
+        "Do not claim fresh-clone proof before running it."
+      ],
+      "verification_steps": [
+        "Run VERIFY_PUBLIC_INSTALL_PACKAGE_V1.ps1",
+        "Run fresh ZIP install acceptance verifier",
+        "Confirm new SHA256 in manifest/report"
+      ],
+      "rollback_notes": "Keep v1.0.0 untouched; publish v1.1.0 as additive release.",
+      "expected_marker": "AION_PUBLIC_OFFLINE_BUNDLE_V1_1_0_VERIFY_OK",
+      "public_safe": true
+    },
+    {
+      "repair_id": "repair_missing_wiring_public_release_v1",
+      "source_type": "contradiction",
+      "severity": "MEDIUM",
+      "status": "READY_FOR_REVIEW",
+      "affected_layer": "Public Release V1",
+      "problem": "Public Release V1 is completed",
+      "why_it_matters": "Unresolved contradiction weakens admissibility and trust.",
+      "recommended_steps": [
+        "Add wiring layer row with verifier/docs/runtime references."
+      ],
+      "forbidden_steps": [
+        "Do not auto-edit unrelated files.",
+        "Do not claim resolved before verifier passes."
+      ],
+      "verification_steps": [
+        "Run layer verifier",
+        "Run roadmap/wiring verifier",
+        "Re-run contradiction verifier"
+      ],
+      "rollback_notes": "If repair regresses verifiers, revert only scoped repair files.",
+      "expected_marker": "AION_CONTRADICTION_ENGINE_V1_VERIFY_OK",
+      "public_safe": true
+    }
+  ],
+  "repair_items_count": 2,
+  "highest_severity": "MEDIUM",
+  "ready_for_review": 1,
+  "blocked": 0
+}
