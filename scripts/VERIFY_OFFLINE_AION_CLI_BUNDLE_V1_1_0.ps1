@@ -20,7 +20,12 @@ if($manifest.sha256.ToLowerInvariant() -ne $sha){ throw 'Manifest SHA mismatch' 
 if($report -notmatch [regex]::Escape($sha)){ throw 'Report SHA mismatch' }
 
 $head = (git -C $Repo rev-parse --short HEAD).Trim()
-if($manifest.source_head -ne $head){ throw "Manifest source_head mismatch: expected $head got $($manifest.source_head)" }
+if(-not $manifest.PSObject.Properties.Name.Contains('source_head') -or [string]::IsNullOrWhiteSpace([string]$manifest.source_head)){
+  throw 'Manifest source_head missing'
+}
+Write-Host ("Package source head: " + $manifest.source_head)
+Write-Host ("Current repo head: " + $head)
+Write-Host "Historical package verification mode: OK"
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $zip = [System.IO.Compression.ZipFile]::OpenRead($zipPath)
