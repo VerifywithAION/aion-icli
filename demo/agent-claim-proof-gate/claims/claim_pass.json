@@ -1,0 +1,6 @@
+{
+  "claim_id": "claim_pass",
+  "claim_text": "Feature pass documentation exists and includes verifier proof marker.",
+  "artifact_path": "demo/agent-claim-proof-gate/artifacts/feature_pass.md",
+  "expected_decision": "PASS"
+}

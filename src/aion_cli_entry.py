@@ -2179,6 +2179,8 @@ def detect_capability(prompt: str) -> str:
         return "verify"
     if "sentinel state" in n or "system health" in n or "is aion healthy" in n or "is aion blocked" in n or "organism healthy" in n or "next required action" in n:
         return "verify"
+    if "run agent claim demo" in n or "agent claim proof gate" in n or "prove agent claim" in n or "your agent said it was done" in n:
+        return "verify"
     if "show proof graph" in n or "connected to proof" in n or "what proves artifact inspection" in n:
         return "cortex"
     if "what is missing" in n:
@@ -2376,6 +2378,23 @@ def build_response(prompt: str, diagnostics_on: bool) -> tuple[str, str, dict]:
 
     if capability == "capabilities":
         return "capabilities", format_capability_list(), {}
+
+    if "run agent claim demo" in n or "agent claim proof gate" in n or "prove agent claim" in n or "your agent said it was done" in n:
+        msg = "AION can run the local Agent Claim vs Proof Gate demo. It compares claims against artifacts and returns PASS/WARN/BLOCK without network, mutation, or execution. Run: powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\RUN_AGENT_CLAIM_PROOF_GATE_DEMO_V1.ps1"
+        out_json = Path("demo") / "agent-claim-proof-gate" / "output" / "agent_claim_proof_gate_results_v1.json"
+        if out_json.exists():
+            try:
+                data = json.loads(safe_read_text(out_json) or "{}")
+                scenarios = data.get("scenarios", []) if isinstance(data, dict) else []
+                counts = {"PASS":0,"WARN":0,"BLOCK":0}
+                for s in scenarios:
+                    d = str(s.get("decision",""))
+                    if d in counts:
+                        counts[d] += 1
+                msg += f" Latest local results: PASS={counts['PASS']} WARN={counts['WARN']} BLOCK={counts['BLOCK']}."
+            except Exception:
+                pass
+        return "verify", msg, {}
 
     signals = {
         "subject": extract_subject(prompt),

@@ -1,0 +1,6 @@
+{
+  "claim_id": "claim_block",
+  "claim_text": "Feature missing is complete and verified.",
+  "artifact_path": "demo/agent-claim-proof-gate/artifacts/missing_feature.md",
+  "expected_decision": "BLOCK"
+}

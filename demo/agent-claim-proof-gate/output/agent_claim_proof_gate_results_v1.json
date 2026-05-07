@@ -1,0 +1,45 @@
+﻿{
+    "demo":  "agent_claim_proof_gate_v1",
+    "generated_at_utc":  "2026-05-07T18:15:23Z",
+    "scenarios":  [
+                      {
+                          "claim_id":  "claim_block",
+                          "claim_text":  "Feature missing is complete and verified.",
+                          "artifact_path":  "demo/agent-claim-proof-gate/artifacts/missing_feature.md",
+                          "artifact_exists":  false,
+                          "evidence_level":  "MISSING_ARTIFACT",
+                          "decision":  "BLOCK",
+                          "reasons":  [
+                                          "artifact_missing"
+                                      ],
+                          "recommended_next_step":  "Provide artifact path and regenerate claim with evidence.",
+                          "receipt_like_summary":  "LOCAL_ONLY|NOT_USED|NOT_PERFORMED|NOT_PERFORMED"
+                      },
+                      {
+                          "claim_id":  "claim_pass",
+                          "claim_text":  "Feature pass documentation exists and includes verifier proof marker.",
+                          "artifact_path":  "demo/agent-claim-proof-gate/artifacts/feature_pass.md",
+                          "artifact_exists":  true,
+                          "evidence_level":  "ADMISSIBLE",
+                          "decision":  "PASS",
+                          "reasons":  [
+                                          "artifact_present_with_proof_marker"
+                                      ],
+                          "recommended_next_step":  "Maintain verifier linkage.",
+                          "receipt_like_summary":  "LOCAL_ONLY|NOT_USED|NOT_PERFORMED|NOT_PERFORMED"
+                      },
+                      {
+                          "claim_id":  "claim_warn",
+                          "claim_text":  "Feature warn documentation exists but may lack verifier marker.",
+                          "artifact_path":  "demo/agent-claim-proof-gate/artifacts/feature_warn.md",
+                          "artifact_exists":  true,
+                          "evidence_level":  "DOC_ONLY",
+                          "decision":  "WARN",
+                          "reasons":  [
+                                          "artifact_present_without_verifier_marker"
+                                      ],
+                          "recommended_next_step":  "Add verifier marker and rerun proof gate.",
+                          "receipt_like_summary":  "LOCAL_ONLY|NOT_USED|NOT_PERFORMED|NOT_PERFORMED"
+                      }
+                  ]
+}

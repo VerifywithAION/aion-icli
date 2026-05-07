@@ -677,3 +677,10 @@ The v1.1.0 offline bundle is the current package for the post-v1.0.0 intelligenc
 - Doc: `docs/OFFLINE_AION_CLI_BUNDLE_V1_1_0.md`
 - Report: `reports/OFFLINE_AION_CLI_BUNDLE_V1_1_0_REPORT.md`
 - Manifest: `packaging/offline-bundle-v1.1.0/offline_bundle_v1_1_0.manifest.json`
+
+
+## Agent Claim vs AION Proof Gate Demo V1
+
+Your agent said it was done. AION checks whether the claim is admissible against local evidence.
+
+See: `docs/AGENT_CLAIM_PROOF_GATE_DEMO_V1.md`.

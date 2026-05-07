@@ -1,0 +1,6 @@
+{
+  "claim_id": "claim_warn",
+  "claim_text": "Feature warn documentation exists but may lack verifier marker.",
+  "artifact_path": "demo/agent-claim-proof-gate/artifacts/feature_warn.md",
+  "expected_decision": "WARN"
+}

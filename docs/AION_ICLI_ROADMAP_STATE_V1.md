@@ -1,6 +1,6 @@
 # AION ICLI Roadmap State V1
 
-Current repo head: 5532ae2
+Current repo head: fdff15a
 
 ## Completed layers
 
@@ -20,6 +20,7 @@ Current repo head: 5532ae2
 - Self-Repair Planner V1
 - Sentinel Consistency Engine V1
 - Offline AION CLI Bundle V1.1.0
+- Public Demo: Agent Claim vs AION Proof Gate V1
 
 ## End-to-end wiring rule
 
@@ -35,4 +36,4 @@ GitHub Release `v1.0.0-public-icli` points to an earlier package state. Main now
 
 ## Next build pointer
 
-Public Demo: Agent Claim vs AION Proof Gate V1
+Public Demo Package + README Demo Section V1
