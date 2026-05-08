@@ -33,7 +33,8 @@ MEMORY_SCARS = [
 ]
 
 SAFE_EXTENSIONS = {
-    ".ps1", ".py", ".js", ".ts", ".tsx", ".json", ".md", ".txt", ".yaml", ".yml", ".cmd", ".bat", ".sh"
+    ".ps1", ".py", ".js", ".ts", ".tsx", ".html", ".htm", ".css",
+    ".json", ".md", ".txt", ".yaml", ".yml", ".cmd", ".bat", ".sh"
 }
 
 FORBIDDEN_PARTS = {
@@ -502,3 +503,5 @@ def main(argv):
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv))
+
+

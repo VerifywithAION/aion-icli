@@ -1,0 +1,41 @@
+{
+  "receipt_type": "aion_cli_receipt_v1",
+  "generated_at_utc": "2026-05-08T19:14:38Z",
+  "prompt": "should I run demo_governed_agents\\web3_wallet_landing_page.html?",
+  "response": "I inspected the local artifact read-only: demo_governed_agents\\web3_wallet_landing_page.html. Decision: REVIEW_ONLY. Risk: HIGH. Detected pattern groups: secret. Missing controls: rollback, dry-run. I did not execute it, did not use the network, and did not mutate files.",
+  "capability": "artifact_inspection",
+  "boundary": "LOCAL_ONLY",
+  "network": "NOT_USED",
+  "mutation": "NOT_PERFORMED",
+  "execution": "NOT_PERFORMED",
+  "governance_tone": "felt_not_seen",
+  "governance_brain_used": false,
+  "memory_scar_engine_used": false,
+  "artifact_inspection_used": true,
+  "artifacts_consulted": [
+    "demo_governed_agents\\web3_wallet_landing_page.html"
+  ],
+  "inspection": {
+    "allowed": true,
+    "path": "demo_governed_agents\\web3_wallet_landing_page.html",
+    "size_bytes": 2079,
+    "file_type": ".html",
+    "decision": "REVIEW_ONLY",
+    "risk_level": "HIGH",
+    "detected_patterns": {
+      "secret": [
+        "token",
+        "seed phrase"
+      ]
+    },
+    "missing_controls": [
+      "rollback",
+      "dry-run"
+    ],
+    "reasons": [
+      "secret-like terms detected"
+    ],
+    "recommended_next_step": "Review the file and run only the matching verifier/dry-run path. Do not auto-execute."
+  },
+  "next_pointer": "Public Release v1.2.0 Demo Gate"
+}

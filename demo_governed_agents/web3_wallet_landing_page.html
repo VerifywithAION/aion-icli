@@ -1,0 +1,25 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Web3 Wallet Preview Demo</title>
+  <style>body{font-family:Arial;background:#08111f;color:#e8f2ff;padding:40px}.card{max-width:760px;margin:auto;background:#101d33;border:1px solid #2d4d7a;border-radius:18px;padding:28px}button{background:#2f80ed;color:white;border:0;padding:12px 18px;border-radius:10px}.warning{background:#3a2410;border:1px solid #ffb347;padding:14px;border-radius:10px;margin-top:18px}.preview{background:#06101d;border:1px solid #294e77;padding:14px;border-radius:10px;margin-top:18px;white-space:pre-wrap}</style>
+</head>
+<body>
+  <main class="card">
+    <h1>Web3 Wallet Connection</h1>
+    <p>This page simulates a wallet connection and transaction preview flow.</p>
+    <button onclick="connectWallet()">Connect Wallet</button>
+    <button onclick="previewTransaction()">Preview Transaction</button>
+    <button onclick="confirmTransaction()">Confirm Transaction</button>
+    <section class="warning"><strong>Safety Checklist</strong><ul><li>Verify recipient address before signing.</li><li>Review chain ID and network name.</li><li>Confirm token amount and gas estimate.</li><li>Never paste a seed phrase.</li></ul></section>
+    <section id="output" class="preview">No wallet connected.</section>
+  </main>
+  <script>
+    let connectedAddress = null;
+    function connectWallet(){connectedAddress="0xDEMO000000000000000000000000000000000000";document.getElementById("output").innerText="Wallet connected: "+connectedAddress;}
+    function previewTransaction(){const preview={chain:"Ethereum Sepolia",chainId:11155111,recipient:"0x1111111111111111111111111111111111111111",value:"0.01 ETH",gasEstimate:"21000",warning:"Simulated preview only. No transaction sent."};document.getElementById("output").innerText="Transaction Preview: "+JSON.stringify(preview,null,2);}
+    function confirmTransaction(){document.getElementById("output").innerText="SIMULATED CONFIRMATION ONLY. No real wallet, no signatures, no broadcast.";}
+  </script>
+</body>
+</html>
