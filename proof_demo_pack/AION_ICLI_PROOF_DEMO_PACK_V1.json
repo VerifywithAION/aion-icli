@@ -1,0 +1,54 @@
+﻿{
+    "generated_at_utc":  "2026-05-08T00:57:41.1992320Z",
+    "repository":  "C:\\Lab_Research\\aion-icli",
+    "current_head":  "49b27b5ee6ad4a433295933b9de5833179a9303b",
+    "git_state":  "clean",
+    "thesis":  "Most AI tools generate claims.\nAION ICLI checks whether a claim is admissible.",
+    "useful_proofs":  {
+                          "memory_scars":  {
+                                               "marker":  "AION_MEMORY_SCAR_ENGINE_V1_VERIFY_OK",
+                                               "purpose":  "Stores operational failure memories and governance lessons."
+                                           },
+                          "release_verification":  {
+                                                       "marker":  "AION_ICLI_RELEASE_EVIDENCE_INDEX_V1_VERIFY_OK",
+                                                       "purpose":  "Verifies release lineage and package integrity."
+                                                   },
+                          "artifact_inspection":  {
+                                                      "marker":  "AION_ARTIFACT_INSPECTION_RUNNER_V1_VERIFY_OK",
+                                                      "purpose":  "Inspects local artifacts read-only before trust."
+                                                  },
+                          "governance_brain":  {
+                                                   "marker":  "AION_GOVERNANCE_BRAIN_ADAPTER_V1_VERIFY_OK",
+                                                   "purpose":  "Answers from local evidence and release state."
+                                               },
+                          "roadmap_governance":  {
+                                                     "marker":  "AION_ICLI_ROADMAP_AND_WIRING_V1_VERIFY_OK",
+                                                     "purpose":  "Prevents roadmap and implementation drift."
+                                                 }
+                      },
+    "markers":  [
+                    "AION_ICLI_PUBLIC_SAFE_VERIFY_OK",
+                    "AION_PUBLIC_INSTALL_PACKAGE_V1_VERIFY_OK",
+                    "AION_OFFLINE_CLI_BUNDLE_V1_1_0_VERIFY_OK",
+                    "AION_PUBLIC_DEMO_RELEASE_PACK_V1_VERIFY_OK",
+                    "AION_PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1_PASS",
+                    "AION_ICLI_RELEASE_EVIDENCE_INDEX_V1_VERIFY_OK",
+                    "AION_GOVERNANCE_BRAIN_ADAPTER_V1_VERIFY_OK",
+                    "AION_GOVERNANCE_BRAIN_INTEGRATION_FIX_V1_VERIFY_OK",
+                    "AION_MEMORY_SCAR_ENGINE_V1_VERIFY_OK",
+                    "AION_ARTIFACT_INSPECTION_RUNNER_V1_VERIFY_OK",
+                    "AION_ICLI_ROADMAP_AND_WIRING_V1_VERIFY_OK"
+                ],
+    "recent_commits":  [
+                           "49b27b5 Add AION ICLI release evidence index v1",
+                           "ad7037b Fix offline bundle verifier historical head mode",
+                           "77d9a4f Add AION public demo release pack v1",
+                           "a4117e6 Add public demo fresh clone acceptance v1",
+                           "f06d7af Add public demo README section v1",
+                           "f04f6f6 Add AION agent claim proof gate demo v1",
+                           "fdff15a Package AION ICLI offline bundle v1.1.0",
+                           "5532ae2 Lock regenerated Sentinel V1 state outputs",
+                           "3368809 Wire AION ICLI sentinel consistency engine v1",
+                           "1a9f7ab Wire AION ICLI self-repair planner v1"
+                       ]
+}

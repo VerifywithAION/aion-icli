@@ -630,3 +630,23 @@ Expected marker:
 
 AION_ICLI_RELEASE_EVIDENCE_INDEX_V1_VERIFY_OK
 
+
+## AION ICLI Proof Demo Pack V1
+
+Proof demo pack:
+
+.\proof_demo_pack\AION_ICLI_PROOF_DEMO_PACK_V1.json
+
+Report:
+
+.\proof_demo_pack\reports\AION_ICLI_PROOF_DEMO_PACK_V1_REPORT.md
+
+Verifier:
+
+.\scripts\VERIFY_AION_ICLI_PROOF_DEMO_PACK_V1.ps1
+
+Markers:
+
+AION_ICLI_PROOF_DEMO_PACK_V1_VERIFY_OK
+AION_ICLI_PROOF_DEMO_PACK_V1_ROOT_VERIFY_OK
+
