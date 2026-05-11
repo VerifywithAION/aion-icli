@@ -111,6 +111,7 @@ Use these links to jump directly into the public AION ICLI release:
 | SDK contract | [Connector SDK Contract V1](docs/CONNECTOR_SDK_CONTRACT_V1.md) | Request/response contract shape |
 | API adapter | [Safe API Adapter Dry-Run V1](docs/SAFE_API_ADAPTER_DRY_RUN_V1.md) | API review without live API calls |
 | Evaluate adapter | [AION Evaluate API Adapter V1](docs/AION_EVALUATE_API_V1.md) | Local HTTP governance adapter for machine-to-machine evaluate requests |
+| Preflight gate | [AION Preflight Gate V1](docs/AION_PREFLIGHT_GATE_V1.md) | Pre-execution governance for proposed actions before consequence |
 | Model adapter | [Safe Model Adapter Dry-Run V1](docs/SAFE_MODEL_ADAPTER_DRY_RUN_V1.md) | Model-provider review without provider calls |
 | SDK examples | [SDK Examples V1](docs/SDK_EXAMPLES_V1.md) | Developer request examples and receipts |
 | Voice layer | [Voice Layer V1](docs/VOICE_LAYER_V1.md) | Human-facing AION voice with optional diagnostics |

@@ -1,0 +1,51 @@
+{
+    "demo":  "AION_PREFLIGHT_GATE_V1",
+    "results":  [
+                    {
+                        "scenario":  "unsafe_script_execute",
+                        "expected":  "BLOCK",
+                        "governance_decision":  "BLOCK",
+                        "risk_level":  "HIGH",
+                        "reason":  "Execution requested without verifier control.",
+                        "receipt_path":  "receipts/preflight/20260511T193316Z_aion_preflight_80546b203d38.json",
+                        "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\preflight\\20260511T193316Z_aion_preflight_80546b203d38.json",
+                        "receipt_written":  true,
+                        "receipt_sha256":  "309cf3270946bf34fa10716bb482340716a122c11d09aad0599956b0dd29c6d7",
+                        "boundary":  "LOCAL_ONLY",
+                        "network":  "NOT_USED",
+                        "mutation":  "NOT_PERFORMED",
+                        "execution":  "NOT_PERFORMED"
+                    },
+                    {
+                        "scenario":  "api_call_dry_run_missing",
+                        "expected":  "WARN",
+                        "governance_decision":  "WARN",
+                        "risk_level":  "MEDIUM",
+                        "reason":  "Network risk present and dry-run control is missing.",
+                        "receipt_path":  "receipts/preflight/20260511T193316Z_aion_preflight_d08666a945de.json",
+                        "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\preflight\\20260511T193316Z_aion_preflight_d08666a945de.json",
+                        "receipt_written":  true,
+                        "receipt_sha256":  "fff7c92ea4defed0a0c16846c7769fab17d3f252225e8c37e36364dfc376f856",
+                        "boundary":  "LOCAL_ONLY",
+                        "network":  "NOT_USED",
+                        "mutation":  "NOT_PERFORMED",
+                        "execution":  "NOT_PERFORMED"
+                    },
+                    {
+                        "scenario":  "safe_dry_run_verified",
+                        "expected":  "ALLOW",
+                        "governance_decision":  "ALLOW",
+                        "risk_level":  "LOW",
+                        "reason":  "Low-risk preflight with complete controls and no immediate execution request.",
+                        "receipt_path":  "receipts/preflight/20260511T193316Z_aion_preflight_59d39476fb6b.json",
+                        "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\preflight\\20260511T193316Z_aion_preflight_59d39476fb6b.json",
+                        "receipt_written":  true,
+                        "receipt_sha256":  "914c483ff815a4545d8a1519767c88713eebdf077da0dbc00d6ec84c678b6170",
+                        "boundary":  "LOCAL_ONLY",
+                        "network":  "NOT_USED",
+                        "mutation":  "NOT_PERFORMED",
+                        "execution":  "NOT_PERFORMED"
+                    }
+                ],
+    "generated_at_utc":  "2026-05-11T19:33:16Z"
+}
