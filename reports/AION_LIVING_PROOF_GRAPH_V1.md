@@ -1,6 +1,6 @@
 # AION Living Proof Graph V1
 
-Generated at UTC: 2026-05-11T21:18:23Z
+Generated at UTC: 2026-05-11T21:25:34Z
 Engine: AION_INTROSPECTION_ENGINE_V1
 
 ## Proven capabilities
@@ -15,4 +15,4 @@ Engine: AION_INTROSPECTION_ENGINE_V1
 ## Summary
 - proven_count: 7
 - missing_count: 0
-- next_build_pointer: Self-Patching Sandbox V1
+- next_build_pointer: Mini AION Domain Governors V1

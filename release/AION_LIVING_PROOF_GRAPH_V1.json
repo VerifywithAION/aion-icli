@@ -1,6 +1,6 @@
 {
   "engine": "AION_INTROSPECTION_ENGINE_V1",
-  "generated_at_utc": "2026-05-11T21:18:23Z",
+  "generated_at_utc": "2026-05-11T21:25:34Z",
   "repo_root": "C:\\Lab_Research\\aion-live-demo",
   "proven_capabilities": [
     {
@@ -84,7 +84,7 @@
     "sentinel"
   ],
   "missing_or_partial": [],
-  "next_build_pointer": "Self-Patching Sandbox V1",
+  "next_build_pointer": "Mini AION Domain Governors V1",
   "summary": {
     "proven_count": 7,
     "missing_count": 0

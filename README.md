@@ -117,6 +117,7 @@ Use these links to jump directly into the public AION ICLI release:
 | Sentinel + contradiction | [AION Sentinel + Contradiction V1](docs/AION_SENTINEL_CONTRADICTION_V1.md) | Detects claim/evidence mismatch before trust and maps contradictions to governed decisions |
 | Introspection engine | [AION Introspection Engine V1](docs/AION_INTROSPECTION_ENGINE_V1.md) | Living proof graph of proven capabilities, missing proof surfaces, and next build pointer |
 | Self-repair planner | [AION Self-Repair Planner V1](docs/AION_SELF_REPAIR_PLANNER_V1.md) | Plan-only repair paths for missing controls, contradictions, and evidence/proof gaps |
+| Self-patching sandbox | [AION Self-Patching Sandbox V1](docs/AION_SELF_PATCHING_SANDBOX_V1.md) | Sandbox-only patch proposals with rollback proof and dry-run validation, no production mutation |
 | Model adapter | [Safe Model Adapter Dry-Run V1](docs/SAFE_MODEL_ADAPTER_DRY_RUN_V1.md) | Model-provider review without provider calls |
 | SDK examples | [SDK Examples V1](docs/SDK_EXAMPLES_V1.md) | Developer request examples and receipts |
 | Voice layer | [Voice Layer V1](docs/VOICE_LAYER_V1.md) | Human-facing AION voice with optional diagnostics |

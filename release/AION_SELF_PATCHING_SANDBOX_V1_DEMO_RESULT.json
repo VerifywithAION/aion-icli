@@ -1,0 +1,122 @@
+﻿{
+    "scenarios":  [
+                      {
+                          "sandbox":  "AION_SELF_PATCHING_SANDBOX_V1",
+                          "sandbox_id":  "sandbox_7628e5cf97",
+                          "patch_status":  "SANDBOXED_ONLY",
+                          "target_file":  "docs/DEMO_TARGET.md",
+                          "production_mutation":  "NOT_PERFORMED",
+                          "sandbox_mutation":  "PERFORMED",
+                          "rollback_available":  true,
+                          "dry_run_verified":  true,
+                          "verification_marker":  "AION_EXAMPLE_PATCH_OK",
+                          "hashes":  {
+                                         "original_sha256":  "79d022e4a4ce1f02d68eb6a8579f62933378a91204794d8e880f749630b7c590",
+                                         "proposed_sha256":  "38b5ec119e08c2e58d41754a73b7f96cd7ba718c9eb44b31255edd82f0b91e5e",
+                                         "rollback_sha256":  "79d022e4a4ce1f02d68eb6a8579f62933378a91204794d8e880f749630b7c590"
+                                     },
+                          "sandbox_paths":  {
+                                                "sandbox_root":  "C:\\Lab_Research\\aion-live-demo\\release_runtime\\sandbox\\sandbox_7628e5cf97",
+                                                "original":  "C:\\Lab_Research\\aion-live-demo\\release_runtime\\sandbox\\sandbox_7628e5cf97\\original.txt",
+                                                "proposed":  "C:\\Lab_Research\\aion-live-demo\\release_runtime\\sandbox\\sandbox_7628e5cf97\\proposed.txt",
+                                                "rollback":  "C:\\Lab_Research\\aion-live-demo\\release_runtime\\sandbox\\sandbox_7628e5cf97\\rollback.txt",
+                                                "summary":  "C:\\Lab_Research\\aion-live-demo\\release_runtime\\sandbox\\sandbox_7628e5cf97\\patch_summary.json"
+                                            },
+                          "forbidden_actions":  [
+                                                    "do_not_patch_production_without_human_review",
+                                                    "do_not_remove_rollback",
+                                                    "do_not_claim_applied_without_apply_gate"
+                                                ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "SANDBOX_ONLY",
+                          "execution":  "NOT_PERFORMED",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo",
+                          "receipt_id":  "aion_sandbox_8f5c4dd2d61e",
+                          "receipt_path":  "receipts/sandbox/20260511T212533Z_aion_sandbox_8f5c4dd2d61e.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\sandbox\\20260511T212533Z_aion_sandbox_8f5c4dd2d61e.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "723a87626b957f962633b1a7e39e89d2a74662c5d521b8f8cc165ffb9a90c6eb"
+                      },
+                      {
+                          "sandbox":  "AION_SELF_PATCHING_SANDBOX_V1",
+                          "sandbox_id":  "sandbox_4cd4982634",
+                          "patch_status":  "REJECTED",
+                          "target_file":  "C:\\secret\\file.txt",
+                          "production_mutation":  "NOT_PERFORMED",
+                          "sandbox_mutation":  "NOT_PERFORMED",
+                          "rollback_available":  false,
+                          "dry_run_verified":  false,
+                          "verification_marker":  "AION_EXAMPLE_PATCH_OK",
+                          "hashes":  {
+                                         "original_sha256":  "",
+                                         "proposed_sha256":  "",
+                                         "rollback_sha256":  ""
+                                     },
+                          "sandbox_paths":  {
+                                                "sandbox_root":  "",
+                                                "original":  "",
+                                                "proposed":  "",
+                                                "rollback":  "",
+                                                "summary":  ""
+                                            },
+                          "forbidden_actions":  [
+                                                    "do_not_patch_production_without_human_review",
+                                                    "do_not_remove_rollback",
+                                                    "do_not_claim_applied_without_apply_gate"
+                                                ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "SANDBOX_ONLY",
+                          "execution":  "NOT_PERFORMED",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo",
+                          "reason":  "Rejected unsafe target_file path.",
+                          "receipt_id":  "aion_sandbox_07f4840ca244",
+                          "receipt_path":  "receipts/sandbox/20260511T212533Z_aion_sandbox_07f4840ca244.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\sandbox\\20260511T212533Z_aion_sandbox_07f4840ca244.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "e52e53d2424bfebbcae5f9bd23dd7c750359d56ff8c683a56746aa8c56917636"
+                      },
+                      {
+                          "sandbox":  "AION_SELF_PATCHING_SANDBOX_V1",
+                          "sandbox_id":  "sandbox_15a22c6f64",
+                          "patch_status":  "REJECTED",
+                          "target_file":  "..\\private\\secret.txt",
+                          "production_mutation":  "NOT_PERFORMED",
+                          "sandbox_mutation":  "NOT_PERFORMED",
+                          "rollback_available":  false,
+                          "dry_run_verified":  false,
+                          "verification_marker":  "AION_EXAMPLE_PATCH_OK",
+                          "hashes":  {
+                                         "original_sha256":  "",
+                                         "proposed_sha256":  "",
+                                         "rollback_sha256":  ""
+                                     },
+                          "sandbox_paths":  {
+                                                "sandbox_root":  "",
+                                                "original":  "",
+                                                "proposed":  "",
+                                                "rollback":  "",
+                                                "summary":  ""
+                                            },
+                          "forbidden_actions":  [
+                                                    "do_not_patch_production_without_human_review",
+                                                    "do_not_remove_rollback",
+                                                    "do_not_claim_applied_without_apply_gate"
+                                                ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "SANDBOX_ONLY",
+                          "execution":  "NOT_PERFORMED",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo",
+                          "reason":  "Rejected unsafe target_file path.",
+                          "receipt_id":  "aion_sandbox_45b6110adbac",
+                          "receipt_path":  "receipts/sandbox/20260511T212534Z_aion_sandbox_45b6110adbac.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\sandbox\\20260511T212534Z_aion_sandbox_45b6110adbac.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "24942104acbd4b32a00945ed136c68aabe6d1def15686d07e21ce368206d819d"
+                      }
+                  ],
+    "generated_at_utc":  "2026-05-11T21:25:34Z",
+    "sandbox":  "AION_SELF_PATCHING_SANDBOX_V1"
+}
