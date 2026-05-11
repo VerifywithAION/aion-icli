@@ -1,0 +1,579 @@
+{
+  "map_name": "AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1",
+  "generated_for_repo": "aion-live-demo",
+  "source_repos": [
+    "aion-live-demo",
+    "aion-control-plane"
+  ],
+  "feature_families": [
+    {
+      "feature_name": "preflight / pre-flight gate",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "docs/ADAPTIVE_REASONING_LAYER_V1.md",
+        "docs/CAPABILITY_ROUTER_V1.md",
+        "docs/USER_GUIDE_V1.md",
+        "docs/VOICE_LAYER_V1.md",
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md",
+        "scripts/VERIFY_CAPABILITY_ROUTER_V1.ps1"
+      ],
+      "found_in_aion_control_plane": true,
+      "aion_control_plane_paths": [
+        ".aion/adversarial/adversarial_execution_receipts.ndjson",
+        ".aion/adversarial/adversarial_execution_report_latest.json",
+        ".aion/ambient/checkpoints.json",
+        ".aion/ambient/events.ndjson",
+        ".aion/ambient/events_enriched.ndjson",
+        ".aion/ambient/events_enriched_v2.ndjson",
+        ".aion/ambient/events_enriched_v3.ndjson",
+        ".aion/ambient/otel_events.ndjson",
+        ".aion/ambient/reality_events.ndjson",
+        ".aion/ambient/reality_summary.json"
+      ],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "AION evaluate / evaluate API",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "README.md",
+        "docs/AION_ICLI_CUSTOMER_EXPERIENCE_V1.md",
+        "docs/GITHUB_RELEASE_V1_DRAFT.md",
+        "docs/USER_GUIDE_V1.md",
+        "examples/connectors/connector_request_allow_v2.json",
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md",
+        "reports/AION_ICLI_REALITY_NO_DRIFT_SCAN_V1.md",
+        "scripts/PATCH_AION_ICLI_NEON_BANNER_V4.py",
+        "scripts/RUN_GOVERNED_VS_UNGOVERNED_CLI_PROOF_V1.ps1"
+      ],
+      "found_in_aion_control_plane": true,
+      "aion_control_plane_paths": [
+        ".aion/16h-logs/cli-run-20260421_002840_937814.log",
+        ".aion/16h-logs/cli-run-20260421_002841_270165.log",
+        ".aion/16h-logs/cli-run-20260421_002841_610591.log",
+        ".aion/16h-logs/cli-run-20260421_002841_940571.log",
+        ".aion/16h-logs/cli-run-20260421_002842_276785.log",
+        ".aion/16h-logs/cli-run-20260421_002842_676148.log",
+        ".aion/16h-logs/cli-run-20260421_002843_096878.log",
+        ".aion/16h-logs/cli-run-20260421_002843_432717.log",
+        ".aion/16h-logs/cli-run-20260421_002843_802985.log",
+        ".aion/16h-logs/cli-run-20260421_002844_351053.log"
+      ],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "local governance proxy",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        ".aion_public/proof_graph/proof_nodes_v1.json",
+        "README.md",
+        "docs/CONNECTOR_POLICY_V2.md",
+        "docs/CONNECTOR_SDK_CONTRACT_V1.md",
+        "docs/GITHUB_RELEASE_V1_DRAFT.md",
+        "docs/LOCAL_GOVERNANCE_PROXY_V1.md",
+        "docs/PUBLIC_RELEASE_LOCK_V1.md",
+        "docs/RELEASE_NOTES_V1.md",
+        "docs/REPO_GUIDED_TOUR_V1.md",
+        "docs/USER_GUIDE_V1.md"
+      ],
+      "found_in_aion_control_plane": true,
+      "aion_control_plane_paths": [
+        "docs/CLAIM_BOUNDARY_V1.md",
+        "docs/CONNECTOR_SDK_CONTRACT_V1.md",
+        "docs/INTEGRATION_LIMITS_V1.md",
+        "docs/LOCAL_GOVERNANCE_PROXY_V1.md",
+        "docs/ROADMAP_PUBLIC_ADOPTION_STACK_V1.md",
+        "scripts/RUN_LOCAL_GOVERNANCE_PROXY_DEMO_V1.ps1",
+        "scripts/VERIFY_PUBLIC_ADOPTION_STACK_V1.ps1"
+      ],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "safe API adapter",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        ".aion_public/proof_graph/proof_nodes_v1.json",
+        "README.md",
+        "docs/CONNECTOR_POLICY_V2.md",
+        "docs/REPO_GUIDED_TOUR_V1.md",
+        "docs/SAFE_API_ADAPTER_DRY_RUN_V1.md",
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md",
+        "reports/CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.md",
+        "scripts/RUN_SAFE_API_ADAPTER_DRY_RUN_V1.ps1",
+        "scripts/VERIFY_REPO_GUIDED_TOUR_V2.ps1"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "safe model adapter",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        ".aion_public/proof_graph/proof_nodes_v1.json",
+        "README.md",
+        "docs/CONNECTOR_POLICY_V2.md",
+        "docs/PUBLIC_RELEASE_LOCK_V1.md",
+        "docs/REPO_GUIDED_TOUR_V1.md",
+        "docs/SAFE_MODEL_ADAPTER_DRY_RUN_V1.md",
+        "docs/USER_GUIDE_V1.md",
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md",
+        "reports/CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.md"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "memory scar engine",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        ".aion_public/evidence/evidence_index_v1.json",
+        ".aion_public/evidence/evidence_latest_v1.json",
+        ".aion_public/proof_graph/proof_edges_v1.json",
+        ".aion_public/proof_graph/proof_graph_latest_v1.json",
+        ".aion_public/proof_graph/proof_nodes_v1.json",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/sentinel/sentinel_latest_v1.json",
+        ".aion_public/sentinel/sentinel_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        "README.md"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "already wired",
+      "wire_into_aion_icli": "Keep current implementation, preserve verifier coverage, and add API/CLI integration tests where absent.",
+      "suggested_phase": "Phase 0 (stabilize and verify)"
+    },
+    {
+      "feature_name": "persistent memory",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md"
+      ],
+      "found_in_aion_control_plane": true,
+      "aion_control_plane_paths": [
+        "schemas/governance-memory-record.json",
+        "src/governance_memory.py"
+      ],
+      "current_status": "docs only",
+      "wire_into_aion_icli": "Implement minimal runtime in src/, add VERIFY_ script, and add demo command with receipt proof.",
+      "suggested_phase": "Phase 2"
+    },
+    {
+      "feature_name": "governance brain adapter",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        ".aion_public/evidence/evidence_index_v1.json",
+        ".aion_public/evidence/evidence_latest_v1.json",
+        ".aion_public/proof_graph/proof_nodes_v1.json",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/scars/scars_seed.jsonl",
+        ".aion_public/wiring/system_wiring_v1.json",
+        "README.md",
+        "docs/AION_ICLI_NEXT_8_BUILDS_V1.md",
+        "docs/AION_ICLI_ROADMAP_STATE_V1.md",
+        "docs/AION_ICLI_SYSTEM_WIRING_REPORT_V1.md"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "artifact inspection runner",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        ".aion_public/evidence/evidence_index_v1.json",
+        ".aion_public/evidence/evidence_latest_v1.json",
+        ".aion_public/proof_graph/proof_nodes_v1.json",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        "README.md",
+        "docs/AION_ICLI_NEXT_8_BUILDS_V1.md",
+        "docs/AION_ICLI_ROADMAP_STATE_V1.md",
+        "docs/AION_ICLI_SYSTEM_WIRING_REPORT_V1.md",
+        "docs/ARTIFACT_INSPECTION_RUNNER_V1.md"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "sentinel consistency engine",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/sentinel/sentinel_summary_v1.md",
+        ".aion_public/wiring/system_wiring_v1.json",
+        "README.md",
+        "docs/AION_ICLI_NEXT_8_BUILDS_V1.md",
+        "docs/AION_ICLI_ROADMAP_STATE_V1.md",
+        "docs/AION_ICLI_SYSTEM_WIRING_REPORT_V1.md",
+        "docs/OFFLINE_AION_CLI_BUNDLE_V1_1_0.md",
+        "docs/PUBLIC_DEMO_FRESH_CLONE_ACCEPTANCE_V1.md",
+        "docs/SENTINEL_CONSISTENCY_ENGINE_V1.md"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "contradiction engine",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        ".aion_public/contradictions/contradiction_index_v1.json",
+        ".aion_public/contradictions/contradiction_latest_v1.json",
+        ".aion_public/contradictions/contradiction_summary_v1.md",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/self_repair/self_repair_latest_v1.json",
+        ".aion_public/self_repair/self_repair_plan_v1.json",
+        ".aion_public/sentinel/sentinel_latest_v1.json",
+        ".aion_public/sentinel/sentinel_state_v1.json",
+        ".aion_public/sentinel/sentinel_summary_v1.md",
+        ".aion_public/wiring/system_wiring_v1.json"
+      ],
+      "found_in_aion_control_plane": true,
+      "aion_control_plane_paths": [
+        ".aion/batches/batch-check-scenarios-2026-04-17T20-27-05-197Z.json",
+        ".aion/batches/batch-check-scenarios-2026-04-17T20-27-05-386Z.json",
+        ".aion/batches/batch-check-scenarios-2026-04-17T20-27-05-546Z.json",
+        ".aion/batches/batch-check-scenarios-2026-04-17T20-30-55-399Z.json",
+        ".aion/batches/batch-check-scenarios-2026-04-17T20-30-55-600Z.json",
+        ".aion/batches/batch-check-scenarios-2026-04-17T20-30-55-781Z.json",
+        ".aion/batches/batch-check-scenarios-2026-04-17T22-05-20-571Z.json",
+        ".aion/batches/batch-check-scenarios-2026-04-17T22-05-20-768Z.json",
+        ".aion/batches/batch-check-scenarios-2026-04-17T22-15-48-791Z.json",
+        ".aion/batches/batch-check-scenarios-2026-04-17T22-15-51-935Z.json"
+      ],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "introspection gate",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        ".aion_public/introspection/introspection_latest_v1.json",
+        ".aion_public/introspection/introspection_rules_v1.json",
+        ".aion_public/introspection/introspection_summary_v1.md",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        "README.md",
+        "docs/AION_ICLI_NEXT_8_BUILDS_V1.md",
+        "docs/AION_ICLI_ROADMAP_STATE_V1.md",
+        "docs/AION_ICLI_SYSTEM_WIRING_REPORT_V1.md",
+        "docs/CONTRADICTION_ENGINE_V1.md"
+      ],
+      "found_in_aion_control_plane": true,
+      "aion_control_plane_paths": [
+        ".aion/evolution/self_evolution_cases_v1.json",
+        ".aion/introspection/introspection_cases_v1.json",
+        ".aion/introspection/introspection_policy_v1.json",
+        "docs/AION_INTROSPECTION_FEEDBACK_LOOP_V1.md",
+        "docs/AION_MASTER_ATLAS.md",
+        "docs/AION_ROADMAP_STATE_REGISTRY_V0.md",
+        "docs/AION_SELF_EVOLUTION_LOOP_V1.md",
+        "scripts/TEST_AION_INTROSPECTION_FEEDBACK_LOOP_V1.ps1",
+        "scripts/VERIFY_AION_INTROSPECTION_FEEDBACK_LOOP_V1.ps1",
+        "src/aion_introspection_feedback_loop_v1.py"
+      ],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "evidence engine",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        ".aion_public/evidence/evidence_index_v1.json",
+        ".aion_public/evidence/evidence_latest_v1.json",
+        ".aion_public/evidence/evidence_summary_v1.md",
+        ".aion_public/evolution/evolution_ledger_seed.jsonl",
+        ".aion_public/proof_graph/proof_nodes_v1.json",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/scars/scars_seed.jsonl",
+        ".aion_public/self_repair/self_repair_latest_v1.json",
+        ".aion_public/self_repair/self_repair_plan_v1.json",
+        ".aion_public/sentinel/sentinel_latest_v1.json"
+      ],
+      "found_in_aion_control_plane": true,
+      "aion_control_plane_paths": [
+        "scripts/VERIFY_AION_PUBLIC_RELEASE_PROOF_BUNDLE_V1.ps1"
+      ],
+      "current_status": "already wired",
+      "wire_into_aion_icli": "Keep current implementation, preserve verifier coverage, and add API/CLI integration tests where absent.",
+      "suggested_phase": "Phase 0 (stabilize and verify)"
+    },
+    {
+      "feature_name": "living proof graph",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        ".aion_public/evidence/evidence_index_v1.json",
+        ".aion_public/evidence/evidence_latest_v1.json",
+        ".aion_public/proof_graph/proof_graph_summary_v1.md",
+        ".aion_public/proof_graph/proof_nodes_v1.json",
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/wiring/system_wiring_v1.json",
+        "README.md",
+        "docs/AION_ICLI_NEXT_8_BUILDS_V1.md",
+        "docs/AION_ICLI_ROADMAP_STATE_V1.md",
+        "docs/AION_ICLI_SYSTEM_WIRING_REPORT_V1.md"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "self-repair planner",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        ".aion_public/roadmap/roadmap_state_v1.json",
+        ".aion_public/self_repair/self_repair_summary_v1.md",
+        ".aion_public/wiring/system_wiring_v1.json",
+        "README.md",
+        "docs/AION_ICLI_NEXT_8_BUILDS_V1.md",
+        "docs/AION_ICLI_ROADMAP_STATE_V1.md",
+        "docs/AION_ICLI_SYSTEM_WIRING_REPORT_V1.md",
+        "docs/OFFLINE_AION_CLI_BUNDLE_V1_1_0.md",
+        "docs/SELF_REPAIR_PLANNER_V1.md",
+        "docs/USER_GUIDE_V1.md"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "repo doctor",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md"
+      ],
+      "found_in_aion_control_plane": true,
+      "aion_control_plane_paths": [
+        ".aion/repo_doctor/repo_doctor_cases_v1.json",
+        ".aion/repo_doctor/repo_doctor_policy_v1.json",
+        "docs/AION_REPO_DOCTOR_V1.md",
+        "docs/AION_ROADMAP_STATE_REGISTRY_V0.md",
+        "scripts/TEST_AION_REPO_DOCTOR_V1.ps1",
+        "scripts/VERIFY_AION_REPO_DOCTOR_V1.ps1",
+        "src/aion_repo_doctor_v1.py"
+      ],
+      "current_status": "docs only",
+      "wire_into_aion_icli": "Implement minimal runtime in src/, add VERIFY_ script, and add demo command with receipt proof.",
+      "suggested_phase": "Phase 2"
+    },
+    {
+      "feature_name": "self-evolution loop",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md"
+      ],
+      "found_in_aion_control_plane": true,
+      "aion_control_plane_paths": [
+        ".aion/evolution/self_evolution_cases_v1.json",
+        ".aion/evolution/self_evolution_policy_v1.json",
+        ".aion/roadmap/roadmap_state_registry_v0.json",
+        "docs/AION_NEXT_10_BUILDS_V1.md",
+        "docs/AION_ROADMAP_STATE_REGISTRY_V0.md",
+        "docs/AION_SELF_EVOLUTION_LOOP_V1.md",
+        "docs/NOTION_AION_MASTER_TEMPLATE_V1.md",
+        "scripts/TEST_AION_SELF_EVOLUTION_LOOP_V1.ps1",
+        "scripts/VERIFY_AION_SELF_EVOLUTION_LOOP_V1.ps1",
+        "src/aion_self_evolution_loop_v1.py"
+      ],
+      "current_status": "docs only",
+      "wire_into_aion_icli": "Implement minimal runtime in src/, add VERIFY_ script, and add demo command with receipt proof.",
+      "suggested_phase": "Phase 2"
+    },
+    {
+      "feature_name": "self-patching sandbox",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md"
+      ],
+      "found_in_aion_control_plane": true,
+      "aion_control_plane_paths": [
+        "docs/AION_ICLI_PRO_PRODUCT_ROADMAP_V1.md",
+        "docs/AION_SELF_PATCHING_SANDBOX_ROADMAP_V1.md",
+        "docs/NOTION_AION_MASTER_TEMPLATE_V1.md"
+      ],
+      "current_status": "docs only",
+      "wire_into_aion_icli": "Implement minimal runtime in src/, add VERIFY_ script, and add demo command with receipt proof.",
+      "suggested_phase": "Phase 2"
+    },
+    {
+      "feature_name": "mini AIONs / domain governors",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md"
+      ],
+      "found_in_aion_control_plane": true,
+      "aion_control_plane_paths": [
+        ".aion/roadmap/roadmap_state_registry_v0.json",
+        "docs/AION_NEXT_10_BUILDS_V1.md",
+        "docs/AION_ROADMAP_STATE_REGISTRY_V0.md",
+        "docs/NOTION_AION_MASTER_TEMPLATE_V1.md"
+      ],
+      "current_status": "docs only",
+      "wire_into_aion_icli": "Implement minimal runtime in src/, add VERIFY_ script, and add demo command with receipt proof.",
+      "suggested_phase": "Phase 2"
+    },
+    {
+      "feature_name": "wallet governance / Wallet Lite / AION Guard",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "docs only",
+      "wire_into_aion_icli": "Implement minimal runtime in src/, add VERIFY_ script, and add demo command with receipt proof.",
+      "suggested_phase": "Phase 2"
+    },
+    {
+      "feature_name": "quantum governance",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "docs only",
+      "wire_into_aion_icli": "Implement minimal runtime in src/, add VERIFY_ script, and add demo command with receipt proof.",
+      "suggested_phase": "Phase 2"
+    },
+    {
+      "feature_name": "physical AI / robotics governance",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "docs only",
+      "wire_into_aion_icli": "Implement minimal runtime in src/, add VERIFY_ script, and add demo command with receipt proof.",
+      "suggested_phase": "Phase 2"
+    },
+    {
+      "feature_name": "cybersecurity / bounty governance",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "README.md",
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md"
+      ],
+      "found_in_aion_control_plane": true,
+      "aion_control_plane_paths": [
+        ".aion/adapters/universal_adapter_contract_v0.json",
+        ".aion/alignment/roadmap_alignment_latest.json",
+        ".aion/alignment/roadmap_alignment_latest.md",
+        ".aion/backups/audit_backlog_hardening_v1_20260427_034132Z/src/roadmap_alignment_verifier.py",
+        ".aion/backups/icli_spoken_output_v4_20260426_212357Z/src/roadmap_alignment_verifier.py",
+        ".aion/backups/icli_spoken_output_v4_recovery_20260426_212722Z/src/roadmap_alignment_verifier.py",
+        ".aion/backups/icli_spoken_output_v4_status_key_fix_20260426_213320Z/src/roadmap_alignment_verifier.py",
+        ".aion/backups/icli_spoken_output_v4_verifier_fix_20260426_213023Z/src/roadmap_alignment_verifier.py",
+        ".aion/backups/icli_text_mode_acceptance_hardening_v1_20260427_212925Z/.aion/alignment/roadmap_alignment_latest.json",
+        ".aion/backups/icli_text_mode_acceptance_hardening_v1_20260427_212925Z/.aion/alignment/roadmap_alignment_latest.md"
+      ],
+      "current_status": "docs only",
+      "wire_into_aion_icli": "Implement minimal runtime in src/, add VERIFY_ script, and add demo command with receipt proof.",
+      "suggested_phase": "Phase 2"
+    },
+    {
+      "feature_name": "structural immunity / AION-SI",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "docs only",
+      "wire_into_aion_icli": "Implement minimal runtime in src/, add VERIFY_ script, and add demo command with receipt proof.",
+      "suggested_phase": "Phase 2"
+    },
+    {
+      "feature_name": "intuition layer",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "docs/ADAPTIVE_REASONING_LAYER_V1.md",
+        "docs/CAPABILITY_ROUTER_V1.md",
+        "docs/USER_GUIDE_V1.md",
+        "docs/VOICE_LAYER_V1.md",
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md",
+        "scripts/VERIFY_ADAPTIVE_REASONING_LAYER_V1.ps1",
+        "scripts/VERIFY_CAPABILITY_ROUTER_V1.ps1"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "creativity layer",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "docs/ADAPTIVE_REASONING_LAYER_V1.md",
+        "docs/CAPABILITY_ROUTER_V1.md",
+        "docs/USER_GUIDE_V1.md",
+        "docs/VOICE_LAYER_V1.md",
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md",
+        "scripts/VERIFY_ADAPTIVE_REASONING_LAYER_V1.ps1",
+        "scripts/VERIFY_CAPABILITY_ROUTER_V1.ps1"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "partially wired",
+      "wire_into_aion_icli": "Add missing runtime or verifier surface, then expose demo command and receipt output end-to-end.",
+      "suggested_phase": "Phase 1"
+    },
+    {
+      "feature_name": "recovery command center",
+      "found_in_aion_icli": true,
+      "aion_icli_paths": [
+        "release/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.json",
+        "reports/AION_ICLI_FEATURE_CONSOLIDATION_MAP_V1.md"
+      ],
+      "found_in_aion_control_plane": false,
+      "aion_control_plane_paths": [],
+      "current_status": "docs only",
+      "wire_into_aion_icli": "Implement minimal runtime in src/, add VERIFY_ script, and add demo command with receipt proof.",
+      "suggested_phase": "Phase 2"
+    }
+  ]
+}
