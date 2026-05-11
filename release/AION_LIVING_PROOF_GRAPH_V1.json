@@ -1,6 +1,6 @@
 {
   "engine": "AION_INTROSPECTION_ENGINE_V1",
-  "generated_at_utc": "2026-05-11T21:44:51Z",
+  "generated_at_utc": "2026-05-11T21:56:00Z",
   "repo_root": "C:\\Lab_Research\\aion-live-demo",
   "proven_capabilities": [
     {
@@ -84,7 +84,7 @@
     "sentinel"
   ],
   "missing_or_partial": [],
-  "next_build_pointer": "Demo Orchestrator V1",
+  "next_build_pointer": "Public Demo Recording Pack V1",
   "summary": {
     "proven_count": 7,
     "missing_count": 0

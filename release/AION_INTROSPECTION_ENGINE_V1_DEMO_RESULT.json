@@ -1,9 +1,9 @@
 ﻿{
     "marker":  "AION_INTROSPECTION_ENGINE_V1_DEMO_OK",
-    "generated_at_utc":  "2026-05-11T21:44:52Z",
+    "generated_at_utc":  "2026-05-11T21:56:00Z",
     "result":  {
                    "engine":  "AION_INTROSPECTION_ENGINE_V1",
-                   "generated_at_utc":  "2026-05-11T21:44:51Z",
+                   "generated_at_utc":  "2026-05-11T21:56:00Z",
                    "repo_root":  "C:\\Lab_Research\\aion-live-demo",
                    "proven_capabilities":  [
                                                {
@@ -89,15 +89,15 @@
                    "missing_or_partial":  [
 
                                           ],
-                   "next_build_pointer":  "Demo Orchestrator V1",
+                   "next_build_pointer":  "Public Demo Recording Pack V1",
                    "summary":  {
                                    "proven_count":  7,
                                    "missing_count":  0
                                },
-                   "receipt_id":  "aion_introspection_206e55e83ce4",
-                   "receipt_path":  "receipts/introspection/20260511T214451Z_aion_introspection_206e55e83ce4.json",
-                   "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\introspection\\20260511T214451Z_aion_introspection_206e55e83ce4.json",
+                   "receipt_id":  "aion_introspection_2be03b20276d",
+                   "receipt_path":  "receipts/introspection/20260511T215600Z_aion_introspection_2be03b20276d.json",
+                   "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\introspection\\20260511T215600Z_aion_introspection_2be03b20276d.json",
                    "receipt_written":  true,
-                   "receipt_sha256":  "33d3402dd068948f0cf991d0e9436a7faad671b271cacd1acfbedcaca1dadcbe"
+                   "receipt_sha256":  "c0e0cde515b147d32359d12b0fe7ba3e20af7aff4a9e803d058f3accfc8d8669"
                }
 }
