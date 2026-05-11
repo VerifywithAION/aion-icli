@@ -24,7 +24,7 @@
 <p align="center">
   <img src="assets/aion-icli-blue-banner.svg" alt="AION ICLI blue terminal banner" width="900">
 </p>
----
+
 
 **AION ICLI** is a local-first command-line interface for governed AI and system actions.
 
@@ -32,7 +32,7 @@ It helps users evaluate requests, expose boundaries, and produce receipts before
 
 If you want a CLI that makes AI/system actions more inspectable, constrained, and replayable, this is the front door.
 
----
+
 
 
 ## Demo: Your agent said it was done. AION proved whether it was admissible.
@@ -116,7 +116,7 @@ Use these links to jump directly into the public AION ICLI release:
 | CLI proof | [Governed vs Ungoverned CLI Proof V1](docs/GOVERNED_VS_UNGOVERNED_CLI_PROOF_V1.md) | Difference between invisible trust and governed trust |
 | Acceptance proof | [Connector Stack Acceptance Report V1](reports/CONNECTOR_STACK_ACCEPTANCE_REPORT_V1.md) | Fresh-clone proof of the full connector stack |
 
----
+
 ## What you can do with AION ICLI
 
 AION ICLI gives users a simple way to place a governance layer in front of AI or system actions.
@@ -192,7 +192,7 @@ Expected marker:
 
     AION_PUBLIC_RELEASE_LOCK_V1_VERIFY_OK
 
----
+
 ## What AION ICLI is
 
 AION ICLI is a governed command-line interface designed to make execution safer, clearer, and more verifiable.
@@ -214,7 +214,7 @@ AION ICLI can be used as a local governance surface for:
 
 By default, it runs locally and does not call external APIs.
 
----
+
 
 ## What AION ICLI is not
 
@@ -231,7 +231,7 @@ AION ICLI is not:
 
 This repo contains the interface, examples, docs, schemas, and deterministic local governance demo needed to run AION ICLI.
 
----
+
 
 ## Why it exists
 
@@ -252,7 +252,7 @@ The goal is to make the interface show:
 - what receipt was created
 - what boundary was enforced
 
----
+
 
 ## Quick Start - Windows
 
@@ -278,7 +278,7 @@ Expected markers:
     sh ./install.sh
     sh ./bin/aion "Who are you, AION?"
 
----
+
 
 ## Guided Tour
 
@@ -296,7 +296,7 @@ macOS/Linux:
 
     sh ./bin/aion "Who are you, AION?"
 
----
+
 
 ### Step 2 - Read the banner
 
@@ -310,7 +310,6 @@ You should see:
 
 This means the public interface is running in local governed mode.
 
----
 
 ### Step 3 - Observe the offline capability block
 
@@ -323,7 +322,7 @@ AION ICLI should show:
     - Block unsafe or unproven operations
     - Preserve evidence for replay and audit
 
----
+
 
 ### Step 4 - Inspect the boundary output
 
@@ -336,7 +335,7 @@ Every basic interaction should expose the boundary:
 
 This is the central behavior: AION ICLI tells you what happened and what did not happen.
 
----
+
 
 ### Step 5 - Run the public safety verifier
 
@@ -346,7 +345,7 @@ Expected marker:
 
     AION_ICLI_PUBLIC_SAFE_VERIFY_OK
 
----
+
 
 ### Step 6 - Run the local governance proxy demo
 
@@ -367,7 +366,6 @@ Generated outputs are written to:
 
 That folder is ignored by Git so runtime verification does not dirty the repo.
 
----
 
 ### Step 7 - Verify the release lock
 
@@ -377,7 +375,6 @@ Expected marker:
 
     AION_PUBLIC_RELEASE_LOCK_V1_VERIFY_OK
 
----
 
 ## Developers: connect to AION in 3 minutes
 
@@ -453,7 +450,7 @@ Fresh-clone acceptance marker:
 
     AION_ICLI_CONNECTOR_STACK_ACCEPTANCE_TEST_V1_PASS
 
----
+
 ## Local Governance Proxy
 
 The Local Governance Proxy V1 is the public-safe foundation for future SDK/API/model adapter governance.
@@ -477,7 +474,7 @@ The demo behavior is intentionally simple:
 
 This proves the governance pattern using a transparent public demo.
 
----
+
 
 ## Public Safety Boundary
 
@@ -504,7 +501,7 @@ This repository must not contain:
 - secrets, tokens, or credentials
 - exploit automation
 
----
+
 
 ## Current release status
 
@@ -527,7 +524,6 @@ Fresh clone validation proved:
     AION_LOCAL_GOVERNANCE_PROXY_V1_VERIFY_OK
     AION_ICLI_FRESH_CLONE_CLEANLINESS_TEST_V3_PASS
 
----
 
 ## Future direction
 
@@ -543,7 +539,7 @@ Future connector layers must remain:
 - governed before execution
 - safe by default
 
----
+
 
 ## Read next
 
