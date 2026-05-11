@@ -113,6 +113,7 @@ Use these links to jump directly into the public AION ICLI release:
 | Evaluate adapter | [AION Evaluate API Adapter V1](docs/AION_EVALUATE_API_V1.md) | Local HTTP governance adapter for machine-to-machine evaluate requests |
 | Preflight gate | [AION Preflight Gate V1](docs/AION_PREFLIGHT_GATE_V1.md) | Pre-execution governance for proposed actions before consequence |
 | Memory scars | [AION Memory Scars V1](docs/AION_MEMORY_SCARS_V1.md) | Public-safe failure memory that biases governance decisions away from repeated mistakes |
+| Preflight + memory | [AION Preflight + Memory Integration V1](docs/AION_PREFLIGHT_MEMORY_INTEGRATION_V1.md) | Preflight decisions influenced by public-safe failure memory |
 | Model adapter | [Safe Model Adapter Dry-Run V1](docs/SAFE_MODEL_ADAPTER_DRY_RUN_V1.md) | Model-provider review without provider calls |
 | SDK examples | [SDK Examples V1](docs/SDK_EXAMPLES_V1.md) | Developer request examples and receipts |
 | Voice layer | [Voice Layer V1](docs/VOICE_LAYER_V1.md) | Human-facing AION voice with optional diagnostics |

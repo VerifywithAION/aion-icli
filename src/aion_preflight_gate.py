@@ -6,6 +6,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+try:
+    from aion_memory_scars import evaluate_memory_influence  # type: ignore
+except Exception:  # pragma: no cover - optional integration fallback
+    evaluate_memory_influence = None
+
 
 ROOT = Path(__file__).resolve().parent.parent
 RECEIPTS_DIR = ROOT / "receipts" / "preflight"
@@ -219,6 +224,13 @@ def evaluate_preflight(payload: Dict[str, Any]) -> Dict[str, Any]:
         "receipt_written": False,
         "receipt_sha256": "",
         "repo_root": str(ROOT),
+        "memory_influence": {
+            "engine": "AION_MEMORY_SCARS_V1",
+            "matched_scars": [],
+            "memory_risk_adjustment": "NONE",
+            "recommended_decision_bias": "NONE",
+            "reason": "Memory store unavailable or no matching scars.",
+        },
         "input_summary": {
             "source": sanitize_text(payload.get("source")),
             "action_type": sanitize_text(payload.get("action_type")),
@@ -228,6 +240,40 @@ def evaluate_preflight(payload: Dict[str, Any]) -> Dict[str, Any]:
             "boundary": sanitize_text(payload.get("boundary")).upper(),
         },
     }
+
+    # Optional memory influence pass. Preflight must remain functional even if memory module/store is unavailable.
+    mem_store = ROOT / ".aion_public" / "memory" / "memory_scars_v1.jsonl"
+    if evaluate_memory_influence is not None and mem_store.exists():
+        mem_payload = {
+            "source": "PreflightGate",
+            "action_type": sanitize_text(payload.get("action_type")),
+            "risk_signals": payload.get("risk_signals", []),
+            "missing_controls": [m.replace("controls.", "") for m in missing_controls],
+            "summary": sanitize_text(payload.get("intent")),
+        }
+        try:
+            mem_out = evaluate_memory_influence(mem_payload)
+            response["memory_influence"] = {
+                "engine": mem_out.get("engine", "AION_MEMORY_SCARS_V1"),
+                "matched_scars": mem_out.get("matched_scars", []),
+                "memory_risk_adjustment": mem_out.get("memory_risk_adjustment", "NONE"),
+                "recommended_decision_bias": mem_out.get("recommended_decision_bias", "NONE"),
+                "reason": mem_out.get("reason", ""),
+            }
+            bias = response["memory_influence"].get("recommended_decision_bias")
+            if bias == "BLOCK" and response["governance_decision"] != "BLOCK":
+                response["governance_decision"] = "BLOCK"
+                response["risk_level"] = "HIGH"
+                response["reason"] = "Memory scar raised decision because prior failure rule matched."
+                response["required_next_step"] = "Satisfy scar-derived future rule before reconsidering execution."
+            elif bias == "WARN" and response["governance_decision"] == "ALLOW":
+                response["governance_decision"] = "WARN"
+                response["risk_level"] = "MEDIUM"
+                response["reason"] = "Memory scar raised decision because prior failure rule matched."
+                response["required_next_step"] = "Proceed only through governed review and verifier path."
+        except Exception:
+            # Do not fail preflight if memory influence encounters an internal issue.
+            pass
 
     receipt = {
         "receipt_type": "aion_preflight_gate_receipt_v1",

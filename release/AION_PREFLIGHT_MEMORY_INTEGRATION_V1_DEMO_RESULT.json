@@ -1,0 +1,76 @@
+{
+    "demo":  "AION_PREFLIGHT_MEMORY_INTEGRATION_V1",
+    "generated_at_utc":  "2026-05-11T19:52:15Z",
+    "scar_add_result":  {
+                            "engine":  "AION_MEMORY_SCARS_V1",
+                            "status":  "ADDED",
+                            "scar_id":  "integration_missing_verifier_exec",
+                            "memory_store_path":  ".aion_public/memory/memory_scars_v1.jsonl",
+                            "memory_store_abs_path":  "C:\\Lab_Research\\aion-live-demo\\.aion_public\\memory\\memory_scars_v1.jsonl",
+                            "memory_store_count":  4,
+                            "receipt_id":  "aion_memory_9454b6254724",
+                            "receipt_path":  "receipts/memory/20260511T195215Z_aion_memory_9454b6254724.json",
+                            "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\memory\\20260511T195215Z_aion_memory_9454b6254724.json",
+                            "receipt_written":  true,
+                            "receipt_sha256":  "fa1e092f5935723460227424740f878075275420459be68424c9cc9ea73a0023",
+                            "repo_root":  "C:\\Lab_Research\\aion-live-demo"
+                        },
+    "preflight_result":  {
+                             "gate":  "AION_PREFLIGHT_GATE_V1",
+                             "governance_decision":  "BLOCK",
+                             "risk_level":  "HIGH",
+                             "reason":  "Execution requested without verifier control.",
+                             "missing_controls":  [
+                                                      "controls.verifier"
+                                                  ],
+                             "required_next_step":  "Add verifier control and perform dry-run before execution.",
+                             "boundary":  "LOCAL_ONLY",
+                             "network":  "NOT_USED",
+                             "mutation":  "NOT_PERFORMED",
+                             "execution":  "NOT_PERFORMED",
+                             "receipt_id":  "aion_preflight_22c7417d77cb",
+                             "receipt_path":  "receipts/preflight/20260511T195215Z_aion_preflight_22c7417d77cb.json",
+                             "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\preflight\\20260511T195215Z_aion_preflight_22c7417d77cb.json",
+                             "receipt_written":  true,
+                             "receipt_sha256":  "29c209bcf047f092740d160d63d8a662287aece1631ca46cb569c186692b98bc",
+                             "repo_root":  "C:\\Lab_Research\\aion-live-demo",
+                             "memory_influence":  {
+                                                      "engine":  "AION_MEMORY_SCARS_V1",
+                                                      "matched_scars":  [
+                                                                            {
+                                                                                "scar_id":  "seed_missing_verifier_execution",
+                                                                                "severity":  "HIGH",
+                                                                                "future_rule":  "BLOCK execution when verifier is missing"
+                                                                            },
+                                                                            {
+                                                                                "scar_id":  "scar_missing_verifier_exec",
+                                                                                "severity":  "HIGH",
+                                                                                "future_rule":  "BLOCK execution when verifier is missing"
+                                                                            },
+                                                                            {
+                                                                                "scar_id":  "verify_missing_verifier_exec",
+                                                                                "severity":  "HIGH",
+                                                                                "future_rule":  "BLOCK when verifier missing for execution"
+                                                                            },
+                                                                            {
+                                                                                "scar_id":  "integration_missing_verifier_exec",
+                                                                                "severity":  "HIGH",
+                                                                                "future_rule":  "BLOCK execution when verifier is missing"
+                                                                            }
+                                                                        ],
+                                                      "memory_risk_adjustment":  "RAISE_TO_BLOCK",
+                                                      "recommended_decision_bias":  "BLOCK",
+                                                      "reason":  "Memory scars matched event risk signals and missing controls."
+                                                  },
+                             "input_summary":  {
+                                                   "source":  "PreflightGate",
+                                                   "action_type":  "script",
+                                                   "target":  "scripts/deploy.ps1",
+                                                   "requested_execution":  true,
+                                                   "risk_signals":  [
+                                                                        "execution"
+                                                                    ],
+                                                   "boundary":  "LOCAL_ONLY"
+                                               }
+                         }
+}
