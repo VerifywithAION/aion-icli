@@ -1,0 +1,43 @@
+{
+    "demo":  "AION_EVALUATE_API_V1",
+    "endpoint":  "http://127.0.0.1:8765/evaluate",
+    "generated_at_utc":  "2026-05-11T19:01:37Z",
+    "results":  [
+                    {
+                        "scenario":  "flagged_block",
+                        "expected":  "BLOCK",
+                        "governance_decision":  "BLOCK",
+                        "risk_level":  "HIGH",
+                        "receipt_path":  "receipts/evaluate/20260511T190137Z_aion_eval_ab95ff9cb130.json",
+                        "boundary":  "LOCAL_ONLY",
+                        "network":  "NOT_USED",
+                        "mutation":  "NOT_PERFORMED",
+                        "execution":  "NOT_PERFORMED",
+                        "reason":  "Threat signal is flagged or score is below 50."
+                    },
+                    {
+                        "scenario":  "watch_warn",
+                        "expected":  "WARN",
+                        "governance_decision":  "WARN",
+                        "risk_level":  "MEDIUM",
+                        "receipt_path":  "receipts/evaluate/20260511T190137Z_aion_eval_4b0ac8768d86.json",
+                        "boundary":  "LOCAL_ONLY",
+                        "network":  "NOT_USED",
+                        "mutation":  "NOT_PERFORMED",
+                        "execution":  "NOT_PERFORMED",
+                        "reason":  "Threat signal requires warning and controlled review."
+                    },
+                    {
+                        "scenario":  "clean_allow",
+                        "expected":  "ALLOW",
+                        "governance_decision":  "ALLOW",
+                        "risk_level":  "LOW",
+                        "receipt_path":  "receipts/evaluate/20260511T190137Z_aion_eval_5a9e7c898c91.json",
+                        "boundary":  "LOCAL_ONLY",
+                        "network":  "NOT_USED",
+                        "mutation":  "NOT_PERFORMED",
+                        "execution":  "NOT_PERFORMED",
+                        "reason":  "Signal is clean and score is above governance threshold."
+                    }
+                ]
+}
