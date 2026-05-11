@@ -48,6 +48,10 @@ Localhost-only binding: `127.0.0.1:8765`
   "execution": "NOT_PERFORMED",
   "receipt_id": "aion_eval_xxxxxxxx",
   "receipt_path": "receipts/evaluate/...",
+  "receipt_abs_path": "C:/.../receipts/evaluate/....json",
+  "receipt_written": true,
+  "receipt_sha256": "hexsha256",
+  "repo_root": "C:/.../aion-live-demo",
   "input_summary": {}
 }
 ```
@@ -81,6 +85,11 @@ Receipt includes:
 - governance output
 - boundary/network/mutation/execution posture
 - receipt id and adapter name
+- absolute receipt path (`receipt_abs_path`)
+- receipt persistence flag (`receipt_written`)
+- receipt file hash (`receipt_sha256`)
+
+Runtime receipts are local artifacts and are not committed.
 
 ## Run
 

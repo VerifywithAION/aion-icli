@@ -1,4 +1,5 @@
 import json
+import hashlib
 import uuid
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -126,6 +127,10 @@ def make_output(payload: Dict[str, Any]) -> Dict[str, Any]:
         "execution": "NOT_PERFORMED",
         "receipt_id": receipt_id,
         "receipt_path": str(receipt_rel).replace("\\", "/"),
+        "receipt_abs_path": str(receipt_abs),
+        "receipt_written": False,
+        "receipt_sha256": "",
+        "repo_root": str(ROOT),
         "input_summary": {
             "source": sanitize_text(payload.get("source")),
             "chain": sanitize_text(payload.get("chain")),
@@ -150,8 +155,17 @@ def make_output(payload: Dict[str, Any]) -> Dict[str, Any]:
         "execution": "NOT_PERFORMED",
         "local_receipts_only": True,
     }
-
-    receipt_abs.write_text(json.dumps(receipt, indent=2), encoding="utf-8")
+    tmp_abs = receipt_abs.with_suffix(".tmp")
+    serialized = json.dumps(receipt, indent=2)
+    with open(tmp_abs, "w", encoding="utf-8", newline="\n") as f:
+        f.write(serialized)
+        f.flush()
+    tmp_abs.replace(receipt_abs)
+    if not receipt_abs.exists():
+        raise RuntimeError(f"receipt was not written: {receipt_abs}")
+    receipt_sha256 = hashlib.sha256(receipt_abs.read_bytes()).hexdigest()
+    output["receipt_written"] = True
+    output["receipt_sha256"] = receipt_sha256
     return output
 
 

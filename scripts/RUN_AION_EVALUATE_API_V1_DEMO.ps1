@@ -66,6 +66,9 @@ foreach($p in $payloads){
     governance_decision = $response.governance_decision
     risk_level = $response.risk_level
     receipt_path = $response.receipt_path
+    receipt_abs_path = $response.receipt_abs_path
+    receipt_sha256 = $response.receipt_sha256
+    receipt_written = $response.receipt_written
     boundary = $response.boundary
     network = $response.network
     mutation = $response.mutation
@@ -89,10 +92,10 @@ $lines += ""
 $lines += "- Endpoint: ``$uri``"
 $lines += "- Generated UTC: " + (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
 $lines += ""
-$lines += "| Scenario | Expected | Actual | Risk | Receipt |"
-$lines += "|---|---|---|---|---|"
+$lines += "| Scenario | Expected | Actual | Risk | Receipt | SHA256 |"
+$lines += "|---|---|---|---|---|---|"
 foreach($r in $results){
-  $lines += "| $($r.scenario) | $($r.expected) | $($r.governance_decision) | $($r.risk_level) | $($r.receipt_path) |"
+  $lines += "| $($r.scenario) | $($r.expected) | $($r.governance_decision) | $($r.risk_level) | $($r.receipt_path) | $($r.receipt_sha256) |"
 }
 $lines -join "`r`n" | Set-Content -LiteralPath $reportOut
 
