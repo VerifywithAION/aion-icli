@@ -1,0 +1,89 @@
+﻿{
+    "scenarios":  [
+                      {
+                          "engine":  "AION_SENTINEL_CONTRADICTION_V1",
+                          "consistency_status":  "CONTRADICTION",
+                          "severity":  "HIGH",
+                          "contradictions":  [
+                                                 "claim_ready_to_ship_without_verifier",
+                                                 "claim_ready_to_ship_without_receipt",
+                                                 "claim_ready_to_ship_with_missing_controls"
+                                             ],
+                          "required_next_step":  "Resolve claim/evidence mismatch before trust; run verifier and produce receipt-backed evidence.",
+                          "governance_decision":  "BLOCK",
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED",
+                          "execution":  "NOT_PERFORMED",
+                          "receipt_id":  "aion_sentinel_8dc8b8cc3477",
+                          "receipt_path":  "receipts/sentinel/20260511T203831Z_aion_sentinel_8dc8b8cc3477.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\sentinel\\20260511T203831Z_aion_sentinel_8dc8b8cc3477.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "a07656f06320194b44b4394656add8802dd11ca9770ac9a11082b3e14c2c9418",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo",
+                          "input_summary":  {
+                                                "claim":  "ready_to_ship",
+                                                "artifact":  "scripts/deploy.ps1",
+                                                "risk_level":  "HIGH",
+                                                "decision":  "REVIEW_ONLY",
+                                                "missing_controls_count":  3
+                                            }
+                      },
+                      {
+                          "engine":  "AION_SENTINEL_CONTRADICTION_V1",
+                          "consistency_status":  "CONTRADICTION",
+                          "severity":  "HIGH",
+                          "contradictions":  [
+                                                 "claim_safe_to_execute_but_decision_block"
+                                             ],
+                          "required_next_step":  "Resolve claim/evidence mismatch before trust; run verifier and produce receipt-backed evidence.",
+                          "governance_decision":  "BLOCK",
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED",
+                          "execution":  "NOT_PERFORMED",
+                          "receipt_id":  "aion_sentinel_7f454c7f0689",
+                          "receipt_path":  "receipts/sentinel/20260511T203831Z_aion_sentinel_7f454c7f0689.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\sentinel\\20260511T203831Z_aion_sentinel_7f454c7f0689.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "052dc64b7416e88a20d2014abadcdb4a28ca2c30bccd265fdd55be0c0000b3af",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo",
+                          "input_summary":  {
+                                                "claim":  "safe_to_execute",
+                                                "artifact":  "scripts/execute.ps1",
+                                                "risk_level":  "HIGH",
+                                                "decision":  "BLOCK",
+                                                "missing_controls_count":  0
+                                            }
+                      },
+                      {
+                          "engine":  "AION_SENTINEL_CONTRADICTION_V1",
+                          "consistency_status":  "CONSISTENT",
+                          "severity":  "LOW",
+                          "contradictions":  [
+
+                                             ],
+                          "required_next_step":  "Proceed within governed local boundary and keep receipt trail.",
+                          "governance_decision":  "ALLOW",
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED",
+                          "execution":  "NOT_PERFORMED",
+                          "receipt_id":  "aion_sentinel_279cac49f1df",
+                          "receipt_path":  "receipts/sentinel/20260511T203831Z_aion_sentinel_279cac49f1df.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\sentinel\\20260511T203831Z_aion_sentinel_279cac49f1df.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "3b44627cf975237319f07c749ba8fc088310002bc963c8c4539d3452097929c7",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo",
+                          "input_summary":  {
+                                                "claim":  "allowed",
+                                                "artifact":  "docs/policy.md",
+                                                "risk_level":  "LOW",
+                                                "decision":  "ALLOW",
+                                                "missing_controls_count":  0
+                                            }
+                      }
+                  ],
+    "generated_at_utc":  "2026-05-11T20:38:31Z",
+    "engine":  "AION_SENTINEL_CONTRADICTION_V1"
+}

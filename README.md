@@ -114,6 +114,7 @@ Use these links to jump directly into the public AION ICLI release:
 | Preflight gate | [AION Preflight Gate V1](docs/AION_PREFLIGHT_GATE_V1.md) | Pre-execution governance for proposed actions before consequence |
 | Memory scars | [AION Memory Scars V1](docs/AION_MEMORY_SCARS_V1.md) | Public-safe failure memory that biases governance decisions away from repeated mistakes |
 | Preflight + memory | [AION Preflight + Memory Integration V1](docs/AION_PREFLIGHT_MEMORY_INTEGRATION_V1.md) | Preflight decisions influenced by public-safe failure memory |
+| Sentinel + contradiction | [AION Sentinel + Contradiction V1](docs/AION_SENTINEL_CONTRADICTION_V1.md) | Detects claim/evidence mismatch before trust and maps contradictions to governed decisions |
 | Model adapter | [Safe Model Adapter Dry-Run V1](docs/SAFE_MODEL_ADAPTER_DRY_RUN_V1.md) | Model-provider review without provider calls |
 | SDK examples | [SDK Examples V1](docs/SDK_EXAMPLES_V1.md) | Developer request examples and receipts |
 | Voice layer | [Voice Layer V1](docs/VOICE_LAYER_V1.md) | Human-facing AION voice with optional diagnostics |
