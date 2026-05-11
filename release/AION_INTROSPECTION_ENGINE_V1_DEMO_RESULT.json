@@ -1,9 +1,9 @@
 ﻿{
     "marker":  "AION_INTROSPECTION_ENGINE_V1_DEMO_OK",
-    "generated_at_utc":  "2026-05-11T21:08:20Z",
+    "generated_at_utc":  "2026-05-11T21:18:23Z",
     "result":  {
                    "engine":  "AION_INTROSPECTION_ENGINE_V1",
-                   "generated_at_utc":  "2026-05-11T21:08:20Z",
+                   "generated_at_utc":  "2026-05-11T21:18:23Z",
                    "repo_root":  "C:\\Lab_Research\\aion-live-demo",
                    "proven_capabilities":  [
                                                {
@@ -89,15 +89,15 @@
                    "missing_or_partial":  [
 
                                           ],
-                   "next_build_pointer":  "Self-Repair Planner V1",
+                   "next_build_pointer":  "Self-Patching Sandbox V1",
                    "summary":  {
                                    "proven_count":  7,
                                    "missing_count":  0
                                },
-                   "receipt_id":  "aion_introspection_6a688b73da9e",
-                   "receipt_path":  "receipts/introspection/20260511T210820Z_aion_introspection_6a688b73da9e.json",
-                   "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\introspection\\20260511T210820Z_aion_introspection_6a688b73da9e.json",
+                   "receipt_id":  "aion_introspection_962bf1348bf6",
+                   "receipt_path":  "receipts/introspection/20260511T211823Z_aion_introspection_962bf1348bf6.json",
+                   "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\introspection\\20260511T211823Z_aion_introspection_962bf1348bf6.json",
                    "receipt_written":  true,
-                   "receipt_sha256":  "8440d167e71340b7aec6d3db71cc72be085a1014c006f23729dd79f4b306d89f"
+                   "receipt_sha256":  "1888d59fcfd453666f7498a1cc25664bc41652d0e2ac715593ea1e27a6390ae1"
                }
 }

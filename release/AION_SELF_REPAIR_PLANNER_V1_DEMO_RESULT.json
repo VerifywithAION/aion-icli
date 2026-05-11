@@ -1,0 +1,126 @@
+﻿{
+    "scenarios":  [
+                      {
+                          "planner":  "AION_SELF_REPAIR_PLANNER_V1",
+                          "repair_status":  "PLAN_ONLY",
+                          "risk_level":  "HIGH",
+                          "repair_plan":  [
+                                              {
+                                                  "step_id":  "repair_001",
+                                                  "title":  "Create verifier for missing control",
+                                                  "rationale":  "No verifier means the claim cannot be proven deterministically.",
+                                                  "target_surface":  "scripts",
+                                                  "required_artifact":  "scripts/VERIFY_\u003cTARGET\u003e_V1.ps1",
+                                                  "verification_marker":  "AION_\u003cTARGET\u003e_VERIFY_OK"
+                                              },
+                                              {
+                                                  "step_id":  "repair_002",
+                                                  "title":  "Add rollback procedure",
+                                                  "rationale":  "Mutation-risk actions require explicit rollback to remain governable.",
+                                                  "target_surface":  "policy",
+                                                  "required_artifact":  "docs/\u003cTARGET\u003e_ROLLBACK_PLAN.md",
+                                                  "verification_marker":  "AION_\u003cTARGET\u003e_ROLLBACK_READY"
+                                              },
+                                              {
+                                                  "step_id":  "repair_003",
+                                                  "title":  "Add dry-run path",
+                                                  "rationale":  "Dry-run provides non-destructive pre-execution validation.",
+                                                  "target_surface":  "scripts",
+                                                  "required_artifact":  "scripts/RUN_\u003cTARGET\u003e_DRY_RUN.ps1",
+                                                  "verification_marker":  "AION_\u003cTARGET\u003e_DRY_RUN_OK"
+                                              }
+                                          ],
+                          "required_human_review":  true,
+                          "admissibility_after_repair":  "RECHECK_REQUIRED",
+                          "forbidden_actions":  [
+                                                    "do_not_execute_target_action",
+                                                    "do_not_patch_without_sandbox",
+                                                    "do_not_claim_ready_without_verifier"
+                                                ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED_ON_TARGET",
+                          "execution":  "NOT_PERFORMED",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo",
+                          "receipt_id":  "aion_self_repair_d062d812111d",
+                          "receipt_path":  "receipts/self_repair/20260511T211822Z_aion_self_repair_d062d812111d.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\self_repair\\20260511T211822Z_aion_self_repair_d062d812111d.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "cad4a65b26ab90d5ce4ac9a23ea4f90829b02f558c913a0490fa2193652876c4"
+                      },
+                      {
+                          "planner":  "AION_SELF_REPAIR_PLANNER_V1",
+                          "repair_status":  "PLAN_ONLY",
+                          "risk_level":  "HIGH",
+                          "repair_plan":  [
+                                              {
+                                                  "step_id":  "repair_001",
+                                                  "title":  "Downgrade claim until evidence aligns",
+                                                  "rationale":  "Contradictory claims must be downgraded to REVIEW_ONLY pending proof.",
+                                                  "target_surface":  "policy",
+                                                  "required_artifact":  "claim downgrade + explicit evidence requirements",
+                                                  "verification_marker":  "AION_CONTRADICTION_ALIGNMENT_OK"
+                                              },
+                                              {
+                                                  "step_id":  "repair_002",
+                                                  "title":  "Require verifier and receipt evidence",
+                                                  "rationale":  "Claim cannot return to ready state until verifier marker and receipt exist.",
+                                                  "target_surface":  "reports",
+                                                  "required_artifact":  "report with verifier marker + receipt reference",
+                                                  "verification_marker":  "AION_EVIDENCE_ALIGNMENT_OK"
+                                              }
+                                          ],
+                          "required_human_review":  true,
+                          "admissibility_after_repair":  "RECHECK_REQUIRED",
+                          "forbidden_actions":  [
+                                                    "do_not_execute_target_action",
+                                                    "do_not_patch_without_sandbox",
+                                                    "do_not_claim_ready_without_verifier"
+                                                ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED_ON_TARGET",
+                          "execution":  "NOT_PERFORMED",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo",
+                          "receipt_id":  "aion_self_repair_d516e304e2ad",
+                          "receipt_path":  "receipts/self_repair/20260511T211822Z_aion_self_repair_d516e304e2ad.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\self_repair\\20260511T211822Z_aion_self_repair_d516e304e2ad.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "32bba0423e5a2860fec6457e033854e8b649d41f6c55425e3b714bd9c1b45bbd"
+                      },
+                      {
+                          "planner":  "AION_SELF_REPAIR_PLANNER_V1",
+                          "repair_status":  "PLAN_ONLY",
+                          "risk_level":  "MEDIUM",
+                          "repair_plan":  [
+                                              {
+                                                  "step_id":  "repair_001",
+                                                  "title":  "Add missing docs/verifier/report/release artifacts",
+                                                  "rationale":  "Missing proof surfaces block admissibility review.",
+                                                  "target_surface":  "docs",
+                                                  "required_artifact":  "docs/AION_EXAMPLE.md, scripts/VERIFY_AION_EXAMPLE.ps1",
+                                                  "verification_marker":  "AION_PROOF_SURFACE_COMPLETE_OK"
+                                              }
+                                          ],
+                          "required_human_review":  true,
+                          "admissibility_after_repair":  "RECHECK_REQUIRED",
+                          "forbidden_actions":  [
+                                                    "do_not_execute_target_action",
+                                                    "do_not_patch_without_sandbox",
+                                                    "do_not_claim_ready_without_verifier"
+                                                ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED_ON_TARGET",
+                          "execution":  "NOT_PERFORMED",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo",
+                          "receipt_id":  "aion_self_repair_ae86a1b4520b",
+                          "receipt_path":  "receipts/self_repair/20260511T211822Z_aion_self_repair_ae86a1b4520b.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\self_repair\\20260511T211822Z_aion_self_repair_ae86a1b4520b.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "dd2016428fe91153a09e401834cd72038cdc9e209ca44f94e47078b88cd23040"
+                      }
+                  ],
+    "generated_at_utc":  "2026-05-11T21:18:22Z",
+    "planner":  "AION_SELF_REPAIR_PLANNER_V1"
+}

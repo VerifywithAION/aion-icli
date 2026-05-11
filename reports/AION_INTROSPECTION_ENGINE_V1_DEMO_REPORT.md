@@ -1,10 +1,10 @@
 ﻿# AION Introspection Engine V1 Demo Report
 
-Generated at UTC: 2026-05-11T21:08:20Z
+Generated at UTC: 2026-05-11T21:18:23Z
 Engine: AION_INTROSPECTION_ENGINE_V1
 Proven count: 7
 Missing count: 0
-Next build pointer: Self-Repair Planner V1
+Next build pointer: Self-Patching Sandbox V1
 
 Outputs:
 - release/AION_LIVING_PROOF_GRAPH_V1.json
