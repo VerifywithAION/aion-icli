@@ -165,7 +165,7 @@ def build_living_proof_graph() -> Dict[str, Any]:
         "core_locked_markers": core_locked_markers,
         "known_receipt_domains": ["local", "evaluate", "preflight", "memory", "sentinel"],
         "missing_or_partial": missing_or_partial,
-        "next_build_pointer": "Mini AION Domain Governors V1",
+        "next_build_pointer": "Creativity + Intuition Layer V1",
         "summary": {
             "proven_count": proven_count,
             "missing_count": missing_count,

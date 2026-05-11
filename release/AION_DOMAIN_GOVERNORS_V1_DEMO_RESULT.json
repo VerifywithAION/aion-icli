@@ -1,0 +1,155 @@
+﻿{
+    "scenarios":  [
+                      {
+                          "engine":  "AION_DOMAIN_GOVERNORS_V1",
+                          "selected_governor":  "agent",
+                          "governance_decision":  "BLOCK",
+                          "risk_level":  "HIGH",
+                          "reason":  "Agent execution requested without verifier control.",
+                          "required_next_step":  "Add verifier and rerun pre-execution governance.",
+                          "domain_controls_required":  [
+                                                           "verifier"
+                                                       ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED",
+                          "execution":  "NOT_PERFORMED",
+                          "receipt_id":  "aion_domain_96ce557bee7c",
+                          "receipt_path":  "receipts/domain_governors/20260511T213459Z_aion_domain_96ce557bee7c.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\domain_governors\\20260511T213459Z_aion_domain_96ce557bee7c.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "ffc00fa9362072269c26f3bfb0bc0291aa62097b137d9bc6659fcbd8b93a967b",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo"
+                      },
+                      {
+                          "engine":  "AION_DOMAIN_GOVERNORS_V1",
+                          "selected_governor":  "wallet",
+                          "governance_decision":  "BLOCK",
+                          "risk_level":  "HIGH",
+                          "reason":  "Wallet funds/signature risk requires human review.",
+                          "required_next_step":  "Require explicit human approval before proceeding.",
+                          "domain_controls_required":  [
+                                                           "human_review"
+                                                       ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED",
+                          "execution":  "NOT_PERFORMED",
+                          "receipt_id":  "aion_domain_8973235f38b1",
+                          "receipt_path":  "receipts/domain_governors/20260511T213459Z_aion_domain_8973235f38b1.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\domain_governors\\20260511T213459Z_aion_domain_8973235f38b1.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "54609cd9716c314fe4be4f68d85faf13e43061fe6c3cc61b738dbd0b16f92896",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo"
+                      },
+                      {
+                          "engine":  "AION_DOMAIN_GOVERNORS_V1",
+                          "selected_governor":  "security",
+                          "governance_decision":  "BLOCK",
+                          "risk_level":  "HIGH",
+                          "reason":  "Security flagged/exploit signal requires immediate block.",
+                          "required_next_step":  "Treat as flagged finding; review and verify before any action.",
+                          "domain_controls_required":  [
+                                                           "verifier",
+                                                           "human_review"
+                                                       ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED",
+                          "execution":  "NOT_PERFORMED",
+                          "receipt_id":  "aion_domain_8566714e021b",
+                          "receipt_path":  "receipts/domain_governors/20260511T213500Z_aion_domain_8566714e021b.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\domain_governors\\20260511T213500Z_aion_domain_8566714e021b.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "500445d62af711db593b478b38c3acac2a4c668ecb645394731272a27e56a924",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo"
+                      },
+                      {
+                          "engine":  "AION_DOMAIN_GOVERNORS_V1",
+                          "selected_governor":  "trading",
+                          "governance_decision":  "BLOCK",
+                          "risk_level":  "MEDIUM",
+                          "reason":  "Trading execution without dry-run is blocked.",
+                          "required_next_step":  "Run dry-run and capture receipt evidence.",
+                          "domain_controls_required":  [
+                                                           "dry_run"
+                                                       ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED",
+                          "execution":  "NOT_PERFORMED",
+                          "receipt_id":  "aion_domain_c6df1b326ee2",
+                          "receipt_path":  "receipts/domain_governors/20260511T213500Z_aion_domain_c6df1b326ee2.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\domain_governors\\20260511T213500Z_aion_domain_c6df1b326ee2.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "b624ea76e4b700a790bd53f383a03eb24606d2889b73cede037ee11a258d2ba1",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo"
+                      },
+                      {
+                          "engine":  "AION_DOMAIN_GOVERNORS_V1",
+                          "selected_governor":  "quantum",
+                          "governance_decision":  "BLOCK",
+                          "risk_level":  "MEDIUM",
+                          "reason":  "Quantum execution requires verifier control.",
+                          "required_next_step":  "Add verifier and rerun governance.",
+                          "domain_controls_required":  [
+                                                           "verifier"
+                                                       ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED",
+                          "execution":  "NOT_PERFORMED",
+                          "receipt_id":  "aion_domain_3a42a5ebf33e",
+                          "receipt_path":  "receipts/domain_governors/20260511T213500Z_aion_domain_3a42a5ebf33e.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\domain_governors\\20260511T213500Z_aion_domain_3a42a5ebf33e.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "5af89e3e519dbcd735cb7c7b06e2ce179c5bc29119806dfbf2967e6229971b6b",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo"
+                      },
+                      {
+                          "engine":  "AION_DOMAIN_GOVERNORS_V1",
+                          "selected_governor":  "physical_ai",
+                          "governance_decision":  "BLOCK",
+                          "risk_level":  "HIGH",
+                          "reason":  "Physical AI execution at high/unknown risk is blocked.",
+                          "required_next_step":  "Require human review and verifier-backed dry-run evidence.",
+                          "domain_controls_required":  [
+                                                           "human_review",
+                                                           "verifier"
+                                                       ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED",
+                          "execution":  "NOT_PERFORMED",
+                          "receipt_id":  "aion_domain_33404ad3f926",
+                          "receipt_path":  "receipts/domain_governors/20260511T213500Z_aion_domain_33404ad3f926.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\domain_governors\\20260511T213500Z_aion_domain_33404ad3f926.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "f132f9ca830120091b2cf8dfc636ada9e8616ef8af915287f019ef4264925959",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo"
+                      },
+                      {
+                          "engine":  "AION_DOMAIN_GOVERNORS_V1",
+                          "selected_governor":  "unknown",
+                          "governance_decision":  "REVIEW_ONLY",
+                          "risk_level":  "UNKNOWN",
+                          "reason":  "Unknown domain must be reviewed manually.",
+                          "required_next_step":  "Classify domain and provide full controls before trust.",
+                          "domain_controls_required":  [
+
+                                                       ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED",
+                          "execution":  "NOT_PERFORMED",
+                          "receipt_id":  "aion_domain_205dfcf0c27c",
+                          "receipt_path":  "receipts/domain_governors/20260511T213500Z_aion_domain_205dfcf0c27c.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\domain_governors\\20260511T213500Z_aion_domain_205dfcf0c27c.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "e249df239364be950ec08afd2bbcf3517b760049f906cbd9047823afcce35729",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo"
+                      }
+                  ],
+    "generated_at_utc":  "2026-05-11T21:35:00Z",
+    "engine":  "AION_DOMAIN_GOVERNORS_V1"
+}
