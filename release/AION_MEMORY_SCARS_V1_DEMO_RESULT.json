@@ -1,0 +1,47 @@
+{
+    "demo":  "AION_MEMORY_SCARS_V1",
+    "generated_at_utc":  "2026-05-11T19:45:10Z",
+    "add_result":  {
+                       "engine":  "AION_MEMORY_SCARS_V1",
+                       "status":  "ADDED",
+                       "scar_id":  "scar_missing_verifier_exec",
+                       "memory_store_path":  ".aion_public/memory/memory_scars_v1.jsonl",
+                       "memory_store_abs_path":  "C:\\Lab_Research\\aion-live-demo\\.aion_public\\memory\\memory_scars_v1.jsonl",
+                       "memory_store_count":  3,
+                       "receipt_id":  "aion_memory_e1055c66ce73",
+                       "receipt_path":  "receipts/memory/20260511T194510Z_aion_memory_e1055c66ce73.json",
+                       "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\memory\\20260511T194510Z_aion_memory_e1055c66ce73.json",
+                       "receipt_written":  true,
+                       "receipt_sha256":  "75c9d3da6321c2b3b347200e24067069ede4270a34d169bf634ec7f6b68fc9bc",
+                       "repo_root":  "C:\\Lab_Research\\aion-live-demo"
+                   },
+    "evaluate_result":  {
+                            "engine":  "AION_MEMORY_SCARS_V1",
+                            "matched_scars":  [
+                                                  {
+                                                      "scar_id":  "seed_missing_verifier_execution",
+                                                      "severity":  "HIGH",
+                                                      "future_rule":  "BLOCK execution when verifier is missing"
+                                                  },
+                                                  {
+                                                      "scar_id":  "verify_missing_verifier_exec",
+                                                      "severity":  "HIGH",
+                                                      "future_rule":  "BLOCK when verifier missing for execution"
+                                                  },
+                                                  {
+                                                      "scar_id":  "scar_missing_verifier_exec",
+                                                      "severity":  "HIGH",
+                                                      "future_rule":  "BLOCK execution when verifier is missing"
+                                                  }
+                                              ],
+                            "memory_risk_adjustment":  "RAISE_TO_BLOCK",
+                            "recommended_decision_bias":  "BLOCK",
+                            "reason":  "Memory scars matched event risk signals and missing controls.",
+                            "receipt_id":  "aion_memory_fcd3da7f911e",
+                            "receipt_path":  "receipts/memory/20260511T194510Z_aion_memory_fcd3da7f911e.json",
+                            "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\memory\\20260511T194510Z_aion_memory_fcd3da7f911e.json",
+                            "receipt_written":  true,
+                            "receipt_sha256":  "d6ef1163ab1df732e775ac28cfaa9736c03331bcaf826da60ddd17b353eb8740",
+                            "repo_root":  "C:\\Lab_Research\\aion-live-demo"
+                        }
+}
