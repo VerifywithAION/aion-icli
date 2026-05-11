@@ -1,0 +1,156 @@
+﻿{
+    "scenarios":  [
+                      {
+                          "engine":  "AION_CREATIVITY_INTUITION_V1",
+                          "intuition_score":  100,
+                          "intuition_class":  "CRITICAL_SIGNAL",
+                          "heuristic_not_truth":  true,
+                          "reason":  "Heuristic signal from contradictions, memory, controls, risk, evidence, and proof-gap surfaces.",
+                          "creative_next_actions":  [
+                                                        {
+                                                            "action_id":  "creative_001",
+                                                            "title":  "Design verifier for missing control",
+                                                            "why":  "Missing verifier blocks admissibility; add deterministic verification marker.",
+                                                            "safe_boundary":  "VERIFY_FIRST"
+                                                        },
+                                                        {
+                                                            "action_id":  "creative_002",
+                                                            "title":  "Draft rollback plan",
+                                                            "why":  "Rollback gap increases consequence risk for mutation paths.",
+                                                            "safe_boundary":  "PLAN_ONLY"
+                                                        },
+                                                        {
+                                                            "action_id":  "creative_003",
+                                                            "title":  "Downgrade claim and align evidence",
+                                                            "why":  "Contradictions indicate claim/evidence mismatch; downgrade to review path.",
+                                                            "safe_boundary":  "REVIEW_ONLY"
+                                                        },
+                                                        {
+                                                            "action_id":  "creative_004",
+                                                            "title":  "Check memory future_rule",
+                                                            "why":  "Prior scars matched; enforce stored future_rule before reconsideration.",
+                                                            "safe_boundary":  "VERIFY_FIRST"
+                                                        },
+                                                        {
+                                                            "action_id":  "creative_005",
+                                                            "title":  "Capture missing evidence",
+                                                            "why":  "Evidence incomplete; produce report+receipt+verifier linkage.",
+                                                            "safe_boundary":  "VERIFY_FIRST"
+                                                        },
+                                                        {
+                                                            "action_id":  "creative_006",
+                                                            "title":  "Enable wallet human-review gate",
+                                                            "why":  "Funds/signature risk requires explicit human approval.",
+                                                            "safe_boundary":  "REVIEW_ONLY"
+                                                        },
+                                                        {
+                                                            "action_id":  "creative_007",
+                                                            "title":  "Recheck after repair",
+                                                            "why":  "Intuition output is heuristic; rerun governance after controls/evidence repair.",
+                                                            "safe_boundary":  "VERIFY_FIRST"
+                                                        }
+                                                    ],
+                          "forbidden_actions":  [
+                                                    "do_not_treat_intuition_as_proof",
+                                                    "do_not_execute_without_verifier",
+                                                    "do_not_skip_receipts"
+                                                ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED",
+                          "execution":  "NOT_PERFORMED",
+                          "receipt_id":  "aion_intuition_94825b160c29",
+                          "receipt_path":  "receipts/intuition/20260511T214450Z_aion_intuition_94825b160c29.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\intuition\\20260511T214450Z_aion_intuition_94825b160c29.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "1940df44f1364f1c4e2a35701975fe4c79de443def5071cfe240bc5b9efaafd1",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo"
+                      },
+                      {
+                          "engine":  "AION_CREATIVITY_INTUITION_V1",
+                          "intuition_score":  90,
+                          "intuition_class":  "CRITICAL_SIGNAL",
+                          "heuristic_not_truth":  true,
+                          "reason":  "Heuristic signal from contradictions, memory, controls, risk, evidence, and proof-gap surfaces.",
+                          "creative_next_actions":  [
+                                                        {
+                                                            "action_id":  "creative_001",
+                                                            "title":  "Design verifier for missing control",
+                                                            "why":  "Missing verifier blocks admissibility; add deterministic verification marker.",
+                                                            "safe_boundary":  "VERIFY_FIRST"
+                                                        },
+                                                        {
+                                                            "action_id":  "creative_002",
+                                                            "title":  "Downgrade claim and align evidence",
+                                                            "why":  "Contradictions indicate claim/evidence mismatch; downgrade to review path.",
+                                                            "safe_boundary":  "REVIEW_ONLY"
+                                                        },
+                                                        {
+                                                            "action_id":  "creative_003",
+                                                            "title":  "Check memory future_rule",
+                                                            "why":  "Prior scars matched; enforce stored future_rule before reconsideration.",
+                                                            "safe_boundary":  "VERIFY_FIRST"
+                                                        },
+                                                        {
+                                                            "action_id":  "creative_004",
+                                                            "title":  "Capture missing evidence",
+                                                            "why":  "Evidence incomplete; produce report+receipt+verifier linkage.",
+                                                            "safe_boundary":  "VERIFY_FIRST"
+                                                        },
+                                                        {
+                                                            "action_id":  "creative_005",
+                                                            "title":  "Recheck after repair",
+                                                            "why":  "Intuition output is heuristic; rerun governance after controls/evidence repair.",
+                                                            "safe_boundary":  "VERIFY_FIRST"
+                                                        }
+                                                    ],
+                          "forbidden_actions":  [
+                                                    "do_not_treat_intuition_as_proof",
+                                                    "do_not_execute_without_verifier",
+                                                    "do_not_skip_receipts"
+                                                ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED",
+                          "execution":  "NOT_PERFORMED",
+                          "receipt_id":  "aion_intuition_83fba03fbcbe",
+                          "receipt_path":  "receipts/intuition/20260511T214450Z_aion_intuition_83fba03fbcbe.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\intuition\\20260511T214450Z_aion_intuition_83fba03fbcbe.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "cb4cbc6a3b6d5b02a429c59907f0fb40356a58e649e3dfbc8296906d5c584d87",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo"
+                      },
+                      {
+                          "engine":  "AION_CREATIVITY_INTUITION_V1",
+                          "intuition_score":  0,
+                          "intuition_class":  "LOW_SIGNAL",
+                          "heuristic_not_truth":  true,
+                          "reason":  "Heuristic signal from contradictions, memory, controls, risk, evidence, and proof-gap surfaces.",
+                          "creative_next_actions":  [
+                                                        {
+                                                            "action_id":  "creative_001",
+                                                            "title":  "Recheck after repair",
+                                                            "why":  "Intuition output is heuristic; rerun governance after controls/evidence repair.",
+                                                            "safe_boundary":  "VERIFY_FIRST"
+                                                        }
+                                                    ],
+                          "forbidden_actions":  [
+                                                    "do_not_treat_intuition_as_proof",
+                                                    "do_not_execute_without_verifier",
+                                                    "do_not_skip_receipts"
+                                                ],
+                          "boundary":  "LOCAL_ONLY",
+                          "network":  "NOT_USED",
+                          "mutation":  "NOT_PERFORMED",
+                          "execution":  "NOT_PERFORMED",
+                          "receipt_id":  "aion_intuition_1e090b8941ba",
+                          "receipt_path":  "receipts/intuition/20260511T214451Z_aion_intuition_1e090b8941ba.json",
+                          "receipt_abs_path":  "C:\\Lab_Research\\aion-live-demo\\receipts\\intuition\\20260511T214451Z_aion_intuition_1e090b8941ba.json",
+                          "receipt_written":  true,
+                          "receipt_sha256":  "d4af05a012fce26bbf724c309d6c8a6a33fc127ecd35bd18438d8413cab4a83d",
+                          "repo_root":  "C:\\Lab_Research\\aion-live-demo"
+                      }
+                  ],
+    "generated_at_utc":  "2026-05-11T21:44:51Z",
+    "engine":  "AION_CREATIVITY_INTUITION_V1"
+}
