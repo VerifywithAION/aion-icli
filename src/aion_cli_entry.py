@@ -12,6 +12,10 @@ try:
     from aion_living_intelligence_kernel import analyze_living_request
 except Exception:
     analyze_living_request = None
+try:
+    from aion_companion_runtime import companion_respond
+except Exception:
+    companion_respond = None
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RECEIPT_PATH = REPO_ROOT / "receipts" / "local" / "aion_cli_receipt_v1.json"
@@ -194,6 +198,21 @@ def should_use_living_intelligence(prompt):
         "what am i missing",
         "what is the next best question",
         "analyze this deeply",
+    ]
+    return any(n.startswith(t) for t in triggers)
+
+
+def should_use_companion(prompt):
+    n = norm(prompt)
+    triggers = [
+        "companion",
+        "humanoid",
+        "trusted companion",
+        "protect my",
+        "help me delegate",
+        "keep me safe",
+        "mirror",
+        "symbiosis",
     ]
     return any(n.startswith(t) for t in triggers)
 
@@ -425,6 +444,17 @@ def answer(prompt):
     global DIAGNOSTICS
 
     n = norm(prompt)
+
+    if should_use_companion(prompt) and companion_respond is not None:
+        c = companion_respond(prompt, context={"runtime": "aion_cli_entry"})
+        response = (
+            c.get("human_response", "")
+            + "\n\n"
+            + "Trust continuity: active."
+            + "\n\n"
+            + "Backend trace is available locally with receipts and governance evidence."
+        )
+        return "companion_runtime", response, c, []
 
     if should_use_living_intelligence(prompt) and analyze_living_request is not None:
         kernel = analyze_living_request(prompt)
