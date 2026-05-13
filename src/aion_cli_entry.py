@@ -8,6 +8,10 @@ try:
     from aion_living_voice_adapter import generate_living_voice_response
 except Exception:
     generate_living_voice_response = None
+try:
+    from aion_living_intelligence_kernel import analyze_living_request
+except Exception:
+    analyze_living_request = None
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RECEIPT_PATH = REPO_ROOT / "receipts" / "local" / "aion_cli_receipt_v1.json"
@@ -178,6 +182,20 @@ def maybe_living_voice(prompt):
         return None
     memory_state = {"recent_turns": VOICE_MEMORY_TURNS[-3:]}
     return generate_living_voice_response(prompt, memory_state=memory_state, context={"runtime": "aion_cli_entry"})
+
+
+def should_use_living_intelligence(prompt):
+    n = norm(prompt)
+    triggers = [
+        "ask aion",
+        "think",
+        "investigate",
+        "what is the core truth",
+        "what am i missing",
+        "what is the next best question",
+        "analyze this deeply",
+    ]
+    return any(n.startswith(t) for t in triggers)
 
 
 def local_exists(path_text):
@@ -407,6 +425,20 @@ def answer(prompt):
     global DIAGNOSTICS
 
     n = norm(prompt)
+
+    if should_use_living_intelligence(prompt) and analyze_living_request is not None:
+        kernel = analyze_living_request(prompt)
+        response = (
+            kernel.get("direct_truth", "")
+            + "\n\n"
+            + "Next best question: "
+            + kernel.get("next_best_question", "")
+            + "\n\n"
+            + kernel.get("governed_answer", "")
+            + "\n\n"
+            + kernel.get("next_admissible_move", "")
+        )
+        return "living_intelligence", response, kernel, []
 
     if n in ["exit", "quit"]:
         return "exit", "Session closed. Receipts remain local for review.", None, []
