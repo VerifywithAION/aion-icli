@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from aion_creativity_intuition import analyze_intuition
+from aion_discernment_kernel import evaluate_discernment
 from aion_domain_governors import route_domain_governance
 from aion_dynamic_cognition_engine import analyze_dynamic_cognition
 from aion_living_intelligence_kernel import analyze_living_request
@@ -40,6 +41,7 @@ def _classify(prompt: str) -> Dict[str, Any]:
             "domain": "trading",
             "risk_signals": ["execution", "funds_at_risk"],
             "focus": "protect_capital",
+            "discernment": "trading",
             "one_question": "What is your maximum acceptable overnight loss before AION interrupts autonomy?",
             "safe_next_step": "Set explicit drawdown and interruption thresholds, then run verifier-backed dry-run only.",
         }
@@ -49,6 +51,7 @@ def _classify(prompt: str) -> Dict[str, Any]:
             "domain": "physical_ai",
             "risk_signals": ["execution", "actuator"],
             "focus": "family_safety",
+            "discernment": "home_robot",
             "one_question": "Which actions are strictly forbidden for the robot without live human confirmation?",
             "safe_next_step": "Define forbidden actions and emergency stop conditions before any autonomous patrol behavior.",
         }
@@ -58,6 +61,7 @@ def _classify(prompt: str) -> Dict[str, Any]:
             "domain": "wallet",
             "risk_signals": ["funds_at_risk", "signature"],
             "focus": "household_rules",
+            "discernment": "shopping",
             "one_question": "What hard budget, allergy, and substitution boundaries must never be violated?",
             "safe_next_step": "Encode budget/allergy/substitution constraints and require human review for out-of-rule purchases.",
         }
@@ -67,6 +71,7 @@ def _classify(prompt: str) -> Dict[str, Any]:
             "domain": "agent",
             "risk_signals": ["execution", "mutation"],
             "focus": "release_safety",
+            "discernment": "coding",
             "one_question": "Which verifier marker and rollback path prove this release is admissible?",
             "safe_next_step": "Run sandbox patch proof and verifier path before any production mutation or release claim.",
         }
@@ -75,6 +80,7 @@ def _classify(prompt: str) -> Dict[str, Any]:
         "domain": "unknown",
         "risk_signals": ["unsafe_claim"],
         "focus": "symbiotic_continuity",
+        "discernment": "mirror",
         "one_question": "What trust boundary, if made explicit now, would most strengthen human-AI delegation confidence?",
         "safe_next_step": "Clarify the hidden thesis and convert it into one governed next build action with proof.",
     }
@@ -83,6 +89,23 @@ def _classify(prompt: str) -> Dict[str, Any]:
 def companion_respond(prompt: str, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     context = context or {}
     profile = _classify(prompt)
+    discernment = evaluate_discernment(
+        {
+            "scenario": profile["discernment"],
+            "human_intent": profile["focus"],
+            "proposed_autonomy": prompt,
+            "possible_consequence": "unbounded autonomy can violate trust boundaries",
+            "human_boundaries": [],
+            "non_negotiables": ["verifier_required", "receipt_required"],
+            "requested_execution": True,
+            "evidence": {
+                "verifier": False,
+                "rollback": False,
+                "human_confirmation": False,
+                "receipt": True,
+            },
+        }
+    )
 
     preflight_input = {
         "source": "CompanionRuntime",
@@ -172,12 +195,14 @@ def companion_respond(prompt: str, context: Optional[Dict[str, Any]] = None) -> 
     )
     protection_line = "I will not allow unbounded autonomy where consequence can outrun evidence."
     next_step = profile["safe_next_step"]
-    one_q = profile["one_question"]
-
+    one_q = discernment.get("one_question_that_matters", profile["one_question"])
+    next_step = discernment.get("safe_next_step", next_step)
+    companion_language = discernment.get("companion_language", "")
     human_response = (
         f"{trust_line}\n\n"
         f"Continuity: {continuity_line}\n\n"
         f"Protection: {protection_line}\n\n"
+        f"{companion_language}\n\n"
         f"One question that matters: {one_q}\n\n"
         f"Safe next step: {next_step}"
     )
@@ -199,6 +224,7 @@ def companion_respond(prompt: str, context: Optional[Dict[str, Any]] = None) -> 
         "memory_bias": memory.get("recommended_decision_bias"),
         "intuition_class": intuition.get("intuition_class"),
         "receipts": {
+            "discernment": discernment.get("receipt_path"),
             "preflight": preflight.get("receipt_path"),
             "memory": memory.get("receipt_path"),
             "sentinel": sentinel.get("receipt_path"),
@@ -219,6 +245,7 @@ def companion_respond(prompt: str, context: Optional[Dict[str, Any]] = None) -> 
         "one_question_that_matters": one_q,
         "safe_next_step": next_step,
         "backend_summary": backend,
+        "discernment_verdict": discernment.get("discernment_verdict", "REVIEW_ONLY"),
         "boundary": "LOCAL_ONLY",
         "network": "NOT_USED",
         "mutation": "NOT_PERFORMED",

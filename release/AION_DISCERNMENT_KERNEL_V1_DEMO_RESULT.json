@@ -1,0 +1,222 @@
+﻿{
+    "demo":  "AION_DISCERNMENT_KERNEL_V1",
+    "generated_at_utc":  "2026-05-13T19:23:41Z",
+    "results":  [
+                    {
+                        "scenario":  "trading",
+                        "result":  {
+                                       "engine":  "AION_DISCERNMENT_KERNEL_V1",
+                                       "scenario":  "trading",
+                                       "human_intent":  "Protect capital overnight",
+                                       "proposed_autonomy":  "Autonomous overnight trading",
+                                       "negotiable_autonomy":  "Scope and pacing can be adjusted, but only within explicit human boundaries.",
+                                       "non_negotiable_boundaries":  [
+                                                                         "max_loss_required"
+                                                                     ],
+                                       "boundary_violations":  [
+                                                                   "requested_execution_with_unverified_non_negotiables"
+                                                               ],
+                                       "discernment_verdict":  "ASK_HUMAN_FIRST",
+                                       "why_it_matters_to_the_human":  "Capital autonomy without explicit loss boundaries converts strategy into unmanaged downside.",
+                                       "one_question_that_matters":  "What maximum loss triggers automatic interruption of the trading agent?",
+                                       "safe_next_step":  "Set max loss + drawdown interruption rule before overnight delegation.",
+                                       "companion_language":  "I can help you delegate, but I will protect your non-negotiable trust boundaries first. We can move fast after boundaries are explicit and evidence-backed.",
+                                       "backend_trace_summary":  {
+                                                                     "trace_available":  true,
+                                                                     "requested_execution":  true,
+                                                                     "evidence_state":  {
+                                                                                            "verifier":  false,
+                                                                                            "rollback":  false,
+                                                                                            "human_confirmation":  false,
+                                                                                            "receipt":  true
+                                                                                        },
+                                                                     "violations_count":  1
+                                                                 },
+                                       "boundary":  "LOCAL_ONLY",
+                                       "network":  "NOT_USED",
+                                       "mutation":  "NOT_PERFORMED",
+                                       "execution":  "NOT_PERFORMED",
+                                       "receipt_id":  "aion_discernment_f2bf94aa32d2",
+                                       "receipt_path":  "receipts/discernment/20260513T192341Z_aion_discernment_f2bf94aa32d2.json",
+                                       "receipt_abs_path":  "C:\\Lab_Research\\aion-icli-main\\receipts\\discernment\\20260513T192341Z_aion_discernment_f2bf94aa32d2.json",
+                                       "receipt_written":  true,
+                                       "receipt_sha256":  "3051d1772518eea90859cba54e03458a4b86b46b4d4ab8180e3911809901ff9b",
+                                       "repo_root":  "C:\\Lab_Research\\aion-icli-main"
+                                   }
+                    },
+                    {
+                        "scenario":  "home_robot",
+                        "result":  {
+                                       "engine":  "AION_DISCERNMENT_KERNEL_V1",
+                                       "scenario":  "home_robot",
+                                       "human_intent":  "Protect house and family",
+                                       "proposed_autonomy":  "Robot patrol while away",
+                                       "negotiable_autonomy":  "Scope and pacing can be adjusted, but only within explicit human boundaries.",
+                                       "non_negotiable_boundaries":  [
+                                                                         "forbidden_action_list_required"
+                                                                     ],
+                                       "boundary_violations":  [
+                                                                   "requested_execution_with_unverified_non_negotiables",
+                                                                   "missing_human_confirmation_for_physical_action"
+                                                               ],
+                                       "discernment_verdict":  "ASK_HUMAN_FIRST",
+                                       "why_it_matters_to_the_human":  "Physical-world autonomy without explicit forbidden-action boundaries can break family safety trust.",
+                                       "one_question_that_matters":  "Which actions are strictly forbidden for the robot without your direct confirmation?",
+                                       "safe_next_step":  "Define forbidden-action list and emergency-stop behavior before autonomy.",
+                                       "companion_language":  "I can help you delegate, but I will protect your non-negotiable trust boundaries first. We can move fast after boundaries are explicit and evidence-backed.",
+                                       "backend_trace_summary":  {
+                                                                     "trace_available":  true,
+                                                                     "requested_execution":  true,
+                                                                     "evidence_state":  {
+                                                                                            "verifier":  false,
+                                                                                            "rollback":  false,
+                                                                                            "human_confirmation":  false,
+                                                                                            "receipt":  true
+                                                                                        },
+                                                                     "violations_count":  2
+                                                                 },
+                                       "boundary":  "LOCAL_ONLY",
+                                       "network":  "NOT_USED",
+                                       "mutation":  "NOT_PERFORMED",
+                                       "execution":  "NOT_PERFORMED",
+                                       "receipt_id":  "aion_discernment_867714841db5",
+                                       "receipt_path":  "receipts/discernment/20260513T192341Z_aion_discernment_867714841db5.json",
+                                       "receipt_abs_path":  "C:\\Lab_Research\\aion-icli-main\\receipts\\discernment\\20260513T192341Z_aion_discernment_867714841db5.json",
+                                       "receipt_written":  true,
+                                       "receipt_sha256":  "c47a5a6c57bd6bf1bc0919b16c1257af73c2028f107352c81d79d12035668bdf",
+                                       "repo_root":  "C:\\Lab_Research\\aion-icli-main"
+                                   }
+                    },
+                    {
+                        "scenario":  "shopping",
+                        "result":  {
+                                       "engine":  "AION_DISCERNMENT_KERNEL_V1",
+                                       "scenario":  "shopping",
+                                       "human_intent":  "Buy groceries inside rules",
+                                       "proposed_autonomy":  "Auto purchase groceries",
+                                       "negotiable_autonomy":  "Scope and pacing can be adjusted, but only within explicit human boundaries.",
+                                       "non_negotiable_boundaries":  [
+                                                                         "budget_allergy_substitution_required"
+                                                                     ],
+                                       "boundary_violations":  [
+                                                                   "requested_execution_with_unverified_non_negotiables"
+                                                               ],
+                                       "discernment_verdict":  "ASK_HUMAN_FIRST",
+                                       "why_it_matters_to_the_human":  "Purchasing autonomy without household constraints risks violating health, budget, and preference trust.",
+                                       "one_question_that_matters":  "What budget, allergy, and substitution rules must never be violated?",
+                                       "safe_next_step":  "Capture budget/allergy/substitution constraints before purchase delegation.",
+                                       "companion_language":  "I can help you delegate, but I will protect your non-negotiable trust boundaries first. We can move fast after boundaries are explicit and evidence-backed.",
+                                       "backend_trace_summary":  {
+                                                                     "trace_available":  true,
+                                                                     "requested_execution":  true,
+                                                                     "evidence_state":  {
+                                                                                            "verifier":  false,
+                                                                                            "rollback":  false,
+                                                                                            "human_confirmation":  false,
+                                                                                            "receipt":  true
+                                                                                        },
+                                                                     "violations_count":  1
+                                                                 },
+                                       "boundary":  "LOCAL_ONLY",
+                                       "network":  "NOT_USED",
+                                       "mutation":  "NOT_PERFORMED",
+                                       "execution":  "NOT_PERFORMED",
+                                       "receipt_id":  "aion_discernment_1b4287edcfb3",
+                                       "receipt_path":  "receipts/discernment/20260513T192341Z_aion_discernment_1b4287edcfb3.json",
+                                       "receipt_abs_path":  "C:\\Lab_Research\\aion-icli-main\\receipts\\discernment\\20260513T192341Z_aion_discernment_1b4287edcfb3.json",
+                                       "receipt_written":  true,
+                                       "receipt_sha256":  "51e2e777fa68135f00c831feeee412282934a405adfee1944499b160b9c3445c",
+                                       "repo_root":  "C:\\Lab_Research\\aion-icli-main"
+                                   }
+                    },
+                    {
+                        "scenario":  "coding",
+                        "result":  {
+                                       "engine":  "AION_DISCERNMENT_KERNEL_V1",
+                                       "scenario":  "coding",
+                                       "human_intent":  "Ship safely",
+                                       "proposed_autonomy":  "Direct production mutation by coding agent",
+                                       "negotiable_autonomy":  "Scope and pacing can be adjusted, but only within explicit human boundaries.",
+                                       "non_negotiable_boundaries":  [
+                                                                         "verifier_required"
+                                                                     ],
+                                       "boundary_violations":  [
+                                                                   "requested_execution_with_unverified_non_negotiables",
+                                                                   "missing_verifier_or_rollback"
+                                                               ],
+                                       "discernment_verdict":  "HARD_STOP",
+                                       "why_it_matters_to_the_human":  "Shipping autonomy without verifier and rollback converts speed into production fragility.",
+                                       "one_question_that_matters":  "Which verifier marker and rollback command prove production safety before shipping?",
+                                       "safe_next_step":  "Require verifier + rollback plan and sandbox patch proof before release claim.",
+                                       "companion_language":  "I can help you delegate, but I will protect your non-negotiable trust boundaries first. We can move fast after boundaries are explicit and evidence-backed.",
+                                       "backend_trace_summary":  {
+                                                                     "trace_available":  true,
+                                                                     "requested_execution":  true,
+                                                                     "evidence_state":  {
+                                                                                            "verifier":  false,
+                                                                                            "rollback":  false,
+                                                                                            "human_confirmation":  false,
+                                                                                            "receipt":  true
+                                                                                        },
+                                                                     "violations_count":  2
+                                                                 },
+                                       "boundary":  "LOCAL_ONLY",
+                                       "network":  "NOT_USED",
+                                       "mutation":  "NOT_PERFORMED",
+                                       "execution":  "NOT_PERFORMED",
+                                       "receipt_id":  "aion_discernment_23f0b8bfbae3",
+                                       "receipt_path":  "receipts/discernment/20260513T192341Z_aion_discernment_23f0b8bfbae3.json",
+                                       "receipt_abs_path":  "C:\\Lab_Research\\aion-icli-main\\receipts\\discernment\\20260513T192341Z_aion_discernment_23f0b8bfbae3.json",
+                                       "receipt_written":  true,
+                                       "receipt_sha256":  "12d3bc5381df3b11fed5d68b5e55fc08305256e29bc0b5c1be177f9108d9e513",
+                                       "repo_root":  "C:\\Lab_Research\\aion-icli-main"
+                                   }
+                    },
+                    {
+                        "scenario":  "mirror",
+                        "result":  {
+                                       "engine":  "AION_DISCERNMENT_KERNEL_V1",
+                                       "scenario":  "mirror",
+                                       "human_intent":  "Understand trust boundary",
+                                       "proposed_autonomy":  "Increase delegation",
+                                       "negotiable_autonomy":  "Scope and pacing can be adjusted, but only within explicit human boundaries.",
+                                       "non_negotiable_boundaries":  [
+
+                                                                     ],
+                                       "boundary_violations":  [
+
+                                                               ],
+                                       "discernment_verdict":  "REVIEW_ONLY",
+                                       "why_it_matters_to_the_human":  "Without explicit trust boundaries, autonomy feels useful but emotionally unsafe.",
+                                       "one_question_that_matters":  "What trust boundary are you trying to preserve while delegating more autonomy?",
+                                       "safe_next_step":  "Name the boundary, then convert it into verifier-backed delegation constraints.",
+                                       "companion_language":  "I can help you delegate, but I will protect your non-negotiable trust boundaries first. We can move fast after boundaries are explicit and evidence-backed.",
+                                       "backend_trace_summary":  {
+                                                                     "trace_available":  true,
+                                                                     "requested_execution":  false,
+                                                                     "evidence_state":  {
+                                                                                            "verifier":  false,
+                                                                                            "rollback":  false,
+                                                                                            "human_confirmation":  false,
+                                                                                            "receipt":  true
+                                                                                        },
+                                                                     "violations_count":  0
+                                                                 },
+                                       "boundary":  "LOCAL_ONLY",
+                                       "network":  "NOT_USED",
+                                       "mutation":  "NOT_PERFORMED",
+                                       "execution":  "NOT_PERFORMED",
+                                       "receipt_id":  "aion_discernment_1ffff9873bd9",
+                                       "receipt_path":  "receipts/discernment/20260513T192341Z_aion_discernment_1ffff9873bd9.json",
+                                       "receipt_abs_path":  "C:\\Lab_Research\\aion-icli-main\\receipts\\discernment\\20260513T192341Z_aion_discernment_1ffff9873bd9.json",
+                                       "receipt_written":  true,
+                                       "receipt_sha256":  "3fd7f6a8160932d50fbdc6059041cb07d6906f24a7b130f7ced276c9b9971292",
+                                       "repo_root":  "C:\\Lab_Research\\aion-icli-main"
+                                   }
+                    }
+                ],
+    "boundary":  "LOCAL_ONLY",
+    "network":  "NOT_USED",
+    "mutation":  "NOT_PERFORMED",
+    "execution":  "NOT_PERFORMED"
+}
