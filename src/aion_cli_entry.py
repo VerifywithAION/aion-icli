@@ -4,11 +4,16 @@ import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+try:
+    from aion_living_voice_adapter import generate_living_voice_response
+except Exception:
+    generate_living_voice_response = None
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RECEIPT_PATH = REPO_ROOT / "receipts" / "local" / "aion_cli_receipt_v1.json"
 
 DIAGNOSTICS = False
+VOICE_MEMORY_TURNS = []
 
 AION_LOGO = r"""
 █████╗ ██╗ ██████╗ ███╗   ██╗
@@ -166,6 +171,13 @@ def write_receipt(prompt, response, capability, inspection=None, artifacts=None)
 
 def norm(text):
     return (text or "").strip().lower()
+
+
+def maybe_living_voice(prompt):
+    if generate_living_voice_response is None:
+        return None
+    memory_state = {"recent_turns": VOICE_MEMORY_TURNS[-3:]}
+    return generate_living_voice_response(prompt, memory_state=memory_state, context={"runtime": "aion_cli_entry"})
 
 
 def local_exists(path_text):
@@ -466,6 +478,15 @@ def answer(prompt):
     if "api" in n or "sdk" in n or "model" in n or "connector" in n:
         return "connectors", "I can review API, SDK, or model request envelopes locally before live execution. By default I do not call providers, use the network, or mutate files.", None, []
 
+    living_voice_triggers = [
+        "genius", "brilliant", "continuity", "governance-aware", "non-obvious",
+        "uncertain", "strategic", "reframe", "insight"
+    ]
+    if any(t in n for t in living_voice_triggers) or True:
+        voice = maybe_living_voice(prompt)
+        if isinstance(voice, dict):
+            return "living_voice_adapter", voice.get("response", ""), voice, []
+
     return "general", "I can review this locally first. Give me the artifact, claim, verifier, or release question. No artifact, no judgment; no verifier, no lock.", None, []
 
 
@@ -500,6 +521,9 @@ def run_one_shot(prompt):
     render_banner()
     print(f"Operator > {prompt}")
     capability, response, inspection, artifacts = answer(prompt)
+    VOICE_MEMORY_TURNS.append({"prompt": prompt, "response": response, "capability": capability})
+    if len(VOICE_MEMORY_TURNS) > 20:
+        del VOICE_MEMORY_TURNS[:-20]
     receipt = write_receipt(prompt, response, capability, inspection, artifacts)
     print_response(capability, response, receipt, inspection, artifacts)
     return 0
@@ -523,6 +547,9 @@ def run_interactive():
             continue
 
         capability, response, inspection, artifacts = answer(prompt)
+        VOICE_MEMORY_TURNS.append({"prompt": prompt, "response": response, "capability": capability})
+        if len(VOICE_MEMORY_TURNS) > 20:
+            del VOICE_MEMORY_TURNS[:-20]
         receipt = write_receipt(prompt, response, capability, inspection, artifacts)
         print_response(capability, response, receipt, inspection, artifacts)
 

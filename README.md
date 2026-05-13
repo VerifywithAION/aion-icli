@@ -122,6 +122,7 @@ Use these links to jump directly into the public AION ICLI release:
 | Creativity + intuition | [AION Creativity + Intuition V1](docs/AION_CREATIVITY_INTUITION_V1.md) | Heuristic signal scoring and bounded next-action generation for safer governance follow-up |
 | Demo orchestrator | [AION Demo Orchestrator V1](docs/AION_DEMO_ORCHESTRATOR_V1.md) | One-command public-safe proof of the full AION governance chain end-to-end |
 | Public demo recording pack | [AION Public Demo Recording Pack V1](docs/AION_PUBLIC_DEMO_RECORDING_PACK_V1.md) | Deterministic video recording guide and script for the final public-safe AION demo |
+| Living voice adapter | [AION Living Voice Adapter V1](docs/AION_LIVING_VOICE_ADAPTER_V1.md) | Continuity-driven conversational intelligence adapter with truth-first governance constraints |
 | Model adapter | [Safe Model Adapter Dry-Run V1](docs/SAFE_MODEL_ADAPTER_DRY_RUN_V1.md) | Model-provider review without provider calls |
 | SDK examples | [SDK Examples V1](docs/SDK_EXAMPLES_V1.md) | Developer request examples and receipts |
 | Voice layer | [Voice Layer V1](docs/VOICE_LAYER_V1.md) | Human-facing AION voice with optional diagnostics |
