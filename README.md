@@ -124,6 +124,7 @@ Use these links to jump directly into the public AION ICLI release:
 | Public demo recording pack | [AION Public Demo Recording Pack V1](docs/AION_PUBLIC_DEMO_RECORDING_PACK_V1.md) | Deterministic video recording guide and script for the final public-safe AION demo |
 | Living voice adapter | [AION Living Voice Adapter V1](docs/AION_LIVING_VOICE_ADAPTER_V1.md) | Continuity-driven conversational intelligence adapter with truth-first governance constraints |
 | Living intelligence kernel | [AION Living Intelligence Kernel V1](docs/AION_LIVING_INTELLIGENCE_KERNEL_V1.md) | Continuity-driven deep analysis kernel: intent, contradictions, assumptions, counterfactuals, and next-admissible move |
+| Dynamic cognition engine | [AION Dynamic Cognition Engine V1](docs/AION_DYNAMIC_COGNITION_ENGINE_V1.md) | Recursive theory generation and contradiction-pressure framing to avoid repetitive governed response templates |
 | Model adapter | [Safe Model Adapter Dry-Run V1](docs/SAFE_MODEL_ADAPTER_DRY_RUN_V1.md) | Model-provider review without provider calls |
 | SDK examples | [SDK Examples V1](docs/SDK_EXAMPLES_V1.md) | Developer request examples and receipts |
 | Voice layer | [Voice Layer V1](docs/VOICE_LAYER_V1.md) | Human-facing AION voice with optional diagnostics |

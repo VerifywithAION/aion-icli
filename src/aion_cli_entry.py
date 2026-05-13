@@ -428,9 +428,13 @@ def answer(prompt):
 
     if should_use_living_intelligence(prompt) and analyze_living_request is not None:
         kernel = analyze_living_request(prompt)
+        insight = kernel.get("nonobvious_insight", "")
+        reframe = kernel.get("dynamic_reframe", "")
         response = (
             kernel.get("direct_truth", "")
             + "\n\n"
+            + ("Non-obvious insight: " + insight + "\n\n" if insight else "")
+            + ("Dynamic reframe: " + reframe + "\n\n" if reframe else "")
             + "Next best question: "
             + kernel.get("next_best_question", "")
             + "\n\n"

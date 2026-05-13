@@ -6,6 +6,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
+try:
+    from aion_dynamic_cognition_engine import analyze_dynamic_cognition
+except Exception:
+    analyze_dynamic_cognition = None
+
 ROOT = Path(__file__).resolve().parent.parent
 RECEIPTS_DIR = ROOT / "receipts" / "living_intelligence"
 ENGINE = "AION_LIVING_INTELLIGENCE_KERNEL_V1"
@@ -107,23 +112,40 @@ def _dynamic_update(intent: str, contradictions: List[str]) -> str:
 
 
 def analyze_living_request(prompt: str) -> Dict[str, Any]:
+    dynamic = None
+    if analyze_dynamic_cognition is not None:
+        try:
+            dynamic = analyze_dynamic_cognition(prompt, context={"caller": ENGINE})
+        except Exception:
+            dynamic = None
+
     intent = _detect_intent(prompt)
-    assumptions = _hidden_assumptions(prompt)
-    contradictions = _contradictions(prompt)
-    root = _root_cause(prompt)
-    counterfactuals = _counterfactuals(prompt)
-    next_q = _next_best_question(prompt)
+    assumptions = dynamic.get("hidden_assumptions") if isinstance(dynamic, dict) else _hidden_assumptions(prompt)
+    contradictions = [dynamic.get("contradiction_pressure")] if isinstance(dynamic, dict) else _contradictions(prompt)
+    root = dynamic.get("strongest_theory", {}).get("theory") if isinstance(dynamic, dict) else _root_cause(prompt)
+    counterfactuals = (
+        [x.get("theory") for x in dynamic.get("competing_theories", []) if isinstance(x, dict)]
+        if isinstance(dynamic, dict)
+        else _counterfactuals(prompt)
+    )
+    next_q = dynamic.get("next_best_question") if isinstance(dynamic, dict) else _next_best_question(prompt)
     update = _dynamic_update(intent, contradictions)
 
     direct_truth = (
         "Direct truth: admissibility is a governance property, not a style property; "
         "without verifier/evidence continuity, confidence is insufficient."
     )
+    if isinstance(dynamic, dict):
+        theory = dynamic.get("strongest_theory", {}).get("theory", "")
+        if theory:
+            direct_truth = "Direct truth: " + theory
 
-    governed_answer = (
+    governed_answer = dynamic.get("governed_answer") if isinstance(dynamic, dict) else (
         "Governed answer: treat this as a constrained decision problem. "
         "Surface missing controls, downgrade claim certainty, and require verifier/receipt evidence before trust escalation."
     )
+    if governed_answer and not governed_answer.lower().startswith("governed answer"):
+        governed_answer = "Governed answer: " + governed_answer
 
     next_move = (
         "Next admissible move: run the matching verifier path, attach receipt evidence, "
@@ -142,6 +164,9 @@ def analyze_living_request(prompt: str) -> Dict[str, Any]:
         "next_best_question": next_q,
         "dynamic_theory_update": update,
         "governed_answer": governed_answer,
+        "nonobvious_insight": dynamic.get("nonobvious_insight") if isinstance(dynamic, dict) else "",
+        "dynamic_reframe": dynamic.get("dynamic_reframe") if isinstance(dynamic, dict) else "",
+        "continuity_update": dynamic.get("continuity_update") if isinstance(dynamic, dict) else "",
         "next_admissible_move": next_move,
         "boundary": "LOCAL_ONLY",
         "network": "NOT_USED",
