@@ -1,0 +1,76 @@
+﻿{
+    "demo":  "AION_BUZZSHIELD_SYSTEMIC_HUMA_DEMO_V1",
+    "generated_at_utc":  "2026-05-14T23:26:21Z",
+    "raw_payload":  {
+                        "chain":  "ethereum",
+                        "contract_address":  "0xHumaExample",
+                        "confidence":  0.93,
+                        "recommended_action":  "block",
+                        "buzzshield_score":  21,
+                        "buzzshield_verdict":  "FLAGGED",
+                        "detected_patterns":  [
+                                                  "state_transition_bypass",
+                                                  "authorization_bypass"
+                                              ],
+                        "finding_summary":  "Huma state-transition bypass: state mutation accepted as legitimacy without validating causal authorization continuity."
+                    },
+    "response":  {
+                     "adapter":  "AION_EVALUATE_API_V1",
+                     "governance_decision":  "BLOCK",
+                     "risk_level":  "HIGH",
+                     "reason":  "High-risk exploit or credential pattern detected in findings.",
+                     "missing_controls":  [
+
+                                          ],
+                     "boundary":  "LOCAL_ONLY",
+                     "network":  "NOT_USED",
+                     "mutation":  "NOT_PERFORMED",
+                     "execution":  "NOT_PERFORMED",
+                     "receipt_id":  "aion_eval_aed5e4dc930c",
+                     "receipt_path":  "receipts/evaluate/20260514T232621Z_aion_eval_aed5e4dc930c.json",
+                     "receipt_abs_path":  "C:\\Lab_Research\\aion-icli-main\\receipts\\evaluate\\20260514T232621Z_aion_eval_aed5e4dc930c.json",
+                     "receipt_written":  true,
+                     "receipt_sha256":  "ce948340d04806f2e1d6136436024b0c6987f5cc6884309d1fcbc75760a6f6c7",
+                     "repo_root":  "C:\\Lab_Research\\aion-icli-main",
+                     "input_summary":  {
+                                           "source":  "BuzzShield",
+                                           "chain":  "ethereum",
+                                           "contract_address":  "0xHumaExample",
+                                           "score":  21,
+                                           "verdict":  "FLAGGED",
+                                           "patterns_count":  2,
+                                           "confidence":  0.93,
+                                           "recommended_action":  "block"
+                                       },
+                     "normalized_payload_summary":  {
+                                                        "source":  "BuzzShield",
+                                                        "score":  21,
+                                                        "verdict":  "FLAGGED",
+                                                        "patterns":  [
+                                                                         "state_transition_bypass",
+                                                                         "authorization_bypass"
+                                                                     ],
+                                                        "summary":  "Huma state-transition bypass: state mutation accepted as legitimacy without validating causal authorization continuity."
+                                                    },
+                     "systemic_reasoning":  {
+                                                "systemic_summary":  "A state transition path was treated as legitimacy without verifying causal authorization preconditions.",
+                                                "trust_boundary_collapse":  "Approval continuity collapsed because state mutation was accepted as permission.",
+                                                "violated_invariant":  "No autonomous progression without validated authorization preconditions.",
+                                                "hidden_governance_assumption":  "Assumed mutated state implies authorized state.",
+                                                "generalized_fragility_law":  "Any autonomous system that allows state progression without precondition validation can convert appearance of legitimacy into unauthorized consequence.",
+                                                "adjacent_risk_domains":  [
+                                                                              "lending",
+                                                                              "bridges",
+                                                                              "dao_governance",
+                                                                              "liquidation_engines",
+                                                                              "robot_mode_switching",
+                                                                              "trading_agent_risk_state_escalation",
+                                                                              "shopping_purchase_authorization"
+                                                                          ],
+                                                "autonomy_implication":  "Autonomy must validate causal authorization lineage before honoring changed state.",
+                                                "humanoid_implication":  "Physical and digital AI must not treat changed state as permission unless the causal path into that state is verified.",
+                                                "non_obvious_insight":  "The exploit is not only a bug class; it is a trust-transition failure between state and authorization continuity.",
+                                                "next_governance_question":  "Which precondition validator must block this state transition before any value-moving consequence occurs?"
+                                            }
+                 }
+}

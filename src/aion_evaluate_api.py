@@ -6,6 +6,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from aion_systemic_reasoning_engine import reason_systemically
 
 HOST = "127.0.0.1"
 PORT = 8765
@@ -72,6 +73,25 @@ def missing_required(payload: Dict[str, Any]) -> List[str]:
     return missing
 
 
+def normalize_buzzshield_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
+    normalized = dict(payload)
+    has_buzzshield_fields = any(
+        key in payload
+        for key in ["buzzshield_score", "buzzshield_verdict", "detected_patterns", "finding_summary"]
+    )
+    if "score" not in normalized and "buzzshield_score" in payload:
+        normalized["score"] = payload.get("buzzshield_score")
+    if "verdict" not in normalized and "buzzshield_verdict" in payload:
+        normalized["verdict"] = payload.get("buzzshield_verdict")
+    if "patterns" not in normalized and "detected_patterns" in payload:
+        normalized["patterns"] = payload.get("detected_patterns")
+    if "summary" not in normalized and "finding_summary" in payload:
+        normalized["summary"] = payload.get("finding_summary")
+    if has_buzzshield_fields and not sanitize_text(normalized.get("source")):
+        normalized["source"] = "BuzzShield"
+    return normalized
+
+
 def evaluate(payload: Dict[str, Any]) -> Tuple[str, str, str, List[str]]:
     missing = missing_required(payload)
     if missing:
@@ -107,7 +127,8 @@ def evaluate(payload: Dict[str, Any]) -> Tuple[str, str, str, List[str]]:
 
 
 def make_output(payload: Dict[str, Any]) -> Dict[str, Any]:
-    decision, risk_level, reason, missing_controls = evaluate(payload)
+    normalized_payload = normalize_buzzshield_payload(payload)
+    decision, risk_level, reason, missing_controls = evaluate(normalized_payload)
     receipt_id = f"aion_eval_{uuid.uuid4().hex[:12]}"
     ts = utc_now()
     receipt_filename = f"{ts.replace(':', '').replace('-', '')}_{receipt_id}.json"
@@ -132,22 +153,31 @@ def make_output(payload: Dict[str, Any]) -> Dict[str, Any]:
         "receipt_sha256": "",
         "repo_root": str(ROOT),
         "input_summary": {
-            "source": sanitize_text(payload.get("source")),
-            "chain": sanitize_text(payload.get("chain")),
-            "contract_address": sanitize_text(payload.get("contract_address")),
-            "score": parse_score(payload.get("score")),
-            "verdict": sanitize_text(payload.get("verdict")).upper(),
-            "patterns_count": len(parse_patterns(payload.get("patterns"))),
-            "confidence": payload.get("confidence"),
-            "recommended_action": sanitize_text(payload.get("recommended_action")),
+            "source": sanitize_text(normalized_payload.get("source")),
+            "chain": sanitize_text(normalized_payload.get("chain")),
+            "contract_address": sanitize_text(normalized_payload.get("contract_address")),
+            "score": parse_score(normalized_payload.get("score")),
+            "verdict": sanitize_text(normalized_payload.get("verdict")).upper(),
+            "patterns_count": len(parse_patterns(normalized_payload.get("patterns"))),
+            "confidence": normalized_payload.get("confidence"),
+            "recommended_action": sanitize_text(normalized_payload.get("recommended_action")),
+        },
+        "normalized_payload_summary": {
+            "source": sanitize_text(normalized_payload.get("source")),
+            "score": parse_score(normalized_payload.get("score")),
+            "verdict": sanitize_text(normalized_payload.get("verdict")).upper(),
+            "patterns": parse_patterns(normalized_payload.get("patterns")),
+            "summary": sanitize_text(normalized_payload.get("summary")),
         },
     }
+    output["systemic_reasoning"] = reason_systemically(normalized_payload, output)
 
     receipt = {
         "receipt_type": "aion_evaluate_api_receipt_v1",
         "adapter": ADAPTER_NAME,
         "timestamp_utc": ts,
         "input_payload": payload,
+        "normalized_payload": normalized_payload,
         "output_decision": output,
         "boundary": "LOCAL_ONLY",
         "network": "NOT_USED",

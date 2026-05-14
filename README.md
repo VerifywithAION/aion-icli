@@ -127,6 +127,7 @@ Use these links to jump directly into the public AION ICLI release:
 | Dynamic cognition engine | [AION Dynamic Cognition Engine V1](docs/AION_DYNAMIC_COGNITION_ENGINE_V1.md) | Recursive theory generation and contradiction-pressure framing to avoid repetitive governed response templates |
 | Companion runtime | [AION Companion Runtime V1](docs/AION_COMPANION_RUNTIME_V1.md) | Human-facing trusted delegation layer that preserves continuity and safety while governance runs in the background |
 | Discernment kernel | [AION Discernment Kernel V1](docs/AION_DISCERNMENT_KERNEL_V1.md) | Distinguishes negotiable autonomy from non-negotiable trust boundaries before delegation |
+| Systemic reasoning engine | [AION Systemic Reasoning Engine V1](docs/AION_SYSTEMIC_REASONING_ENGINE_V1.md) | Extends Evaluate API with trust-boundary collapse and generalized fragility reasoning for autonomous risk findings |
 | Model adapter | [Safe Model Adapter Dry-Run V1](docs/SAFE_MODEL_ADAPTER_DRY_RUN_V1.md) | Model-provider review without provider calls |
 | SDK examples | [SDK Examples V1](docs/SDK_EXAMPLES_V1.md) | Developer request examples and receipts |
 | Voice layer | [Voice Layer V1](docs/VOICE_LAYER_V1.md) | Human-facing AION voice with optional diagnostics |
