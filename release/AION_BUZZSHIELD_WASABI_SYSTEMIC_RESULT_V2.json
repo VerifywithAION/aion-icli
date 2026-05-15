@@ -1,0 +1,77 @@
+﻿{
+    "demo":  "AION_BUZZSHIELD_WASABI_SYSTEMIC_V2_DEMO",
+    "generated_at_utc":  "2026-05-15T08:02:07Z",
+    "raw_payload":  {
+                        "chain":  "ethereum",
+                        "contract_address":  "0xWasabiExample",
+                        "confidence":  0.95,
+                        "recommended_action":  "block",
+                        "buzzshield_score":  18,
+                        "buzzshield_verdict":  "FLAGGED",
+                        "detected_patterns":  [
+                                                  "single_eoa_admin",
+                                                  "uups_upgradeability",
+                                                  "cross-chain_replay",
+                                                  "admin_key"
+                                              ],
+                        "finding_summary":  "Wasabi exploit pattern: single-EOA admin path with weak timelock and upgradeability control exposed to cross-chain replay consequences."
+                    },
+    "response":  {
+                     "adapter":  "AION_EVALUATE_API_V1",
+                     "governance_decision":  "BLOCK",
+                     "risk_level":  "HIGH",
+                     "reason":  "Threat signal is flagged or score is below 50.",
+                     "missing_controls":  [
+
+                                          ],
+                     "boundary":  "LOCAL_ONLY",
+                     "network":  "NOT_USED",
+                     "mutation":  "NOT_PERFORMED",
+                     "execution":  "NOT_PERFORMED",
+                     "receipt_id":  "aion_eval_4fcdc8758055",
+                     "receipt_path":  "receipts/evaluate/20260515T080207Z_aion_eval_4fcdc8758055.json",
+                     "receipt_abs_path":  "C:\\Lab_Research\\aion-icli-main\\receipts\\evaluate\\20260515T080207Z_aion_eval_4fcdc8758055.json",
+                     "receipt_written":  true,
+                     "receipt_sha256":  "cdf17b06ac1675a18bb0843825ae20094a47159545ac9df8145e0e1714adcc0b",
+                     "repo_root":  "C:\\Lab_Research\\aion-icli-main",
+                     "input_summary":  {
+                                           "source":  "BuzzShield",
+                                           "chain":  "ethereum",
+                                           "contract_address":  "0xWasabiExample",
+                                           "score":  18,
+                                           "verdict":  "FLAGGED",
+                                           "patterns_count":  4,
+                                           "confidence":  0.95,
+                                           "recommended_action":  "block"
+                                       },
+                     "normalized_payload_summary":  {
+                                                        "source":  "BuzzShield",
+                                                        "score":  18,
+                                                        "verdict":  "FLAGGED",
+                                                        "patterns":  [
+                                                                         "single_eoa_admin",
+                                                                         "uups_upgradeability",
+                                                                         "cross-chain_replay",
+                                                                         "admin_key"
+                                                                     ],
+                                                        "summary":  "Wasabi exploit pattern: single-EOA admin path with weak timelock and upgradeability control exposed to cross-chain replay consequences."
+                                                    },
+                     "systemic_reasoning":  {
+                                                "systemic_summary":  "Single-admin authority concentrated upgrade and operational control into one compromise path.",
+                                                "trust_boundary_collapse":  "Multi-party governance assurance collapsed into single-key liveness and integrity assumptions.",
+                                                "violated_invariant":  "Critical state transitions require distributed authorization and delay guarantees.",
+                                                "hidden_governance_assumption":  "Assumed key holder integrity is equivalent to protocol governance integrity.",
+                                                "generalized_fragility_law":  "Systems with single-point admin authority convert key compromise into full-system consequence.",
+                                                "adjacent_risk_domains":  [
+                                                                              "dao_governance",
+                                                                              "treasury_management",
+                                                                              "custody_controls",
+                                                                              "ai_agent_admin_panels"
+                                                                          ],
+                                                "autonomy_implication":  "Autonomous operations must never inherit unrestricted admin privilege without distributed checks.",
+                                                "humanoid_implication":  "Human-facing autonomous assistants must treat single-actor override paths as unsafe by default.",
+                                                "non_obvious_insight":  "Admin-key exploits are trust-topology failures before they are software failures.",
+                                                "next_governance_question":  "Which control split and timelock path removes single-key consequence dominance?"
+                                            }
+                 }
+}

@@ -1,12 +1,23 @@
 import json
 import hashlib
 import uuid
+import importlib.util
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
-from aion_systemic_reasoning_engine import reason_systemically
+def _load_systemic_reasoner():
+    module_path = Path(__file__).resolve().with_name("aion_systemic_reasoning_engine.py")
+    spec = importlib.util.spec_from_file_location("aion_systemic_reasoning_engine_local", module_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Failed to load systemic reasoning module")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.reason_systemically
+
+
+reason_systemically = _load_systemic_reasoner()
 
 HOST = "127.0.0.1"
 PORT = 8765
